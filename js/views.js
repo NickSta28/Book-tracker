@@ -60,7 +60,7 @@ export function shelfShell(S, counts) {
     <div class="toggles">${tg('paper', 'Papier')}${tg('ebook', 'E-Book')}${tg('audio', 'Hörbuch')}</div>
   </div>
   <label class="search">${ICON.search}<span class="sr">Suche</span><input id="q" type="search" placeholder="Titel, Autor:in, ISBN" value="${esc(S.filter.q)}" autocomplete="off"></label>
-  <div class="chips" role="group" aria-label="Status">${chip('all', 'Alle')}${chip('reading', 'Lese ich')}${chip('finished', 'Gelesen')}${chip('shelf', 'Regal')}${chip('wishlist', 'Wunschliste')}</div>
+  <div class="chips" role="group" aria-label="Status">${chip('all', 'Alle')}${chip('reading', 'Lese ich')}${chip('finished', 'Gelesen')}${chip('shelf', 'Regal')}${chip('wishlist', 'Wunschliste')}${chip('abandoned', 'Abgebrochen')}</div>
   <div id="list"></div>`;
 }
 
@@ -128,13 +128,13 @@ export function statsView(S, entries) {
       if (!dd) { cells += `<div class="d">${d}</div>`; continue; }
       const a = dd.pages < 20 ? 0.45 : dd.pages < 45 ? 0.72 : 1;
       const bg = keyColor(dd);
-      cells += `<div class="d" title="${Math.round(dd.pages)} Seiten" style="background:${bg};opacity:${a};color:${textOn(bg)}">${d}</div>`;
+      cells += `<button class="d on" data-act="day" data-date="${date}" aria-label="${d}. – ${Math.round(dd.pages)} Seiten" style="background:${bg};color:${textOn(bg)};--a:${a}">${d}</button>`;
     }
     chart = `<h3 class="sec">Lesekalender</h3><div class="cal">${['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map((w) => `<div class="wd">${w}</div>`).join('')}${cells}</div>`;
   } else {
     const bars = [];
     if (st.period === 'week') {
-      for (let i = 0; i < 7; i++) { const date = addDays(range.from, i), dd = daily.get(date); bars.push({ l: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'][i], v: dd ? dd.pages : 0 }); }
+      for (let i = 0; i < 7; i++) { const date = addDays(range.from, i), dd = daily.get(date); bars.push({ l: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'][i], v: dd ? dd.pages : 0, date }); }
     } else {
       const y = parseDate(st.anchor).getFullYear();
       for (let m = 0; m < 12; m++) {
@@ -144,7 +144,7 @@ export function statsView(S, entries) {
       }
     }
     const mx = Math.max(1, ...bars.map((b) => b.v));
-    chart = `<h3 class="sec">${st.period === 'week' ? 'Seiten pro Tag' : 'Seiten pro Monat'}</h3><div class="bars">${bars.map((b) => `<div class="c"><span>${b.v ? num(b.v) : ''}</span><i style="height:${Math.round(b.v / mx * 90)}px"></i><em>${b.l}</em></div>`).join('')}</div>`;
+    chart = `<h3 class="sec">${st.period === 'week' ? 'Seiten pro Tag' : 'Seiten pro Monat'}</h3><div class="bars">${bars.map((b) => `<${b.date && b.v ? 'button data-act="day" data-date="' + b.date + '"' : 'div'} class="c"><span>${b.v ? num(b.v) : ''}</span><i style="height:${Math.round(b.v / mx * 90)}px"></i><em>${b.l}</em></${b.date && b.v ? 'button' : 'div'}>`).join('')}</div>`;
   }
 
   const fastest = sum.fastest, slowest = sum.slowest;
@@ -164,6 +164,7 @@ export function statsView(S, entries) {
   ${sum.spend || sum.avgRating ? `<div class="kpis"><div class="kpi"><b>${sum.spend ? num(sum.spend, 2) + ' €' : '–'}</b><span>Ausgaben für Bücher</span></div><div class="kpi"><b>${sum.avgRating ? num(sum.avgRating, 1) : '–'}</b><span>Ø Bewertung</span></div><div class="kpi"><b>${S.ub.filter((u) => u.status === 'shelf').length}</b><span>ungelesen im Regal</span></div></div>` : ''}
   ${chart}
   ${total ? `<div class="legend">${names.map((k) => `<span><i style="background:${colOf(k)}"></i>${esc(nameOf(k))} ${Math.round(share[k] / total * 100)} %</span>`).join('')}</div><div class="stack">${names.map((k) => `<div style="width:${share[k] / total * 100}%;background:${colOf(k)}"></div>`).join('')}</div>` : '<p class="note">In diesem Zeitraum wurden keine Seiten erfasst.</p>'}
+  ${st.period === 'month' || st.period === 'week' ? '<p class="note">Tipp: Tage antippen, um die gelesenen Bücher zu sehen.</p>' : ''}
   ${est > 0 ? `<p class="note">Enthält geschätzte Seiten (${num(est)}) aus Büchern ohne Tages-Log, gleichmäßig über Start- bis Enddatum verteilt.</p>` : ''}
   <h3 class="sec">Tempo</h3>
   <div class="two-cards"><div class="tcard"><small>Am schnellsten</small>${pace(fastest)}</div><div class="tcard"><small>Am langsamsten</small>${pace(slowest)}</div></div>`;
@@ -179,7 +180,7 @@ export function readingView(S, entries) {
     return `<div class="rd">${coverHtml(e.book, true)}<div class="body"><h3>${esc(e.book.title)}</h3><p class="sub">${esc(e.book.authors || '')}</p>
       <div class="bar" style="margin-top:8px"><div style="width:${pct}%"></div></div>
       <p class="sub">Seite ${lp}${pages ? ' von ' + pages + ' · ' + pct + ' %' : ''}</p>
-      ${ro ? '' : `<div class="inline"><input type="number" inputmode="numeric" min="0" ${pages ? `max="${pages}"` : ''} value="${lp || ''}" placeholder="Seite" aria-label="Aktuelle Seite" data-pg="${e.id}"><button class="btn" data-act="logpage" data-id="${e.id}">Eintragen</button><button class="btn ghost" data-act="open" data-id="${e.id}">Details</button></div>`}
+      ${ro ? '' : `<div class="inline"><input type="number" inputmode="numeric" min="0" ${pages ? `max="${pages}"` : ''} value="${lp || ''}" placeholder="Seite" aria-label="Aktuelle Seite" data-pg="${e.id}"><button class="btn" data-act="logpage" data-id="${e.id}">Eintragen</button><button class="btn ghost" data-act="open" data-id="${e.id}">Details</button><button class="btn ghost" data-act="abandonopen" data-id="${e.id}">Abbrechen</button></div>`}
     </div></div>`;
   }).join('') : `<div class="empty"><b>Gerade liest du nichts</b>Öffne ein Buch im Regal und setze den Status auf „Lese ich“.</div>`;
   return `${header(S, 'Lesen', list.length + ' ' + (list.length === 1 ? 'Buch' : 'Bücher') + ' in Arbeit')}${body}`;
@@ -208,7 +209,7 @@ export function bookSheet(S, e) {
       ${pages ? `<div class="bar"><div style="width:${Math.min(100, Math.round(lp / pages * 100))}%"></div></div>` : ''}
       <p class="sub">Aktuell auf Seite ${lp}${pages ? ' von ' + pages : ''}</p>
       <div class="inline"><input id="logpg" type="number" inputmode="numeric" min="0" ${pages ? `max="${pages}"` : ''} value="${lp || ''}" aria-label="Aktuelle Seite" placeholder="Seite"><button class="btn" data-act="sheetlog" data-id="${e.id}">Eintragen</button></div>
-      <div class="quick">${[10, 25, 50].map((n) => `<button data-act="quicklog" data-n="${n}">+${n}</button>`).join('')}<button data-act="quicklog" data-n="done">Fertig</button></div>` : ''}
+      <div class="quick">${[10, 25, 50].map((n) => `<button data-act="quicklog" data-n="${n}">+${n}</button>`).join('')}<button data-act="quicklog" data-n="done">Fertig</button>${e.status === 'reading' ? `<button data-act="abandonopen" data-id="${e.id}">Abbrechen</button>` : ''}</div>` : ''}
     ${logs.length ? `<h3 class="sec">Verlauf</h3>${logs.slice(0, 6).map((l) => `<div class="logrow"><span>${deDate(l.log_date)}</span><span>+${l.pages_read} S.</span><span>bis Seite ${l.page_to}</span></div>`).join('')}` : ''}
 
     <h3 class="sec">Mein Eintrag</h3>
@@ -296,4 +297,36 @@ export function settingsSheet(S) {
     <div id="setOut" class="prog" role="status"></div>
     <div class="btns"><button class="btn danger grow" data-act="logout">Abmelden</button></div>
   </div></div>`;
+}
+
+/* ---------- Tagesansicht (Statistik) ---------- */
+export function daySheet(S, date, dd, byId) {
+  const rows = Object.entries(dd ? dd.books : {}).sort((a, b) => b[1].pages - a[1].pages).map(([id, v]) => {
+    const e = byId.get(id); if (!e) return '';
+    const p = Math.round(v.pages);
+    return `<button class="dayrow" data-act="open" data-id="${id}">${coverHtml(e.book, true)}<span class="body"><b>${esc(e.book.title)}</b><span>${esc(e.book.authors || '')}</span><span>${p} ${p === 1 ? 'Seite' : 'Seiten'}${v.est ? ' (geschätzt)' : ''}${e.category ? ' · ' + esc(e.category) : ''}</span></span></button>`;
+  }).join('');
+  const total = dd ? Math.round(dd.pages) : 0;
+  return `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true" aria-label="Gelesen am ${deDate(date)}" data-stop>
+    <div class="sheet-head"><span style="width:44px"></span><span class="grab"></span><button class="icon-btn" style="border:0" data-act="closeSheet" aria-label="Schließen">${ICON.close}</button></div>
+    <h2>${parseDate(date).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</h2>
+    <p class="sub">${total} Seiten gelesen</p>
+    ${rows || '<p class="note">An diesem Tag wurde nichts erfasst.</p>'}
+  </div></div>`;
+}
+
+/* ---------- Buch abbrechen ---------- */
+export function abandonSheet(S, e, lp) {
+  const pages = e.book.pages || 0;
+  return `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true" aria-label="Buch abbrechen" data-stop>
+    <div class="sheet-head"><span style="width:44px"></span><span class="grab"></span><button class="icon-btn" style="border:0" data-act="closeSheet" aria-label="Schließen">${ICON.close}</button></div>
+    <h2>Abbrechen: ${esc(e.book.title)}</h2>
+    <p class="sub">Die bis hier gelesenen Seiten zählen in der Statistik weiter mit.</p>
+    <form class="form" data-form="abandon" data-id="${e.id}">
+      <label>Bis zu welcher Seite gelesen?<input name="page" type="number" inputmode="numeric" min="0" ${pages ? `max="${pages}"` : ''} value="${lp || ''}" placeholder="Seite"></label>
+      <label>Abgebrochen am<input name="date" type="date" value="${today()}"></label>
+      <label>Bewertung (optional)<select name="rating"><option value="">keine</option>${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${e.rating === n ? 'selected' : ''}>${'★'.repeat(n)}</option>`).join('')}</select></label>
+      <label>Warum abgebrochen? (optional)<textarea name="reason" rows="3" placeholder="z. B. sprachlich zu schwach, Thema trägt nicht …">${esc(e.notes || '')}</textarea></label>
+      <button class="btn" type="submit">Als abgebrochen speichern</button>
+    </form></div></div>`;
 }

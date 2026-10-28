@@ -7,8 +7,8 @@
   :root{--paper:#17140F;--paper2:#241F18;--ink:#F1EBDD;--muted:#B8AE9A;--line:#3A342B;--line2:#51493C;--green:#5FB394;--green-ink:#10241C;--red:#E08A7E;--ochre:#D9AE5A;--board:#6B5E45;--scrim:rgba(0,0,0,.6)}
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.4}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip;overscroll-behavior-x:none;touch-action:pan-y;max-width:100%}
+body{margin:0;overflow-x:hidden;overflow-x:clip;max-width:100%;position:relative;touch-action:pan-y;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.4}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit}
@@ -27,7 +27,7 @@ h1,h2,h3{margin:0}
 .seg{display:flex;border:1px solid var(--line2);border-radius:22px;padding:2px;font:600 12px var(--sans)}
 .seg button{min-height:38px;padding:0 13px;border:0;border-radius:19px;background:transparent}
 .seg button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
-.chips{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips{touch-action:pan-x pan-y;overscroll-behavior-x:contain;display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;min-height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--line2);background:transparent;font:600 13px var(--sans)}
 .chip[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -117,6 +117,7 @@ dl.meta dt{color:var(--muted)} dl.meta dd{margin:0;font-weight:600;word-break:br
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-family:var(--sans)}
 .cal .wd{text-align:center;font:600 10.5px var(--sans);color:var(--muted)}
 .cal .d{height:36px;border-radius:3px;padding:3px 4px;font:500 10px var(--sans);background:var(--paper2)}
+.cal .d.on{border:0;cursor:pointer;display:block;text-align:left;opacity:var(--a,1)}
 .cal .d.off{background:transparent;color:var(--muted)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font:500 11.5px var(--sans)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
@@ -150,7 +151,7 @@ dl.meta dt{color:var(--muted)} dl.meta dd{margin:0;font-weight:600;word-break:br
 .vid .fr{position:absolute;left:8%;right:8%;top:30%;bottom:30%;border:2px solid #fff;border-radius:8px;box-shadow:0 0 0 999px rgba(0,0,0,.35);pointer-events:none}
 .msg{margin:10px 0 0;font:500 13px var(--sans);color:var(--muted);min-height:20px}
 .msg.ok{color:var(--green)} .msg.bad{color:var(--red)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom));z-index:60;max-width:90vw;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:22px;font:600 13px var(--sans);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top));z-index:60;max-width:90vw;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:22px;font:600 13px var(--sans);box-shadow:0 4px 12px rgba(0,0,0,.25)}
 .toast.bad{background:var(--red);color:#fff}
 .prog{margin-top:12px;font:500 13px var(--sans)}
 .found{margin-top:14px;border:1px solid var(--line2);border-radius:12px;padding:12px}
@@ -158,3 +159,10 @@ dl.meta dt{color:var(--muted)} dl.meta dd{margin:0;font-weight:600;word-break:br
 .found .cover{width:72px;flex:none}
 table.sm{width:100%;border-collapse:collapse;font:500 12px var(--sans);margin-top:8px}
 table.sm td,table.sm th{padding:5px 4px;border-bottom:1px solid var(--line);text-align:left}
+
+.bars button.c{background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer}
+.dayrow{display:flex;gap:12px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:12px 0;align-items:center}
+.dayrow .cover{width:48px;flex:none;padding:4px}
+.dayrow .cover .ct{font-size:7px}.dayrow .cover .ca{display:none}
+.dayrow .body{display:flex;flex-direction:column;gap:2px;min-width:0;font:500 13px var(--sans);color:var(--muted)}
+.dayrow .body b{font:700 15px var(--serif);color:var(--ink)}

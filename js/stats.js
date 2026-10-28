@@ -15,8 +15,9 @@ export function dailyMap(entries, logs) {
   const add = (date, pages, u, est) => {
     if (!(pages > 0)) return;
     let d = map.get(date);
-    if (!d) { d = { pages: 0, cats: {}, fmts: {}, est: 0 }; map.set(date, d); }
+    if (!d) { d = { pages: 0, cats: {}, fmts: {}, est: 0, books: {} }; map.set(date, d); }
     d.pages += pages; d.est += est ? pages : 0;
+    const bk = d.books[u.id] || (d.books[u.id] = { pages: 0, est: false }); bk.pages += pages; if (est) bk.est = true;
     const c = catOf(u), f = u.format;
     d.cats[c] = (d.cats[c] || 0) + pages;
     d.fmts[f] = (d.fmts[f] || 0) + pages;

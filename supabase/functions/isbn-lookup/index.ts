@@ -224,13 +224,23 @@ async function viaOpenLibrarySearch(isbn: string) {
 }
 
 // Cover einmal laden und im eigenen Speicher ablegen (schont die Quellen, funktioniert dauerhaft).
+function toIsbn10(isbn: string): string | null {
+  if (!isbn.startsWith('978')) return null;
+  const core = isbn.slice(3, 12);
+  let sum = 0;
+  for (let i = 0; i < 9; i++) sum += Number(core[i]) * (10 - i);
+  const c = (11 - (sum % 11)) % 11;
+  return core + (c === 10 ? 'X' : String(c));
+}
+
 async function cacheCover(isbn: string, candidates: string[]): Promise<string | null> {
   const base = Deno.env.get('SUPABASE_URL');
   const srv = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!base || !srv) return null;
   for (const u of candidates) {
     try {
-      const r = await fetch(u);
+      let r = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; buecher-tracker/1.0)' } });
+      if (r.status === 429) { await new Promise((res) => setTimeout(res, 1200)); r = await fetch(u); }
       if (!r.ok) continue;
       const type = r.headers.get('content-type') || '';
       if (!type.startsWith('image/')) continue;
@@ -261,6 +271,9 @@ Deno.serve(async (req: Request) => {
   const merged: any = mergeInfos([dnb.info, lobid.info, google.info, ol.info, ols.info]);
   const covers = [google.info, ol.info, ols.info].map((i: any) => i && i.coverUrl).filter(Boolean) as string[];
   covers.push('https://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg?default=false');
+  covers.push('https://books.google.com/books/content?vid=ISBN' + isbn + '&printsec=frontcover&img=1&zoom=1');
+  const i10 = toIsbn10(isbn);
+  if (i10) covers.push('https://images-na.ssl-images-amazon.com/images/P/' + i10 + '.01.LZZZZZZZ.jpg');
   const coverPath = covers.length ? await cacheCover(isbn, covers) : null;
   delete merged.coverUrl;
 

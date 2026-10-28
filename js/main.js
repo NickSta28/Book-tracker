@@ -2,7 +2,7 @@
 import * as api from './api.js';
 import { $, $$, esc, today, addDays, sleep, debounce, extractIsbns, normalizeIsbn, isbn13Valid, download, rgbToHex, num } from './util.js';
 import { parseCsv, fromBookology, toCsv } from './csv.js';
-import { shiftAnchor, lastPage } from './stats.js';
+import { shiftAnchor, lastPage, dailyMap } from './stats.js';
 import { startScanner, stopScanner, decodePhoto, beep } from './scan.js';
 import * as V from './views.js';
 
@@ -60,7 +60,7 @@ function render() {
   else {
     const counts = { all: ents.length };
     for (const e of ents) counts[e.status] = (counts[e.status] || 0) + 1;
-    ['reading', 'finished', 'shelf', 'wishlist'].forEach((k) => { counts[k] = counts[k] || 0; });
+    ['reading', 'finished', 'shelf', 'wishlist', 'abandoned'].forEach((k) => { counts[k] = counts[k] || 0; });
     html = V.shelfShell(S, counts);
   }
   app.innerHTML = html + V.navView(S.tab) + (ro() ? '' : V.fabView());
@@ -193,6 +193,7 @@ async function addBook(info, status, format) {
   if (have) return { entry: have, dup: true };
   const [ub] = await api.insert('user_books', [{ user_id: S.me.id, book_id: book.id, status, format }]);
   S.ub.push(ub);
+  if (!book.cover_path || !book.pages) enrichSoon(book);
   return { entry: ub, dup: false };
 }
 
@@ -217,29 +218,52 @@ async function onScanCode(isbn) {
 }
 
 /* ---------- Anreichern (Cover & fehlende Angaben) ---------- */
-async function enrich(out) {
+// Holt Cover/Daten für ein Buch, mit bis zu 3 Versuchen und wachsender Wartezeit (Quellen drosseln gern).
+async function enrichBook(b) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const r = await api.lookupIsbn(b.isbn13);
+      const upd = {};
+      if (r.coverPath && !b.cover_path) upd.cover_path = r.coverPath;
+      if (r.pages && !b.pages) upd.pages = r.pages;
+      if (r.publisher && !b.publisher) upd.publisher = r.publisher;
+      if (r.categories && !b.categories) upd.categories = r.categories;
+      if (r.year && !b.pub_year) upd.pub_year = r.year;
+      if (Object.keys(upd).length) { const [row] = await api.patch('books', { id: 'eq.' + b.id }, upd); S.books.set(b.id, row); b = row; }
+      if (b.cover_path && b.pages) return { ok: true, changed: Object.keys(upd).length > 0 };
+      const limited = r.diag && Object.values(r.diag).some((v) => /HTTP|nicht erreichbar/.test(String(v)));
+      if (!limited) return { ok: false, changed: Object.keys(upd).length > 0 }; // wirklich nichts da: kein Wiederholen
+    } catch (e) { if (e.status === 401) throw e; }
+    await sleep(1500 * (attempt + 1));
+  }
+  return { ok: false, changed: false };
+}
+const needsData = (b) => (!b.cover_path || !b.pages) && S.ub.some((u) => u.book_id === b.id);
+async function enrich(out, only) {
   if (S.enriching) return; S.enriching = true;
   const say = (t) => { const o = out && out.isConnected ? out : $('#setOut') || $('#csvOut'); if (o) o.textContent = t; };
   try {
-    const todo = [...S.books.values()].filter((b) => !b.cover_path || !b.pages).filter((b) => S.ub.some((u) => u.book_id === b.id));
-    let done = 0, found = 0;
+    const ids = only ? new Set(only) : null;
+    const todo = [...S.books.values()].filter(needsData).filter((b) => !ids || ids.has(b.id));
+    let done = 0, changed = 0, still = 0;
     for (const b of todo) {
       say('Lade Cover und Daten: ' + done + ' von ' + todo.length + ' …');
       try {
-        const r = await api.lookupIsbn(b.isbn13);
-        const upd = {};
-        if (r.coverPath && !b.cover_path) upd.cover_path = r.coverPath;
-        if (r.pages && !b.pages) upd.pages = r.pages;
-        if (r.publisher && !b.publisher) upd.publisher = r.publisher;
-        if (r.categories && !b.categories) upd.categories = r.categories;
-        if (r.year && !b.pub_year) upd.pub_year = r.year;
-        if (Object.keys(upd).length) { const [row] = await api.patch('books', { id: 'eq.' + b.id }, upd); S.books.set(b.id, row); found++; }
+        const r = await enrichBook(b);
+        if (r.changed) { changed++; if (S.loaded && done % 5 === 4) render(); }
+        if (!r.ok) still++;
       } catch (e) { if (e.status === 401) break; }
-      done++; await sleep(700);
+      done++; await sleep(900);
     }
-    say('Fertig: ' + found + ' von ' + todo.length + ' Büchern ergänzt.');
+    say('Fertig: ' + changed + ' von ' + todo.length + ' Büchern ergänzt' + (still ? ', ' + still + ' ohne vollständige Daten (keine Quelle kennt sie oder sie drosseln gerade; später erneut versuchen).' : '.'));
     if (S.loaded) render();
   } finally { S.enriching = false; }
+}
+// Direkt nach dem Erfassen im Hintergrund nachladen
+async function enrichSoon(book) {
+  if (!book) return;
+  while (S.enriching) await sleep(1500);
+  await enrich(null, [book.id]);
 }
 
 /* ---------- CSV-Import ---------- */
@@ -281,6 +305,14 @@ document.addEventListener('click', (ev) => {
       case 'reload': boot(); break;
       case 'open': openBook(id); break;
       case 'closeSheet': closeSheet(); break;
+      case 'day': {
+        const date = el.dataset.date, byId = new Map(entries().map((u) => [u.id, u]));
+        openSheet(V.daySheet(S, date, dailyMap(entries(), S.logs).get(date), byId)); break;
+      }
+      case 'abandonopen': {
+        const e = entries().find((x) => x.id === id); if (!e) break;
+        openSheet(V.abandonSheet(S, e, lastPage(S.logs, e.id))); break;
+      }
       case 'settings': openSheet(V.settingsSheet(S)); break;
       case 'add': S.add.tab = 'scan'; S.add.busy = false; openSheet(V.addSheet(S)); break;
       case 'addtab': stopScanner(); S.add.tab = v; S.add.busy = false; openSheet(V.addSheet(S)); break;
@@ -349,6 +381,15 @@ document.addEventListener('submit', (ev) => {
       const bk = { title: val('b_title') || e.book.title, subtitle: val('b_subtitle'), authors: val('b_authors'), pages: val('b_pages') ? Number(val('b_pages')) : null, pub_year: val('b_year') ? Number(val('b_year')) : null, publisher: val('b_publisher') };
       if (['title', 'subtitle', 'authors', 'pages', 'pub_year', 'publisher'].some((k) => (e.book[k] ?? null) !== bk[k])) { const [row] = await api.patch('books', { id: 'eq.' + e.book.id }, bk); S.books.set(row.id, row); }
       toast('Gespeichert.'); closeSheet(); render();
+    } else if (kind === 'abandon') {
+      const id = form.dataset.id, e = entries().find((x) => x.id === id); if (!e) return;
+      const date = String(fd.get('date') || today()), pg = String(fd.get('page') || '').trim();
+      if (pg !== '' && Number(pg) > 0) await saveLog(id, pg, date);
+      const upd = { status: 'abandoned', finished_at: date, notes: String(fd.get('reason') || '').trim() || null };
+      if (!e.started_at) upd.started_at = date;
+      const rt = String(fd.get('rating') || ''); if (rt) upd.rating = Number(rt);
+      await patchEntry(id, upd);
+      closeSheet(); render(); toast('Als abgebrochen gespeichert.');
     } else if (kind === 'manual-isbn') {
       const isbn = normalizeIsbn(fd.get('isbn')); if (!isbn13Valid(isbn)) { scanMsg('Ungültige ISBN.', 'bad'); return; }
       await onScanCode(isbn);
