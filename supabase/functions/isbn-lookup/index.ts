@@ -109,11 +109,20 @@ const CORS: Record<string, string> = {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
-async function getText(url: string, ms = 8000): Promise<{ ok: boolean; status: number; text: string }> {
+async function getText(url: string, ms = 8000, retries = 1): Promise<{ ok: boolean; status: number; text: string }> {
+  const r = await getOnce(url, ms);
+  if (!r.ok && (r.status === 429 || r.status >= 500) && retries > 0) {
+    await new Promise((res) => setTimeout(res, 1200));
+    return getText(url, ms, retries - 1);
+  }
+  return r;
+}
+
+async function getOnce(url: string, ms: number): Promise<{ ok: boolean; status: number; text: string }> {
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), ms);
   try {
-    const r = await fetch(url, { signal: ctl.signal, headers: { 'User-Agent': 'buecher-tracker/1.0 (privat)' } });
+    const r = await fetch(url, { signal: ctl.signal, headers: { 'User-Agent': 'Mozilla/5.0 (compatible; buecher-tracker/1.0)', Accept: '*/*' } });
     return { ok: r.ok, status: r.status, text: r.ok ? await r.text() : '' };
   } catch (e) {
     return { ok: false, status: 0, text: '' };
@@ -172,6 +181,48 @@ async function viaOpenLibrary(isbn: string) {
   };
 }
 
+// lobid.org (hbz-Verbundkatalog, deutschsprachige Bücher, JSON)
+async function viaLobid(isbn: string) {
+  const r = await getText('https://lobid.org/resources/search?q=isbn:' + isbn + '&format=json&size=1');
+  if (!r.ok) return { info: null, diag: r.status ? 'HTTP ' + r.status : 'nicht erreichbar' };
+  let j: any = {};
+  try { j = JSON.parse(r.text); } catch { /* leer */ }
+  const m = j.member && j.member[0];
+  if (!m || !m.title) return { info: null, diag: '0 Treffer' };
+  const authors = (m.contribution || []).filter((c: any) => (c.role && c.role.id || '').includes('aut')).map((c: any) => c.agent && c.agent.label).filter(Boolean);
+  const yr = Number(String(m.publication && m.publication[0] && m.publication[0].startDate || '').slice(0, 4)) || undefined;
+  const ext = String(m.extent || '');
+  const pg = /(\d{2,4})\s*(S\.|Seiten)/.exec(ext);
+  return {
+    info: {
+      title: m.title, subtitle: m.otherTitleInformation && m.otherTitleInformation[0],
+      authors: authors.join(', ') || undefined,
+      publisher: m.publication && m.publication[0] && m.publication[0].publishedBy && m.publication[0].publishedBy[0],
+      year: yr, pages: pg ? Number(pg[1]) : undefined, source: 'lobid'
+    },
+    diag: 'Treffer'
+  };
+}
+
+// Open Library Suche (zweiter Weg neben der Books-API)
+async function viaOpenLibrarySearch(isbn: string) {
+  const r = await getText('https://openlibrary.org/search.json?q=isbn:' + isbn + '&fields=title,subtitle,author_name,publisher,first_publish_year,number_of_pages_median,cover_i&limit=1');
+  if (!r.ok) return { info: null, diag: r.status ? 'HTTP ' + r.status : 'nicht erreichbar' };
+  let j: any = {};
+  try { j = JSON.parse(r.text); } catch { /* leer */ }
+  const d = j.docs && j.docs[0];
+  if (!d || !d.title) return { info: null, diag: '0 Treffer' };
+  return {
+    info: {
+      title: d.title, subtitle: d.subtitle, authors: (d.author_name || []).join(', ') || undefined,
+      publisher: d.publisher && d.publisher[0], year: d.first_publish_year,
+      pages: d.number_of_pages_median, coverUrl: d.cover_i ? 'https://covers.openlibrary.org/b/id/' + d.cover_i + '-L.jpg' : undefined,
+      source: 'openlibrary-search'
+    },
+    diag: 'Treffer'
+  };
+}
+
 // Cover einmal laden und im eigenen Speicher ablegen (schont die Quellen, funktioniert dauerhaft).
 async function cacheCover(isbn: string, candidates: string[]): Promise<string | null> {
   const base = Deno.env.get('SUPABASE_URL');
@@ -204,9 +255,12 @@ Deno.serve(async (req: Request) => {
   const isbn = normalizeIsbn(body.isbn);
   if (!isbn13Valid(isbn)) return json({ error: 'Ungültige ISBN' }, 400);
 
-  const [dnb, google, ol] = await Promise.all([viaDnb(isbn), viaGoogle(isbn), viaOpenLibrary(isbn)]);
-  const merged: any = mergeInfos([dnb.info, google.info, ol.info]);
-  const covers = [google.info && (google.info as any).coverUrl, ol.info && (ol.info as any).coverUrl].filter(Boolean) as string[];
+  const [dnb, google, ol, lobid, ols] = await Promise.all([
+    viaDnb(isbn), viaGoogle(isbn), viaOpenLibrary(isbn), viaLobid(isbn), viaOpenLibrarySearch(isbn)
+  ]);
+  const merged: any = mergeInfos([dnb.info, lobid.info, google.info, ol.info, ols.info]);
+  const covers = [google.info, ol.info, ols.info].map((i: any) => i && i.coverUrl).filter(Boolean) as string[];
+  covers.push('https://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg?default=false');
   const coverPath = covers.length ? await cacheCover(isbn, covers) : null;
   delete merged.coverUrl;
 
@@ -215,6 +269,6 @@ Deno.serve(async (req: Request) => {
     found: !!merged.title,
     ...merged,
     coverPath,
-    diag: { dnb: dnb.diag, google: google.diag, openlibrary: ol.diag }
+    diag: { dnb: dnb.diag, lobid: lobid.diag, google: google.diag, openlibrary: ol.diag, 'openlibrary-suche': ols.diag }
   });
 });
