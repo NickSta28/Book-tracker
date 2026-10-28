@@ -23,6 +23,11 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
+-- Profile für bereits vorhandene Konten nachtragen
+insert into public.profiles (id, display_name)
+select id, split_part(email, '@', 1) from auth.users
+on conflict (id) do nothing;
+
 -- ===== Bücher (gemeinsame Stammdaten, je ISBN einmal) =====
 create table if not exists public.books (
   id uuid primary key default gen_random_uuid(),
