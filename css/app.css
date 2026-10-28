@@ -74,8 +74,10 @@ h1,h2,h3{margin:0}
 
 /* Sheets */
 .scrim{position:fixed;inset:0;z-index:40;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}
-.sheet{width:100%;max-width:560px;max-height:92dvh;overflow-y:auto;background:var(--paper);border-radius:20px 20px 0 0;padding:8px 20px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
-.sheet-head{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--paper);padding:2px 0;z-index:2}
+.scrim{touch-action:none;overscroll-behavior:none}
+.sheet{width:100%;max-width:560px;height:auto;max-height:92dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--paper);border-radius:20px 20px 0 0}
+.sheet-head{flex:none;display:flex;align-items:center;justify-content:space-between;background:var(--paper);padding:10px 20px 2px;position:relative;z-index:2}
+.sheet-body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;padding:0 20px calc(24px + env(safe-area-inset-bottom))}
 .grab{width:40px;height:4px;border-radius:2px;background:var(--line2)}
 .sheet h2{font-size:21px;font-weight:700;line-height:1.2}
 .row{display:flex;gap:16px}
@@ -166,3 +168,4 @@ table.sm td,table.sm th{padding:5px 4px;border-bottom:1px solid var(--line);text
 .dayrow .cover .ct{font-size:7px}.dayrow .cover .ca{display:none}
 .dayrow .body{display:flex;flex-direction:column;gap:2px;min-width:0;font:500 13px var(--sans);color:var(--muted)}
 .dayrow .body b{font:700 15px var(--serif);color:var(--ink)}
+.quick button{padding-left:14px;padding-right:14px;white-space:nowrap}

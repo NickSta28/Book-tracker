@@ -74,7 +74,17 @@ function renderList() {
   box.innerHTML = V.shelfList(S, filtered(), width);
 }
 let openSheetEl = null;
-function openSheet(html) { $('#layer').innerHTML = html; openSheetEl = $('#layer .sheet'); document.body.style.overflow = 'hidden'; }
+function openSheet(html) {
+  const layer = $('#layer'); layer.innerHTML = html;
+  const sheet = $('#layer .sheet'); openSheetEl = null;
+  if (sheet) {
+    // Kopfleiste (X) fest, nur der Rest scrollt
+    const body = document.createElement('div'); body.className = 'sheet-body';
+    [...sheet.children].filter((c) => !c.classList.contains('sheet-head')).forEach((c) => body.appendChild(c));
+    sheet.appendChild(body); openSheetEl = body;
+  }
+  document.body.style.overflow = 'hidden';
+}
 function closeSheet() { stopScanner(); $('#layer').innerHTML = ''; openSheetEl = null; S.add.busy = false; S.openId = null; document.body.style.overflow = ''; }
 function openBook(id) {
   const e = entries().find((x) => x.id === id); if (!e) return;
