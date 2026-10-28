@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Scan-Test">
+<meta name="theme-color" content="#F4EFE6">
+<title>ISBN Scan-Test</title>
+<style>
+:root{--paper:#F4EFE6;--ink:#1F1B16;--muted:#5B5348;--line:#D9D0BF;--green:#1F4D3F;--red:#8A3B33}
+@media (prefers-color-scheme: dark){:root{--paper:#16130F;--ink:#F1EBDD;--muted:#B5AB98;--line:#3A342B;--green:#5FB394;--red:#E07A6E}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.4 Georgia,'Times New Roman',serif;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom))}
+h1{font-size:26px;margin:18px 0 4px}
+p.sub{margin:0 0 14px;color:var(--muted);font:14px/1.4 system-ui,sans-serif}
+.cam{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:4/3}
+video{width:100%;height:100%;object-fit:cover;display:block}
+.frame{position:absolute;left:10%;right:10%;top:34%;bottom:34%;border:2px solid #fff;border-radius:8px;box-shadow:0 0 0 999px rgba(0,0,0,.35);pointer-events:none}
+button{font:600 15px system-ui,sans-serif;min-height:48px;padding:0 18px;border-radius:24px;border:1px solid var(--green);background:var(--green);color:#fff;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.row{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+input{font:16px system-ui,sans-serif;min-height:48px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);flex:1;min-width:0}
+.card{display:flex;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px}
+.card img{width:84px;height:126px;object-fit:cover;border-radius:3px;background:var(--line);flex:none}
+.card h2{font-size:18px;margin:0 0 4px}
+.card .m{font:13px/1.45 system-ui,sans-serif;color:var(--muted)}
+#status{font:14px system-ui,sans-serif;color:var(--muted);margin:8px 0;min-height:20px}
+.ok{color:var(--green)}.bad{color:var(--red)}
+table{width:100%;border-collapse:collapse;font:13px system-ui,sans-serif;margin-top:6px}
+th,td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
+h3{font:600 15px system-ui,sans-serif;margin:20px 0 0}
+</style>
+</head>
+<body>
+<h1>ISBN Scan-Test</h1>
+<p class="sub">Test: Erkennt die Kamera Buch-Barcodes zuverlässig und schnell? Barcode auf der Buchrückseite (beginnt mit 978 oder 979) in den Rahmen halten.</p>
+
+<div class="cam">
+  <video id="v" playsinline muted autoplay></video>
+  <div class="frame"></div>
+</div>
+<div class="row">
+  <button id="start">Kamera starten</button>
+  <button id="stop" class="ghost">Stopp</button>
+  <button id="torch" class="ghost" hidden>Licht</button>
+</div>
+<div id="status" role="status">Bereit.</div>
+
+<div id="result"></div>
+
+<h3>Manuell eingeben</h3>
+<div class="row">
+  <label for="man" style="position:absolute;left:-9999px">ISBN</label>
+  <input id="man" inputmode="numeric" placeholder="ISBN-13 oder ISBN-10">
+  <button id="go" class="ghost">Suchen</button>
+</div>
+
+<h3>Messprotokoll</h3>
+<p class="sub" style="margin:4px 0">Zeit bis zur Erkennung ab Start bzw. ab letztem Treffer.</p>
+<table><thead><tr><th>Zeit</th><th>ISBN</th><th>Erkannt nach</th><th>Daten</th></tr></thead><tbody id="log"></tbody></table>
+
+<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var video = $('v'), statusEl = $('status'), resultEl = $('result'), logEl = $('log');
+  var reader = null, lastCode = '', lastAt = 0, t0 = 0, track = null, torchOn = false;
+
+  function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = cls || ''; }
+
+  function isbn13Valid(s) {
+    if (!/^\d{13}$/.test(s) || !/^97[89]/.test(s)) return false;
+    var sum = 0;
+    for (var i = 0; i < 12; i++) sum += (+s[i]) * (i % 2 ? 3 : 1);
+    return (10 - sum % 10) % 10 === +s[12];
+  }
+  function isbn10to13(s) {
+    s = s.replace(/[\s-]/g, '').toUpperCase();
+    if (!/^\d{9}[\dX]$/.test(s)) return null;
+    var core = '978' + s.slice(0, 9), sum = 0;
+    for (var i = 0; i < 12; i++) sum += (+core[i]) * (i % 2 ? 3 : 1);
+    return core + ((10 - sum % 10) % 10);
+  }
+
+  function beep() {
+    try {
+      var c = new (window.AudioContext || window.webkitAudioContext)();
+      var o = c.createOscillator(), g = c.createGain();
+      o.frequency.value = 880; g.gain.value = 0.08; o.connect(g); g.connect(c.destination);
+      o.start(); setTimeout(function () { o.stop(); c.close(); }, 90);
+    } catch (e) {}
+    if (navigator.vibrate) navigator.vibrate(60);
+  }
+
+  function addLog(isbn, ms, found) {
+    var tr = document.createElement('tr');
+    var cells = [new Date().toLocaleTimeString('de-DE'), isbn, (ms / 1000).toFixed(1) + ' s', found ? 'ja' : 'nein'];
+    cells.forEach(function (c) { var td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
+    logEl.insertBefore(tr, logEl.firstChild);
+  }
+
+  function lookup(isbn, ms) {
+    setStatus('Suche Daten zu ' + isbn + ' ...');
+    var gb = fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn + '&maxResults=1')
+      .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    var ol = fetch('https://openlibrary.org/api/books?bibkeys=ISBN:' + isbn + '&format=json&jscmd=data')
+      .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    Promise.all([gb, ol]).then(function (res) {
+      var g = res[0] && res[0].items && res[0].items[0] && res[0].items[0].volumeInfo;
+      var o = res[1] && res[1]['ISBN:' + isbn];
+      if (!g && !o) { setStatus('ISBN ' + isbn + ' erkannt, aber in keiner Datenbank gefunden.', 'bad'); addLog(isbn, ms, false); return; }
+      var title = (g && g.title) || (o && o.title) || '';
+      var sub = (g && g.subtitle) || (o && o.subtitle) || '';
+      var authors = (g && g.authors && g.authors.join(', ')) || (o && o.authors && o.authors.map(function (a) { return a.name; }).join(', ')) || '';
+      var pages = (g && g.pageCount) || (o && o.number_of_pages) || '';
+      var pub = (g && g.publisher) || (o && o.publishers && o.publishers[0] && o.publishers[0].name) || '';
+      var year = ((g && g.publishedDate) || (o && o.publish_date) || '').toString().slice(0, 4);
+      var cats = (g && g.categories && g.categories.join(', ')) || '';
+      var gbThumb = g && g.imageLinks && (g.imageLinks.thumbnail || g.imageLinks.smallThumbnail);
+      if (gbThumb) gbThumb = gbThumb.replace('http://', 'https://');
+      var card = document.createElement('div'); card.className = 'card';
+      var img = document.createElement('img'); img.alt = 'Cover'; img.src = 'https://covers.openlibrary.org/b/isbn/' + isbn + '-M.jpg?default=false';
+      img.onerror = function () { if (gbThumb && img.src !== gbThumb) img.src = gbThumb; else img.removeAttribute('src'); };
+      var box = document.createElement('div');
+      var h = document.createElement('h2'); h.textContent = title; box.appendChild(h);
+      var m = document.createElement('div'); m.className = 'm';
+      m.textContent = [sub, authors, pub + (year ? ' ' + year : ''), pages ? pages + ' Seiten' : 'Seitenzahl fehlt', cats ? 'Kategorie: ' + cats : 'keine Kategorie', 'ISBN ' + isbn].filter(Boolean).join(' · ');
+      box.appendChild(m);
+      card.appendChild(img); card.appendChild(box);
+      resultEl.insertBefore(card, resultEl.firstChild);
+      setStatus('Gefunden: ' + title, 'ok');
+      addLog(isbn, ms, true);
+    });
+  }
+
+  function onCode(text) {
+    var now = Date.now();
+    if (text === lastCode && now - lastAt < 4000) return;
+    if (!isbn13Valid(text)) { setStatus('Barcode ' + text + ' ist keine ISBN (Prüfziffer/Präfix).', 'bad'); return; }
+    var ms = now - (lastAt || t0);
+    lastCode = text; lastAt = now;
+    beep();
+    lookup(text, ms);
+  }
+
+  function start() {
+    if (!window.ZXing) { setStatus('Scan-Bibliothek nicht geladen (Internet?).', 'bad'); return; }
+    stop();
+    var hints = new Map();
+    hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.EAN_13]);
+    hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+    reader = new ZXing.BrowserMultiFormatReader(hints, 250);
+    t0 = Date.now(); lastAt = 0;
+    setStatus('Kamera wird gestartet ...');
+    reader.decodeFromConstraints(
+      { audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } } },
+      video,
+      function (result) { if (result) onCode(result.getText()); }
+    ).then(function () {
+      setStatus('Kamera läuft. Barcode in den Rahmen halten.');
+      var s = video.srcObject; track = s && s.getVideoTracks()[0];
+      var caps = track && track.getCapabilities ? track.getCapabilities() : {};
+      $('torch').hidden = !caps.torch;
+      if (caps.focusMode && caps.focusMode.indexOf('continuous') > -1) track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(function () {});
+    }).catch(function (e) {
+      setStatus('Kamera-Fehler: ' + (e && e.name ? e.name : e) + '. Zugriff erlauben?', 'bad');
+    });
+  }
+  function stop() {
+    if (reader) { try { reader.reset(); } catch (e) {} reader = null; }
+    track = null; torchOn = false;
+  }
+
+  $('start').onclick = start;
+  $('stop').onclick = function () { stop(); setStatus('Gestoppt.'); };
+  $('torch').onclick = function () {
+    if (!track) return;
+    torchOn = !torchOn;
+    track.applyConstraints({ advanced: [{ torch: torchOn }] }).catch(function () {});
+  };
+  $('go').onclick = function () {
+    var raw = $('man').value.replace(/[\s-]/g, '');
+    var isbn = raw.length === 10 ? isbn10to13(raw) : raw;
+    if (!isbn || !isbn13Valid(isbn)) { setStatus('Ungültige ISBN.', 'bad'); return; }
+    lookup(isbn, 0);
+  };
+})();
+</script>
+</body>
+</html>
