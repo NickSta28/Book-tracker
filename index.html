@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Scan-Test">
 <meta name="theme-color" content="#F4EFE6">
-<title>ISBN Scan-Test v2</title>
+<title>ISBN Scan-Test v3</title>
 <style>
 :root{--paper:#F4EFE6;--ink:#1F1B16;--muted:#5B5348;--line:#D9D0BF;--green:#1F4D3F;--red:#8A3B33}
 @media (prefers-color-scheme: dark){:root{--paper:#16130F;--ink:#F1EBDD;--muted:#B5AB98;--line:#3A342B;--green:#5FB394;--red:#E07A6E}}
@@ -40,7 +40,7 @@ ul#kept li{padding:7px 0;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>
-<h1>ISBN Scan-Test <span style="font-size:14px;font-weight:400;color:var(--muted)">v2</span></h1>
+<h1>ISBN Scan-Test <span style="font-size:14px;font-weight:400;color:var(--muted)">v3</span></h1>
 <p class="sub">Halte den Barcode (beginnt mit 978 oder 979) ruhig in den Rahmen, etwa 15 bis 25 cm Abstand. Klappt Live nicht, nimm ein Foto auf.</p>
 
 <div class="cam">
@@ -122,43 +122,86 @@ function keep(info) {
   setStatus('Übernommen: ' + info.title, 'ok');
 }
 
+async function fetchSource(name, fn) {
+  try { const r = await fn(); return { name, ...r }; }
+  catch (e) { return { name, status: 'Fehler: ' + (e && e.message ? e.message : e), info: null }; }
+}
+async function viaGoogle(isbn) {
+  for (const q of ['isbn:' + isbn, isbn]) {
+    const r = await fetch('https://www.googleapis.com/books/v1/volumes?q=' + encodeURIComponent(q) + '&country=DE&maxResults=3');
+    if (!r.ok) return { status: 'HTTP ' + r.status, info: null };
+    const j = await r.json();
+    const items = (j.items || []).filter((it) => ((it.volumeInfo.industryIdentifiers || []).some((x) => x.identifier === isbn)) || q.startsWith('isbn:'));
+    if (items.length) {
+      const g = items[0].volumeInfo;
+      let th = g.imageLinks && (g.imageLinks.thumbnail || g.imageLinks.smallThumbnail);
+      if (th) th = th.replace('http://', 'https://');
+      return { status: 'Treffer', info: { title: g.title, sub: g.subtitle, authors: (g.authors || []).join(', '), pages: g.pageCount, pub: g.publisher, year: String(g.publishedDate || '').slice(0, 4), cats: (g.categories || []).join(', '), thumb: th } };
+    }
+  }
+  return { status: '0 Treffer', info: null };
+}
+async function viaOpenLibrary(isbn) {
+  const r = await fetch('https://openlibrary.org/api/books?bibkeys=ISBN:' + isbn + '&format=json&jscmd=data');
+  if (!r.ok) return { status: 'HTTP ' + r.status, info: null };
+  const j = await r.json(); const o = j['ISBN:' + isbn];
+  if (o) return { status: 'Treffer', info: { title: o.title, sub: o.subtitle, authors: (o.authors || []).map((a) => a.name).join(', '), pages: o.number_of_pages, pub: o.publishers && o.publishers[0] && o.publishers[0].name, year: String(o.publish_date || '').slice(-4), cats: (o.subjects || []).slice(0, 2).map((s) => s.name).join(', ') } };
+  const r2 = await fetch('https://openlibrary.org/isbn/' + isbn + '.json');
+  if (!r2.ok) return { status: '0 Treffer', info: null };
+  const b = await r2.json();
+  return { status: 'Treffer (nur Basisdaten)', info: { title: b.title, sub: b.subtitle, pages: b.number_of_pages, pub: (b.publishers || [])[0], year: String(b.publish_date || '').slice(-4) } };
+}
+async function viaDNB(isbn) {
+  const r = await fetch('https://services.dnb.de/sru/dnb?version=1.1&operation=searchRetrieve&query=' + encodeURIComponent('num=' + isbn) + '&recordSchema=oai_dc&maximumRecords=1');
+  if (!r.ok) return { status: 'HTTP ' + r.status, info: null };
+  const x = new DOMParser().parseFromString(await r.text(), 'text/xml');
+  const t = (n) => { const e = x.getElementsByTagNameNS('*', n)[0]; return e ? e.textContent.trim() : ''; };
+  const title = t('title');
+  if (!title) return { status: '0 Treffer', info: null };
+  return { status: 'Treffer', info: { title, authors: t('creator'), pub: t('publisher'), year: t('date').slice(0, 4) } };
+}
+
 async function lookup(isbn, ms) {
   setStatus('Suche Daten zu ' + isbn + ' ...');
-  const getJson = (u) => fetch(u).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-  const [gbr, olr] = await Promise.all([
-    getJson('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn + '&maxResults=1'),
-    getJson('https://openlibrary.org/api/books?bibkeys=ISBN:' + isbn + '&format=json&jscmd=data')
+  const res = await Promise.all([
+    fetchSource('Google Books', () => viaGoogle(isbn)),
+    fetchSource('Open Library', () => viaOpenLibrary(isbn)),
+    fetchSource('Dt. Nationalbibliothek', () => viaDNB(isbn))
   ]);
-  const g = gbr && gbr.items && gbr.items[0] && gbr.items[0].volumeInfo;
-  const o = olr && olr['ISBN:' + isbn];
-  if (!g && !o) { setStatus('ISBN ' + isbn + ' erkannt, aber in keiner Datenbank gefunden.', 'bad'); addLog(isbn, ms, false); return; }
-  const title = (g && g.title) || (o && o.title) || '';
-  const sub = (g && g.subtitle) || (o && o.subtitle) || '';
-  const authors = (g && g.authors && g.authors.join(', ')) || (o && o.authors && o.authors.map((a) => a.name).join(', ')) || '';
-  const pages = (g && g.pageCount) || (o && o.number_of_pages) || '';
-  const pub = (g && g.publisher) || (o && o.publishers && o.publishers[0] && o.publishers[0].name) || '';
-  const year = String((g && g.publishedDate) || (o && o.publish_date) || '').slice(0, 4);
-  const cats = (g && g.categories && g.categories.join(', ')) || '';
-  let gbThumb = g && g.imageLinks && (g.imageLinks.thumbnail || g.imageLinks.smallThumbnail);
-  if (gbThumb) gbThumb = gbThumb.replace('http://', 'https://');
+  const diag = res.map((r) => r.name + ': ' + r.status).join(' | ');
+  const infos = res.map((r) => r.info).filter(Boolean);
+  const pick = (k) => { for (const i of infos) if (i[k]) return i[k]; return ''; };
+  const info = infos.length ? { title: pick('title'), sub: pick('sub'), authors: pick('authors'), pages: pick('pages'), pub: pick('pub'), year: pick('year'), cats: pick('cats'), thumb: pick('thumb') } : { title: '', sub: '', authors: '', pages: '', pub: '', year: '', cats: '', thumb: '' };
+  const found = infos.length > 0;
 
   const card = document.createElement('div'); card.className = 'card';
   const img = document.createElement('img'); img.alt = 'Cover';
   img.src = 'https://covers.openlibrary.org/b/isbn/' + isbn + '-M.jpg?default=false';
-  img.onerror = () => { if (gbThumb && img.src !== gbThumb) img.src = gbThumb; else img.removeAttribute('src'); };
-  const box = document.createElement('div');
-  const h = document.createElement('h2'); h.textContent = title; box.appendChild(h);
+  img.onerror = () => { if (info.thumb && img.src !== info.thumb) img.src = info.thumb; else img.removeAttribute('src'); };
+  const box = document.createElement('div'); box.style.minWidth = 0; box.style.flex = '1';
+  const h = document.createElement('h2'); h.textContent = found ? info.title : 'ISBN ' + isbn + ' (keine Daten gefunden)'; box.appendChild(h);
   const m = document.createElement('div'); m.className = 'm';
-  m.textContent = [sub, authors, pub + (year ? ' ' + year : ''), pages ? pages + ' Seiten' : 'Seitenzahl fehlt', cats ? 'Kategorie: ' + cats : 'keine Kategorie', 'ISBN ' + isbn].filter(Boolean).join(' · ');
+  m.textContent = (found ? [info.sub, info.authors, info.pub + (info.year ? ' ' + info.year : ''), info.pages ? info.pages + ' Seiten' : 'Seitenzahl fehlt', info.cats ? 'Kategorie: ' + info.cats : 'keine Kategorie', 'ISBN ' + isbn].filter(Boolean).join(' · ') : 'Bitte unten ergänzen.') + '\nQuellen – ' + diag;
+  m.style.whiteSpace = 'pre-wrap';
   box.appendChild(m);
+  let ti, au, pg;
+  if (!found) {
+    const mk = (ph, mode) => { const i = document.createElement('input'); i.id = ''; i.placeholder = ph; i.inputMode = mode || 'text'; i.style.cssText = 'width:100%;margin-top:6px;min-height:44px;font:16px system-ui;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink)'; box.appendChild(i); return i; };
+    ti = mk('Titel'); au = mk('Autor:in'); pg = mk('Seiten', 'numeric');
+  }
   const acts = document.createElement('div'); acts.className = 'acts';
   const b = document.createElement('button'); b.textContent = 'Übernehmen';
-  b.onclick = () => { keep({ isbn, title, authors, pages }); b.disabled = true; b.textContent = 'Übernommen'; };
+  b.onclick = () => {
+    const title = found ? info.title : (ti.value || 'ISBN ' + isbn);
+    keep({ isbn, title, authors: found ? info.authors : au.value, pages: found ? info.pages : pg.value });
+    b.disabled = true; b.textContent = 'Übernommen';
+  };
   acts.appendChild(b); box.appendChild(acts);
   card.appendChild(img); card.appendChild(box);
   resultEl.insertBefore(card, resultEl.firstChild);
-  setStatus('Gefunden: ' + title + ' – bitte unten „Übernehmen“ tippen.', 'ok');
-  addLog(isbn, ms, true);
+  if (found) setStatus('Gefunden: ' + info.title + ' – unten „Übernehmen“ tippen.', 'ok');
+  else setStatus('ISBN ' + isbn + ' erkannt, aber keine Daten gefunden. Details in der Karte.', 'bad');
+  addLog(isbn, ms, found);
 }
 
 function onCode(text) {
