@@ -4,6 +4,18 @@ import { coverUrl } from './api.js';
 import { analyze } from './reco.js';
 import { dailyMap, periodRange, summarize, categoryColors, catOf, FORMAT_COLORS, FORMAT_LABELS, OTHER_COLOR, lastPage } from './stats.js';
 
+// Feste Kategorien (je Buch genau eine); eigene, ältere Werte bleiben auswählbar
+export const CATEGORY_GROUPS = {
+  Literatur: ['Gegenwartsliteratur', 'Klassiker und Moderne', 'Lyrik', 'Essay', 'Erzählungen', 'Literatur in Übersetzung'],
+  Genre: ['Krimi und Thriller', 'Historischer Roman', 'SciFi, Dystopie und Fantasy', 'Humor und Satire'],
+  Sachbuch: ['Geschichte', 'Biografie und Memoir', 'Politik und Gesellschaft', 'Philosophie', 'Wirtschaft und Finanzen', 'Naturwissenschaft', 'Reise und Natur', 'Sport', 'Kunst und Kultur'],
+  Sonstiges: ['Kinderbuch', 'Ratgeber', 'Kochen und Wein', 'Comic und Graphic Novel']
+};
+function catOptions(cur) {
+  const all = Object.values(CATEGORY_GROUPS).flat();
+  const own = cur && !all.includes(cur) ? `<optgroup label="Bisher"><option value="${esc(cur)}" selected>${esc(cur)}</option></optgroup>` : '';
+  return own + Object.entries(CATEGORY_GROUPS).map(([g, l]) => `<optgroup label="${g}">${l.map((c) => `<option value="${esc(c)}" ${c === cur ? 'selected' : ''}>${esc(c)}</option>`).join('')}</optgroup>`).join('');
+}
 export const STATUS = { wishlist: 'Wunschliste', shelf: 'Regal', reading: 'Lese ich', finished: 'Gelesen', abandoned: 'Abgebrochen' };
 const FALLBACK = ['#2F5D4E', '#8A3B33', '#3F5B7A', '#5A3A55', '#4B5D3A', '#6B4A2E', '#2B2B2B', '#8C6213'];
 export const colorOf = (b) => b.cover_color || FALLBACK[hashStr(b.title || '') % FALLBACK.length];
@@ -224,8 +236,8 @@ export function bookSheet(S, e) {
         <input type="hidden" name="rating" value="${e.rating || ''}"></div>
       <div class="two"><label>Begonnen<input type="date" name="started_at" value="${e.started_at || ''}" ${dis}></label><label>Beendet<input type="date" name="finished_at" value="${e.finished_at || ''}" ${dis}></label></div>
       <div class="two"><label>Kaufpreis (€)<input type="number" step="0.01" min="0" name="purchase_price" value="${e.purchase_price ?? ''}" ${dis}></label><label>Gekauft am<input type="date" name="purchase_date" value="${e.purchase_date || ''}" ${dis}></label></div>
-      <div class="two"><label>Kategorie<input name="category" list="catlist" value="${esc(e.category || '')}" placeholder="z. B. Gegenwartsroman" ${dis}></label><label>Lesereihe / Thema<input name="reading_series" value="${esc(e.reading_series || '')}" ${dis}></label></div>
-      <datalist id="catlist">${cats.map((c) => `<option value="${esc(c)}">`).join('')}</datalist>
+      <div class="two"><label>Kategorie<select name="category" ${dis}><option value="">– keine –</option>${catOptions(e.category)}</select></label><label>Lesereihe / Thema<input name="reading_series" list="serlist" value="${esc(e.reading_series || '')}" placeholder="z. B. Dystopie" ${dis}></label></div>
+      <datalist id="serlist">${[...new Set(S.ub.flatMap((u) => String(u.reading_series || '').split(',')).map((x) => x.trim()).filter(Boolean))].map((c) => `<option value="${esc(c)}">`).join('')}</datalist>
       <label>Notizen<textarea name="notes" ${dis}>${esc(e.notes || '')}</textarea></label>
       <details><summary class="sans" style="font:600 13px var(--sans);min-height:44px;display:flex;align-items:center">Buchdaten bearbeiten</summary>
         <div class="form" style="margin-top:0">
