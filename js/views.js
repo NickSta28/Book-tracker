@@ -206,6 +206,7 @@ export function bookSheet(S, e) {
       <h2>${esc(b.title)}</h2>${b.subtitle ? `<p class="sub" style="margin:0">${esc(b.subtitle)}</p>` : ''}
       <p class="sub" style="margin:0">${esc(b.authors || '')}</p></div></div>
     <div class="facts"><div class="fact"><b>${pages || '–'}</b><span>Seiten</span></div><div class="fact"><b>${pace || '–'}</b><span>Seiten pro Tag</span></div><div class="fact"><b>${days || '–'}</b><span>Tage</span></div></div>
+    ${ro ? '' : `<label class="btn ghost covbtn">${b.cover_path ? 'Cover ersetzen' : 'Cover fotografieren oder wählen'}<input type="file" accept="image/*" data-cover="${b.id}" hidden></label>`}
 
     ${!ro && (e.status === 'reading' || e.status === 'shelf') ? `<h3 class="sec">Lesen loggen</h3>
       ${pages ? `<div class="bar"><div style="width:${Math.min(100, Math.round(lp / pages * 100))}%"></div></div>` : ''}

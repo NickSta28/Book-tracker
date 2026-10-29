@@ -436,12 +436,34 @@ document.addEventListener('submit', (ev) => {
   });
 });
 
+// Foto verkleinern (längste Seite max. px) und als JPEG liefern
+async function shrinkImage(file, max) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('Bild nicht lesbar')); i.src = url; });
+    const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return await new Promise((res) => c.toBlob(res, 'image/jpeg', 0.85));
+  } finally { URL.revokeObjectURL(url); }
+}
 document.addEventListener('change', (ev) => {
   const t = ev.target;
   if (t.id === 'defStatus') S.add.defStatus = t.value;
   else if (t.id === 'defFormat') S.add.defFormat = t.value;
   else if (t.id === 'photoIn' && t.files[0]) {
     guard(async () => { scanMsg('Foto wird ausgewertet …'); const isbn = await decodePhoto(t.files[0]); t.value = ''; if (isbn) await onScanCode(isbn); else scanMsg('Im Foto wurde kein Barcode erkannt. Näher ran, scharf stellen.', 'bad'); });
+  } else if (t.dataset && t.dataset.cover && t.files[0]) {
+    const file = t.files[0], bid = t.dataset.cover;
+    guard(async () => {
+      toast('Cover wird hochgeladen …');
+      const blob = await shrinkImage(file, 700);
+      const b = S.books.get(bid); const path = b.isbn13 + '-' + Date.now().toString(36) + '.jpg';
+      await api.uploadCover(path, blob);
+      const [row] = await api.patch('books', { id: 'eq.' + bid }, { cover_path: path, cover_color: null });
+      S.books.set(bid, row); colorTried.delete(bid);
+      toast('Cover gespeichert.'); render(); if (S.openId) openBook(S.openId);
+    });
   } else if (t.id === 'csvIn' && t.files[0]) {
     guard(async () => { await importCsv(t.files[0], $('#csvOut')); t.value = ''; });
   }

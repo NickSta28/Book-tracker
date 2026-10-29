@@ -10,7 +10,7 @@ const CORS: Record<string, string> = {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
-async function getText(url: string, ms = 8000, retries = 1): Promise<{ ok: boolean; status: number; text: string }> {
+async function getText(url: string, ms = 6000, retries = 1): Promise<{ ok: boolean; status: number; text: string }> {
   const r = await getOnce(url, ms);
   if (!r.ok && (r.status === 429 || r.status >= 500) && retries > 0) {
     await new Promise((res) => setTimeout(res, 1200));
@@ -134,27 +134,38 @@ function toIsbn10(isbn: string): string | null {
   return core + (c === 10 ? 'X' : String(c));
 }
 
-async function cacheCover(isbn: string, candidates: string[]): Promise<string | null> {
+// fetch mit hartem Zeitlimit (nichts darf den Dienst blockieren)
+async function fetchT(url: string, ms: number, init: RequestInit = {}): Promise<Response> {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), ms);
+  try { return await fetch(url, { ...init, signal: ctl.signal }); } finally { clearTimeout(t); }
+}
+
+// Cover einmal laden und im eigenen Speicher ablegen. Höchstens ~18 s insgesamt, je Quelle 5 s.
+async function cacheCover(isbn: string, candidates: string[], tried: string[]): Promise<string | null> {
   const base = Deno.env.get('SUPABASE_URL');
   const srv = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-  if (!base || !srv) return null;
+  if (!base || !srv) { tried.push('kein Service-Key'); return null; }
+  const t0 = Date.now();
   for (const u of candidates) {
+    if (Date.now() - t0 > 18000) { tried.push('Zeitbudget erschöpft'); break; }
+    const host = new URL(u).hostname.replace(/^(www|covers|images-na\.ssl-images-amazon)\./, '');
     try {
-      let r = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; buecher-tracker/1.0)' } });
-      if (r.status === 429) { await new Promise((res) => setTimeout(res, 1200)); r = await fetch(u); }
-      if (!r.ok) continue;
+      const r = await fetchT(u, 5000, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; buecher-tracker/1.0)' } });
+      if (!r.ok) { tried.push(host + ' ' + r.status); continue; }
       const type = r.headers.get('content-type') || '';
-      if (!type.startsWith('image/')) continue;
+      if (!type.startsWith('image/')) { tried.push(host + ' kein Bild'); continue; }
       const buf = new Uint8Array(await r.arrayBuffer());
-      if (buf.length < 2500) continue; // Platzhalterbild
+      if (buf.length < 2500) { tried.push(host + ' Platzhalter'); continue; }
       const path = isbn + '.jpg';
-      const up = await fetch(base + '/storage/v1/object/covers/' + path, {
+      const up = await fetchT(base + '/storage/v1/object/covers/' + path, 8000, {
         method: 'POST',
         headers: { Authorization: 'Bearer ' + srv, apikey: srv, 'Content-Type': type, 'x-upsert': 'true' },
         body: buf
       });
-      if (up.ok) return path;
-    } catch { /* nächster Kandidat */ }
+      if (up.ok) { tried.push(host + ' ok'); return path; }
+      tried.push('Speichern ' + up.status);
+    } catch { tried.push(host + ' Zeitüberschreitung'); }
   }
   return null;
 }
@@ -170,12 +181,14 @@ Deno.serve(async (req: Request) => {
     viaDnb(isbn), viaGoogle(isbn), viaOpenLibrary(isbn), viaLobid(isbn), viaOpenLibrarySearch(isbn)
   ]);
   const merged: any = mergeInfos([dnb.info, lobid.info, google.info, ol.info, ols.info]);
-  const covers = [google.info, ol.info, ols.info].map((i: any) => i && i.coverUrl).filter(Boolean) as string[];
+  const covers: string[] = ['https://portal.dnb.de/opac/mvb/cover?isbn=' + isbn];
+  [google.info, ol.info, ols.info].forEach((i: any) => { if (i && i.coverUrl) covers.push(i.coverUrl); });
   covers.push('https://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg?default=false');
   covers.push('https://books.google.com/books/content?vid=ISBN' + isbn + '&printsec=frontcover&img=1&zoom=1');
   const i10 = toIsbn10(isbn);
   if (i10) covers.push('https://images-na.ssl-images-amazon.com/images/P/' + i10 + '.01.LZZZZZZZ.jpg');
-  const coverPath = covers.length ? await cacheCover(isbn, covers) : null;
+  const coverTried: string[] = [];
+  const coverPath = await cacheCover(isbn, [...new Set(covers)].slice(0, 6), coverTried);
   delete merged.coverUrl;
 
   return json({
@@ -183,6 +196,6 @@ Deno.serve(async (req: Request) => {
     found: !!merged.title,
     ...merged,
     coverPath,
-    diag: { dnb: dnb.diag, lobid: lobid.diag, google: google.diag, openlibrary: ol.diag, 'openlibrary-suche': ols.diag }
+    diag: { cover: coverPath ? 'ok' : coverTried.join(', ') || 'keine Quelle', dnb: dnb.diag, lobid: lobid.diag, google: google.diag, openlibrary: ol.diag, 'openlibrary-suche': ols.diag }
   });
 });

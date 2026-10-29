@@ -97,4 +97,22 @@ export const upsertIgnore = (table, rows, onConflict) => req('POST', '/rest/v1/'
 export const patch = (table, filter, values) => req('PATCH', '/rest/v1/' + table, { query: filter, body: values, headers: { Prefer: 'return=representation' } });
 export const remove = (table, filter) => req('DELETE', '/rest/v1/' + table, { query: filter });
 
-export const lookupIsbn = (isbn) => req('POST', '/functions/v1/isbn-lookup', { body: { isbn } });
+export async function lookupIsbn(isbn) {
+  // Dienst hat intern Zeitlimits (~40 s); danach geben wir auf, statt ewig zu warten
+  return Promise.race([
+    req('POST', '/functions/v1/isbn-lookup', { body: { isbn } }),
+    new Promise((_, rej) => setTimeout(() => rej(new ApiError('Zeitüberschreitung beim Abfragen', 504)), 50000))
+  ]);
+}
+
+// Eigenes Cover (Foto) in den Speicher legen
+export async function uploadCover(path, blob) {
+  if (session && session.expires_at - 30 < Date.now() / 1000) await refresh();
+  const r = await fetch(SUPABASE_URL + '/storage/v1/object/covers/' + encodeURIComponent(path), {
+    method: 'POST',
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + session.access_token, 'Content-Type': blob.type || 'image/jpeg', 'x-upsert': 'true' },
+    body: blob
+  });
+  if (!r.ok) { let m = ''; try { m = (await r.json()).message; } catch { /* leer */ } throw new ApiError(m || 'Upload fehlgeschlagen (' + r.status + ')', r.status); }
+  return path;
+}

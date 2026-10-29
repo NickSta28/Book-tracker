@@ -183,3 +183,5 @@ table.sm td,table.sm th{padding:5px 4px;border-bottom:1px solid var(--line);text
 .pick .body{display:flex;flex-direction:column;gap:2px;min-width:0;font:500 13px var(--sans);color:var(--muted)}
 .pick .body b{font:700 15px var(--serif);color:var(--ink)}
 .pick .why{color:var(--green);font-weight:600}
+
+.covbtn{display:inline-flex;align-items:center;justify-content:center;margin-top:12px;min-height:44px;padding:0 16px;font-size:14px}
