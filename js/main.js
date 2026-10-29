@@ -57,6 +57,7 @@ function render() {
   let html;
   if (S.tab === 'stats') html = V.statsView(S, ents);
   else if (S.tab === 'reading') html = V.readingView(S, ents);
+  else if (S.tab === 'reco') html = V.recoView(S, entries());
   else {
     const counts = { all: ents.length };
     for (const e of ents) counts[e.status] = (counts[e.status] || 0) + 1;

@@ -1,6 +1,7 @@
 // Darstellung: baut HTML aus dem Zustand. Alle Texte werden maskiert.
 import { esc, hashStr, textOn, luminance, MONTHS, MONTHS_SHORT, deDate, deShort, num, isoWeek, parseDate, addDays, diffDays, today } from './util.js';
 import { coverUrl } from './api.js';
+import { analyze } from './reco.js';
 import { dailyMap, periodRange, summarize, categoryColors, catOf, FORMAT_COLORS, FORMAT_LABELS, OTHER_COLOR, lastPage } from './stats.js';
 
 export const STATUS = { wishlist: 'Wunschliste', shelf: 'Regal', reading: 'Lese ich', finished: 'Gelesen', abandoned: 'Abgebrochen' };
@@ -11,6 +12,7 @@ const ICON = {
   books: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M10 4v16M15.5 5.5l3.5 14"/></svg>',
   chart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>',
   pen: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8z"/></svg>',
   plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
   user: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>',
   search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
@@ -46,7 +48,7 @@ export function header(S, title, subtitle) {
 
 export function navView(tab) {
   const item = (id, label, icon) => `<button data-act="tab" data-tab="${id}" ${tab === id ? 'aria-current="page"' : ''}>${ICON[icon]}${label}</button>`;
-  return `<nav class="nav"><div class="nav-in">${item('shelf', 'Bibliothek', 'books')}${item('stats', 'Statistik', 'chart')}${item('reading', 'Lesen', 'pen')}</div></nav>`;
+  return `<nav class="nav"><div class="nav-in">${item('shelf', 'Bibliothek', 'books')}${item('stats', 'Statistik', 'chart')}${item('reading', 'Lesen', 'pen')}${item('reco', 'Tipps', 'star')}</div></nav>`;
 }
 export const fabView = () => `<button class="fab" data-act="add" aria-label="Buch hinzufügen">${ICON.plus}</button>`;
 
@@ -329,4 +331,27 @@ export function abandonSheet(S, e, lp) {
       <label>Warum abgebrochen? (optional)<textarea name="reason" rows="3" placeholder="z. B. sprachlich zu schwach, Thema trägt nicht …">${esc(e.notes || '')}</textarea></label>
       <button class="btn" type="submit">Als abgebrochen speichern</button>
     </form></div></div>`;
+}
+
+/* ---------- Lesetipps (Prototyp) ---------- */
+export function recoView(S, entries) {
+  const r = analyze(entries), i = r.info;
+  const ro = S.viewUser !== S.me.id;
+  const fmtDay = (d) => deDate(d);
+  const phases = r.phases.slice(0, 5).map((p) => `<div class="phase${p.active ? ' act' : ''}">
+      <div class="ph-h"><b>${esc(p.label)}</b><span class="pill" style="background:${p.active ? 'var(--green)' : 'var(--muted)'}">${p.active ? 'aktuell' : 'früher'}</span></div>
+      <p class="sub">${p.books.length} Bücher · ${fmtDay(p.from)} – ${fmtDay(p.to)}${p.avg ? ' · Ø ' + num(p.avg, 1) + ' ★' : ''}</p>
+      <div class="mini">${p.books.map((x) => `<button data-act="open" data-id="${x.id}" aria-label="${esc(x.book.title)}">${coverHtml(x.book, true)}</button>`).join('')}</div>
+    </div>`).join('');
+  const picks = r.picks.filter((p) => p.score > 0).slice(0, 8).map((p) => `<button class="pick" data-act="open" data-id="${p.e.id}">${coverHtml(p.e.book, true)}
+      <span class="body"><b>${esc(p.e.book.title)}</b><span>${esc(p.e.book.authors || '')}${p.e.book.pages ? ' · ' + p.e.book.pages + ' S.' : ''}</span>
+      ${p.reasons.slice(0, 2).map((x) => `<span class="why">${esc(x.text)}</span>`).join('')}</span></button>`).join('');
+  const thin = i.rated < 10 || i.themed < 10;
+  return `${header(S, 'Lesetipps', 'Aus deinem Regal, nach Lesephasen')}
+  ${thin ? `<div class="note box"><b>Datenlage noch dünn.</b> ${i.rated} von ${i.done} gelesenen Büchern haben Sterne, ${i.themed} von ${i.total} Büchern ein Thema (Kategorie, Lesereihe). Je mehr davon gepflegt ist, desto treffender werden die Tipps.</div>` : ''}
+  <h3 class="sec">Deine Lesephasen</h3>
+  ${phases || '<p class="note">Noch keine Phase erkennbar. Eine Phase entsteht, wenn du mindestens zwei Bücher zum selben Thema (Kategorie oder Lesereihe) innerhalb von vier Monaten liest.</p>'}
+  <h3 class="sec">Als Nächstes aus deinem Regal</h3>
+  ${picks || '<p class="note">Noch keine passenden Bücher im Regal gefunden.</p>'}
+  ${ro ? '' : '<p class="note">Prototyp: Die Reihenfolge beruht nur auf deinen Themen, Autor:innen und Sternen, nicht auf Rezensionen oder Preislisten.</p>'}`;
 }

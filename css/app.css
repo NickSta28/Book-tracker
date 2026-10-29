@@ -169,3 +169,17 @@ table.sm td,table.sm th{padding:5px 4px;border-bottom:1px solid var(--line);text
 .dayrow .body{display:flex;flex-direction:column;gap:2px;min-width:0;font:500 13px var(--sans);color:var(--muted)}
 .dayrow .body b{font:700 15px var(--serif);color:var(--ink)}
 .quick button{padding-left:14px;padding-right:14px;white-space:nowrap}
+
+.nav button{min-width:64px}
+.box{background:var(--paper2);border-radius:10px;padding:12px 14px;margin-top:14px;color:var(--ink)}
+.phase{border-top:1px solid var(--line);padding:14px 0}
+.phase .ph-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.phase .ph-h b{font-size:17px}
+.mini{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;touch-action:pan-x pan-y;overscroll-behavior-x:contain}
+.mini button{flex:none;border:0;background:none;padding:0}
+.mini .cover{width:46px;padding:4px}.mini .cover .ct{font-size:7px}.mini .cover .ca{display:none}
+.pick{display:flex;gap:12px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:12px 0}
+.pick .cover{width:52px;flex:none;padding:4px}.pick .cover .ct{font-size:7px}.pick .cover .ca{display:none}
+.pick .body{display:flex;flex-direction:column;gap:2px;min-width:0;font:500 13px var(--sans);color:var(--muted)}
+.pick .body b{font:700 15px var(--serif);color:var(--ink)}
+.pick .why{color:var(--green);font-weight:600}
