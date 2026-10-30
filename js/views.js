@@ -2,6 +2,7 @@
 import { esc, hashStr, textOn, luminance, MONTHS, MONTHS_SHORT, deDate, deShort, num, isoWeek, parseDate, addDays, diffDays, today } from './util.js';
 import { coverUrl } from './api.js';
 import { analyze } from './reco.js';
+import { APP_VERSION, APP_DATE } from './version.js';
 import { dailyMap, periodRange, summarize, categoryColors, catOf, FORMAT_COLORS, FORMAT_LABELS, OTHER_COLOR, lastPage } from './stats.js';
 
 // Feste Kategorien (je Buch genau eine); eigene, ältere Werte bleiben auswählbar
@@ -313,6 +314,7 @@ export function settingsSheet(S) {
     <div class="btns" style="margin-top:6px"><button class="btn ghost" data-act="enrich">Fehlende Cover und Daten nachladen</button><button class="btn ghost" data-act="export">Als CSV exportieren</button></div>
     <div id="setOut" class="prog" role="status"></div>
     <div class="btns"><button class="btn danger grow" data-act="logout">Abmelden</button></div>
+    <p class="ver">Version ${APP_VERSION} · Stand ${APP_DATE}</p>
   </div></div>`;
 }
 
