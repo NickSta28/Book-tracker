@@ -62,9 +62,11 @@ create table if not exists public.user_books (
   purchase_date date,
   started_at date,
   finished_at date,
+  abandon_reason text,      -- Grund bei Abbruch (Auswahlliste in der App)
   created_at timestamptz not null default now(),
   unique (user_id, book_id)
 );
+alter table public.user_books add column if not exists abandon_reason text;
 create index if not exists user_books_user_idx on public.user_books(user_id, status);
 
 -- ===== Tages-Leselog =====

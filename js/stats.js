@@ -22,7 +22,16 @@ export function dailyMap(entries, logs) {
     d.cats[c] = (d.cats[c] || 0) + pages;
     d.fmts[f] = (d.fmts[f] || 0) + pages;
   };
-  for (const l of logs) { const u = byId.get(l.user_book_id); if (u) add(l.log_date, l.pages_read, u, false); }
+  // Abgebrochen ohne laufendes Tracking: nur ein Eintrag am Abbruchtag -> über den Lesezeitraum verteilen
+  const logCount = new Map(); for (const l of logs) logCount.set(l.user_book_id, (logCount.get(l.user_book_id) || 0) + 1);
+  const spread = (u, l) => u.status === 'abandoned' && logCount.get(u.id) === 1 && u.started_at && l.log_date === u.finished_at && u.started_at < u.finished_at;
+  for (const l of logs) {
+    const u = byId.get(l.user_book_id); if (!u) continue;
+    if (spread(u, l)) {
+      const n = Math.max(1, diffDays(u.started_at, u.finished_at) + 1);
+      for (let i = 0; i < n; i++) add(addDays(u.started_at, i), l.pages_read / n, u, true);
+    } else add(l.log_date, l.pages_read, u, false);
+  }
   for (const u of entries) {
     if (withLog.has(u.id) || u.status !== 'finished' || !u.started_at || !u.finished_at || !(u.book && u.book.pages)) continue;
     const n = Math.max(1, diffDays(u.started_at, u.finished_at) + 1);

@@ -87,6 +87,10 @@ function openSheet(html) {
   document.body.style.overflow = 'hidden';
 }
 function closeSheet() { stopScanner(); $('#layer').innerHTML = ''; openSheetEl = null; S.add.busy = false; S.openId = null; document.body.style.overflow = ''; }
+function openAbandon(e) {
+  const tracked = S.logs.some((l) => l.user_book_id === e.id && l.page_to > 0);
+  openSheet(V.abandonSheet(S, e, lastPage(S.logs, e.id), tracked));
+}
 function openBook(id) {
   const e = entries().find((x) => x.id === id); if (!e) return;
   const top = openSheetEl ? openSheetEl.scrollTop : 0;
@@ -322,7 +326,7 @@ document.addEventListener('click', (ev) => {
       }
       case 'abandonopen': {
         const e = entries().find((x) => x.id === id); if (!e) break;
-        openSheet(V.abandonSheet(S, e, lastPage(S.logs, e.id))); break;
+        openAbandon(e); break;
       }
       case 'settings': openSheet(V.settingsSheet(S)); break;
       case 'add': S.add.tab = 'scan'; S.add.busy = false; openSheet(V.addSheet(S)); break;
@@ -394,11 +398,20 @@ document.addEventListener('submit', (ev) => {
       toast('Gespeichert.'); closeSheet(); render();
     } else if (kind === 'abandon') {
       const id = form.dataset.id, e = entries().find((x) => x.id === id); if (!e) return;
-      const date = String(fd.get('date') || today()), pg = String(fd.get('page') || '').trim();
-      if (pg !== '' && Number(pg) > 0) await saveLog(id, pg, date);
-      const upd = { status: 'abandoned', finished_at: date, notes: String(fd.get('reason') || '').trim() || null };
-      if (!e.started_at) upd.started_at = date;
+      const date = String(fd.get('date') || today());
+      const upd = { status: 'abandoned', finished_at: date, abandon_reason: String(fd.get('reason') || '') || null, notes: String(fd.get('note') || '').trim() || null };
+      const st = String(fd.get('started') || ''); if (st && st <= date) upd.started_at = st;
+      if (!e.started_at && !upd.started_at) upd.started_at = date;
       const rt = String(fd.get('rating') || ''); if (rt) upd.rating = Number(rt);
+      if (form.dataset.tracked !== '1') {
+        // Ohne Lese-Log: Seiten als einen Log-Eintrag am Abbruchtag erfassen
+        const pg = Math.round(Number(fd.get('page')) || 0);
+        if (pg > 0) {
+          const [row] = await api.upsert('reading_logs', [{ user_id: S.me.id, user_book_id: id, log_date: date, page_to: pg, pages_read: pg }], 'user_book_id,log_date');
+          const i = S.logs.findIndex((l) => l.user_book_id === id && l.log_date === date);
+          if (i >= 0) S.logs[i] = row; else S.logs.push(row);
+        }
+      }
       await patchEntry(id, upd);
       closeSheet(); render(); toast('Als abgebrochen gespeichert.');
     } else if (kind === 'manual-isbn') {
@@ -449,6 +462,10 @@ async function shrinkImage(file, max) {
 }
 document.addEventListener('change', (ev) => {
   const t = ev.target;
+  if (t.name === 'status' && t.value === 'abandoned' && t.closest('form[data-form=entry]')) {
+    const e = entries().find((x) => x.id === t.closest('form').dataset.id);
+    if (e && e.status !== 'abandoned') { openAbandon(e); return; }
+  }
   if (t.id === 'defStatus') S.add.defStatus = t.value;
   else if (t.id === 'defFormat') S.add.defFormat = t.value;
   else if (t.id === 'photoIn' && t.files[0]) {

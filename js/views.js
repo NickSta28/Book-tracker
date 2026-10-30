@@ -216,7 +216,7 @@ export function bookSheet(S, e) {
     <div class="row hero">${coverHtml(b)}<div style="min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px">
       <span class="pill" style="align-self:flex-start;background:${stBg}">${STATUS[e.status]}</span>
       <h2>${esc(b.title)}</h2>${b.subtitle ? `<p class="sub" style="margin:0">${esc(b.subtitle)}</p>` : ''}
-      <p class="sub" style="margin:0">${esc(b.authors || '')}</p></div></div>
+      <p class="sub" style="margin:0">${esc(b.authors || '')}</p>${e.status === 'abandoned' && e.abandon_reason ? `<p class="sub" style="margin:0;color:var(--red)">Abgebrochen: ${esc(e.abandon_reason)}${lp ? ' · bei Seite ' + lp : ''}</p>` : ''}</div></div>
     <div class="facts"><div class="fact"><b>${pages || '–'}</b><span>Seiten</span></div><div class="fact"><b>${pace || '–'}</b><span>Seiten pro Tag</span></div><div class="fact"><b>${days || '–'}</b><span>Tage</span></div></div>
     ${ro ? '' : `<label class="btn ghost covbtn">${b.cover_path ? 'Cover ersetzen' : 'Cover fotografieren oder wählen'}<input type="file" accept="image/*" data-cover="${b.id}" hidden></label>`}
 
@@ -331,17 +331,29 @@ export function daySheet(S, date, dd, byId) {
 }
 
 /* ---------- Buch abbrechen ---------- */
-export function abandonSheet(S, e, lp) {
+export const ABANDON_REASONS = {
+  'Sprache & Stil': ['Sprache/Stil spricht mich nicht an', 'Übersetzung wirkt schwach'],
+  Inhalt: ['Zu langatmig, zieht sich', 'Handlung/Thema trägt nicht', 'Figuren bleiben mir fremd', 'Zu vorhersehbar, zu viele Klischees', 'Inhaltlich zu belastend'],
+  Erwartung: ['Hält nicht, was Klappentext/Rezensionen versprechen', 'Zu oberflächlich, zu wenig Anspruch'],
+  Zeitpunkt: ['Gerade nicht der richtige Moment (später erneut)', 'Zu anspruchsvoll für die aktuelle Phase', 'Anderes Buch hat Vorrang'],
+  Sonstiges: ['Sonstiges']
+};
+export function abandonSheet(S, e, lp, tracked) {
   const pages = e.book.pages || 0;
+  const reasons = Object.entries(ABANDON_REASONS).map(([g, l]) => `<optgroup label="${esc(g)}">${l.map((r) => `<option ${r === e.abandon_reason ? 'selected' : ''}>${esc(r)}</option>`).join('')}</optgroup>`).join('');
   return `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true" aria-label="Buch abbrechen" data-stop>
     <div class="sheet-head"><span style="width:44px"></span><span class="grab"></span><button class="icon-btn" style="border:0" data-act="closeSheet" aria-label="Schließen">${ICON.close}</button></div>
     <h2>Abbrechen: ${esc(e.book.title)}</h2>
-    <p class="sub">Die bis hier gelesenen Seiten zählen in der Statistik weiter mit.</p>
-    <form class="form" data-form="abandon" data-id="${e.id}">
-      <label>Bis zu welcher Seite gelesen?<input name="page" type="number" inputmode="numeric" min="0" ${pages ? `max="${pages}"` : ''} value="${lp || ''}" placeholder="Seite"></label>
-      <label>Abgebrochen am<input name="date" type="date" value="${today()}"></label>
-      <label>Bewertung (optional)<select name="rating"><option value="">keine</option>${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${e.rating === n ? 'selected' : ''}>${'★'.repeat(n)}</option>`).join('')}</select></label>
-      <label>Warum abgebrochen? (optional)<textarea name="reason" rows="3" placeholder="z. B. sprachlich zu schwach, Thema trägt nicht …">${esc(e.notes || '')}</textarea></label>
+    <form class="form" data-form="abandon" data-id="${e.id}" data-tracked="${tracked ? 1 : 0}">
+      ${tracked
+        ? `<p class="note box">Gelesen bis Seite <b>${lp}</b>${pages ? ' von ' + pages : ''} (aus deinem Lese-Log). Diese Seiten zählen in der Statistik weiter mit.</p>`
+        : `<label>Bis zu welcher Seite hast du gelesen?<input name="page" type="number" inputmode="numeric" min="1" ${pages ? `max="${pages}"` : ''} value="${lp || ''}" placeholder="Seite" required></label>
+           <p class="note" style="margin-top:-6px">Für dieses Buch ist kein Lesefortschritt erfasst. Die Seiten werden gleichmäßig vom Beginn bis zum Abbruch auf die Statistik verteilt.</p>
+           <label>Begonnen am<input name="started" type="date" value="${e.started_at || ''}" ${e.started_at ? '' : 'required'}></label>`}
+      <label>Grund<select name="reason" required><option value="">– bitte wählen –</option>${reasons}</select></label>
+      <label>Anmerkung (optional)<textarea name="note" rows="2" placeholder="z. B. nach 80 Seiten keine Bindung zu den Figuren">${esc(e.notes || '')}</textarea></label>
+      <div class="two"><label>Abgebrochen am<input name="date" type="date" value="${today()}"></label>
+      <label>Bewertung (optional)<select name="rating"><option value="">keine</option>${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${e.rating === n ? 'selected' : ''}>${'★'.repeat(n)}</option>`).join('')}</select></label></div>
       <button class="btn" type="submit">Als abgebrochen speichern</button>
     </form></div></div>`;
 }

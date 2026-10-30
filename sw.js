@@ -1,5 +1,5 @@
 // Einfacher Service Worker: App-Dateien offline verfügbar, aber immer zuerst frisch aus dem Netz.
-const CACHE = 'buecher-v6';
+const CACHE = 'buecher-v7';
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));

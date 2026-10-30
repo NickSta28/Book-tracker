@@ -1,6 +1,8 @@
 // Lesetipps (Prototyp, ohne KI): erkennt aktuelle Lesephasen und sortiert das ungelesene Regal danach.
 import { today, diffDays } from './util.js';
 
+// Abbruchgründe, die nichts gegen Buch oder Autor:in sagen (nur falscher Moment)
+const LATER = new Set(['Gerade nicht der richtige Moment (später erneut)', 'Zu anspruchsvoll für die aktuelle Phase', 'Anderes Buch hat Vorrang']);
 const STOP = new Set(['roman', 'belletristik', 'literatur', 'allgemein', 'ohne kategorie', 'fiction', 'general', 'german', 'deutsch']);
 const PHASE_DAYS = 120;   // so dicht beieinander müssen Bücher eines Themas gelesen sein
 const ACTIVE_DAYS = 90;   // so jung muss das jüngste Buch sein, damit die Phase „aktuell“ ist
@@ -22,7 +24,7 @@ export function tokensOf(e) {
 }
 
 // Gewicht eines gelesenen Buchs: Sterne bestimmen, wie stark es zählt
-const wOf = (e) => (e.status === 'abandoned' ? 0.1 : { 1: 0.1, 2: 0.4, 3: 0.8, 4: 1.2, 5: 1.6 }[e.rating] || 0.8);
+const wOf = (e) => (e.status === 'abandoned' ? (LATER.has(e.abandon_reason) ? 0.6 : 0.1) : { 1: 0.1, 2: 0.4, 3: 0.8, 4: 1.2, 5: 1.6 }[e.rating] || 0.8);
 const dateOf = (e) => e.finished_at || e.started_at || null;
 const stars = (a) => (a.length ? a.reduce((s, x) => s + x, 0) / a.length : 0);
 
@@ -60,7 +62,7 @@ export function analyze(entries) {
   const authors = new Map();
   for (const t of byTok.values()) if (t.kind === 'autor') {
     const rated = t.books.filter((x) => x.rating && x.status !== 'abandoned').map((x) => x.rating);
-    const dropped = t.books.some((x) => x.status === 'abandoned');
+    const dropped = t.books.some((x) => x.status === 'abandoned' && !LATER.has(x.abandon_reason));
     if (rated.length) authors.set(t.k, { label: t.label, avg: stars(rated), n: rated.length, dropped });
     else if (dropped) authors.set(t.k, { label: t.label, avg: 0, n: 0, dropped });
   }
