@@ -97,10 +97,10 @@ export const upsertIgnore = (table, rows, onConflict) => req('POST', '/rest/v1/'
 export const patch = (table, filter, values) => req('PATCH', '/rest/v1/' + table, { query: filter, body: values, headers: { Prefer: 'return=representation' } });
 export const remove = (table, filter) => req('DELETE', '/rest/v1/' + table, { query: filter });
 
-export async function lookupIsbn(isbn) {
+export async function lookupIsbn(isbn, opts = {}) {
   // Dienst hat intern Zeitlimits (~40 s); danach geben wir auf, statt ewig zu warten
   return Promise.race([
-    req('POST', '/functions/v1/isbn-lookup', { body: { isbn } }),
+    req('POST', '/functions/v1/isbn-lookup', { body: { isbn, ...opts } }),
     new Promise((_, rej) => setTimeout(() => rej(new ApiError('Zeitüberschreitung beim Abfragen', 504)), 50000))
   ]);
 }

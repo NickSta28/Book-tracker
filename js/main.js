@@ -200,7 +200,8 @@ async function addBook(info, status, format) {
     const [row] = await api.upsert('books', [{
       isbn13: info.isbn13, title: info.title, subtitle: info.subtitle || null, authors: info.authors || null,
       publisher: info.publisher || null, pub_year: info.pub_year || null, pages: info.pages || null,
-      language: info.language || null, categories: info.categories || null, cover_path: info.cover_path || null
+      language: info.language || null, categories: info.categories || null, cover_path: info.cover_path || null,
+      description: info.description || null
     }], 'isbn13');
     book = row; S.books.set(book.id, book);
   }
@@ -208,7 +209,7 @@ async function addBook(info, status, format) {
   if (have) return { entry: have, dup: true };
   const [ub] = await api.insert('user_books', [{ user_id: S.me.id, book_id: book.id, status, format }]);
   S.ub.push(ub);
-  if (!book.cover_path || !book.pages) enrichSoon(book);
+  if (needsData(book)) enrichSoon(book);
   return { entry: ub, dup: false };
 }
 
@@ -237,23 +238,25 @@ async function onScanCode(isbn) {
 async function enrichBook(b) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      const r = await api.lookupIsbn(b.isbn13);
+      const r = await api.lookupIsbn(b.isbn13, b.cover_path ? { cover: false } : {});
       const upd = {};
       if (r.coverPath && !b.cover_path) upd.cover_path = r.coverPath;
       if (r.pages && !b.pages) upd.pages = r.pages;
       if (r.publisher && !b.publisher) upd.publisher = r.publisher;
       if (r.categories && !b.categories) upd.categories = r.categories;
       if (r.year && !b.pub_year) upd.pub_year = r.year;
+      const limited = r.diag && Object.values(r.diag).some((v) => /HTTP 429|HTTP 5|nicht erreichbar|Zeitüberschreitung/.test(String(v)));
+      if (b.description == null && (r.description || !limited)) upd.description = r.description || ''; // '' = gesucht, keiner gefunden
       if (Object.keys(upd).length) { const [row] = await api.patch('books', { id: 'eq.' + b.id }, upd); S.books.set(b.id, row); b = row; }
-      if (b.cover_path && b.pages) return { ok: true, changed: Object.keys(upd).length > 0 };
-      const limited = r.diag && Object.values(r.diag).some((v) => /HTTP|nicht erreichbar/.test(String(v)));
-      if (!limited) return { ok: false, changed: Object.keys(upd).length > 0 }; // wirklich nichts da: kein Wiederholen
+      const real = Object.keys(upd).some((k) => upd[k] !== '');
+      if (b.cover_path && b.pages && b.description != null) return { ok: true, changed: real };
+      if (!limited) return { ok: false, changed: real }; // wirklich nichts da: kein Wiederholen
     } catch (e) { if (e.status === 401) throw e; }
     await sleep(1500 * (attempt + 1));
   }
   return { ok: false, changed: false };
 }
-const needsData = (b) => (!b.cover_path || !b.pages) && S.ub.some((u) => u.book_id === b.id);
+const needsData = (b) => (!b.cover_path || !b.pages || b.description == null) && S.ub.some((u) => u.book_id === b.id);
 async function enrich(out, only) {
   if (S.enriching) return; S.enriching = true;
   const say = (t) => { const o = out && out.isConnected ? out : $('#setOut') || $('#csvOut'); if (o) o.textContent = t; };
@@ -320,6 +323,7 @@ document.addEventListener('click', (ev) => {
       case 'reload': boot(); break;
       case 'open': openBook(id); break;
       case 'closeSheet': closeSheet(); break;
+      case 'blurb': { const d = $('#blurb'); const open = d.classList.toggle('open'); el.textContent = open ? 'Weniger anzeigen' : 'Mehr anzeigen'; break; }
       case 'day': {
         const date = el.dataset.date, byId = new Map(entries().map((u) => [u.id, u]));
         openSheet(V.daySheet(S, date, dailyMap(entries(), S.logs).get(date), byId)); break;
@@ -393,8 +397,8 @@ document.addEventListener('submit', (ev) => {
       if (upd.status === 'finished' && !upd.finished_at) upd.finished_at = today();
       if ((upd.status === 'reading' || upd.status === 'finished') && !upd.started_at) upd.started_at = upd.finished_at || today();
       await patchEntry(id, upd);
-      const bk = { title: val('b_title') || e.book.title, subtitle: val('b_subtitle'), authors: val('b_authors'), pages: val('b_pages') ? Number(val('b_pages')) : null, pub_year: val('b_year') ? Number(val('b_year')) : null, publisher: val('b_publisher') };
-      if (['title', 'subtitle', 'authors', 'pages', 'pub_year', 'publisher'].some((k) => (e.book[k] ?? null) !== bk[k])) { const [row] = await api.patch('books', { id: 'eq.' + e.book.id }, bk); S.books.set(row.id, row); }
+      const bk = { title: val('b_title') || e.book.title, subtitle: val('b_subtitle'), authors: val('b_authors'), pages: val('b_pages') ? Number(val('b_pages')) : null, pub_year: val('b_year') ? Number(val('b_year')) : null, publisher: val('b_publisher'), description: val('b_description') };
+      if (['title', 'subtitle', 'authors', 'pages', 'pub_year', 'publisher', 'description'].some((k) => (e.book[k] ?? null) !== bk[k])) { const [row] = await api.patch('books', { id: 'eq.' + e.book.id }, bk); S.books.set(row.id, row); }
       toast('Gespeichert.'); closeSheet(); render();
     } else if (kind === 'abandon') {
       const id = form.dataset.id, e = entries().find((x) => x.id === id); if (!e) return;
@@ -420,7 +424,7 @@ document.addEventListener('submit', (ev) => {
     } else if (kind === 'found') {
       const { isbn, info, known } = S.add.last;
       const book = { isbn13: isbn, title: String(fd.get('title')).trim(), authors: String(fd.get('authors')).trim() || null, pages: Number(fd.get('pages')) || null, pub_year: Number(fd.get('year')) || null,
-        subtitle: info.subtitle, publisher: info.publisher, language: info.language, categories: info.categories, cover_path: info.coverPath || (known && known.cover_path) || null };
+        subtitle: info.subtitle, publisher: info.publisher, language: info.language, categories: info.categories, description: info.description, cover_path: info.coverPath || (known && known.cover_path) || null };
       const r = await addBook(book, S.add.defStatus, S.add.defFormat);
       $('#scanResult').innerHTML = ''; S.add.busy = false;
       scanMsg(r.dup ? 'Schon in deiner Bibliothek.' : 'Hinzugefügt: ' + book.title + '. Nächstes Buch scannen.', 'ok');
@@ -435,7 +439,7 @@ document.addEventListener('submit', (ev) => {
         let info = null;
         if (!known) { try { info = await api.lookupIsbn(isbn); } catch { info = null; } await sleep(300); }
         const book = known ? known : { isbn13: isbn, title: info && info.found ? info.title : '[ergänzen] ISBN ' + isbn, subtitle: info && info.subtitle, authors: info && info.authors, publisher: info && info.publisher,
-          pub_year: info && info.year, pages: info && info.pages, language: info && info.language, categories: info && info.categories, cover_path: info && info.coverPath };
+          pub_year: info && info.year, pages: info && info.pages, language: info && info.language, categories: info && info.categories, description: info && info.description, cover_path: info && info.coverPath };
         if (!known && !(info && info.found)) unknown.push(isbn);
         const r = await addBook(known ? { isbn13: isbn } : book, S.add.defStatus, S.add.defFormat);
         if (r.dup) dup++; else added++;

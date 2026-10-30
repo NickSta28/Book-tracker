@@ -185,3 +185,8 @@ table.sm td,table.sm th{padding:5px 4px;border-bottom:1px solid var(--line);text
 .pick .why{color:var(--green);font-weight:600}
 
 .covbtn{display:inline-flex;align-items:center;justify-content:center;margin-top:12px;min-height:44px;padding:0 16px;font-size:14px}
+
+.blurb{font-size:15px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+.blurb.open{display:block;-webkit-line-clamp:unset}
+.linkbtn{display:block;border:0;background:none;padding:6px 0;color:var(--green);font:600 13px var(--sans)}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

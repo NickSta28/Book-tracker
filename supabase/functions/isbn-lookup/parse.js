@@ -72,6 +72,14 @@ export function parseMarc(xml) {
   const ext = fields(xml, '300')[0] || '';
   const pg = (sub(ext, 'a')[0] || '').match(/(\d{1,5})\s*(?:Seiten|S\.|Pages|p\b)/i);
   const lang = (fields(xml, '041')[0] && sub(fields(xml, '041')[0], 'a')[0]) || '';
+  // Inhaltstext: direkt (520) oder als Link vom Verlag/VLB (856 mit $3 „Inhaltstext“)
+  const abstract = fields(xml, '520').map((b) => sub(b, 'a').join(' ')).join(' ').trim();
+  let descUrl;
+  for (const b of fields(xml, '856')) {
+    const label = sub(b, '3').join(' ');
+    const u = sub(b, 'u')[0];
+    if (u && /inhaltstext|klappentext|beschreibung/i.test(label)) { descUrl = u; break; }
+  }
   return {
     title,
     subtitle: subtitle || undefined,
@@ -80,13 +88,15 @@ export function parseMarc(xml) {
     year: yr ? Number(yr[0]) : undefined,
     pages: pg ? Number(pg[1]) : undefined,
     language: lang || undefined,
+    description: abstract ? clean(abstract) : undefined,
+    descUrl,
     source: 'dnb'
   };
 }
 
 // Mehrere Quellen zusammenführen: erste Quelle mit Wert gewinnt je Feld.
 export function mergeInfos(list) {
-  const keys = ['title', 'subtitle', 'authors', 'publisher', 'year', 'pages', 'language', 'categories', 'coverUrl'];
+  const keys = ['title', 'subtitle', 'authors', 'publisher', 'year', 'pages', 'language', 'categories', 'description', 'coverUrl'];
   const out = {};
   const used = [];
   for (const info of list.filter(Boolean)) {
@@ -95,4 +105,15 @@ export function mergeInfos(list) {
   }
   out.sources = used;
   return out;
+}
+
+// HTML (z. B. Inhaltstext-Seite der DNB oder Google-Beschreibung) in lesbaren Text umwandeln
+export function htmlToText(html) {
+  let t = String(html || '');
+  const body = /<body[^>]*>([\s\S]*?)<\/body>/i.exec(t); if (body) t = body[1];
+  t = t.replace(/<(script|style|head)[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, '\n').replace(/<\/(p|div|li|h\d)>/gi, '\n\n')
+    .replace(/<[^>]+>/g, ' ');
+  t = decodeXml(t).replace(/&nbsp;/g, ' ').replace(/&#?\w+;/g, ' ');
+  return t.split('\n').map((l) => l.replace(/[ \t]+/g, ' ').trim()).join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }

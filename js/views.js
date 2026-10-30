@@ -215,10 +215,11 @@ export function bookSheet(S, e) {
     <div class="sheet-head"><span style="width:44px"></span><span class="grab"></span><button class="icon-btn" style="border:0" data-act="closeSheet" aria-label="Schließen">${ICON.close}</button></div>
     <div class="row hero">${coverHtml(b)}<div style="min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px">
       <span class="pill" style="align-self:flex-start;background:${stBg}">${STATUS[e.status]}</span>
-      <h2>${esc(b.title)}</h2>${b.subtitle ? `<p class="sub" style="margin:0">${esc(b.subtitle)}</p>` : ''}
+      <h2>${esc(b.title)}</h2>${b.subtitle ? `<p class="sub clamp2" style="margin:0">${esc(b.subtitle)}</p>` : ''}
       <p class="sub" style="margin:0">${esc(b.authors || '')}</p>${e.status === 'abandoned' && e.abandon_reason ? `<p class="sub" style="margin:0;color:var(--red)">Abgebrochen: ${esc(e.abandon_reason)}${lp ? ' · bei Seite ' + lp : ''}</p>` : ''}</div></div>
     <div class="facts"><div class="fact"><b>${pages || '–'}</b><span>Seiten</span></div><div class="fact"><b>${pace || '–'}</b><span>Seiten pro Tag</span></div><div class="fact"><b>${days || '–'}</b><span>Tage</span></div></div>
     ${ro ? '' : `<label class="btn ghost covbtn">${b.cover_path ? 'Cover ersetzen' : 'Cover fotografieren oder wählen'}<input type="file" accept="image/*" data-cover="${b.id}" hidden></label>`}
+    ${b.description ? `<h3 class="sec">Klappentext</h3><div class="blurb" id="blurb">${esc(b.description).replace(/\n+/g, '<br><br>')}</div>${b.description.length > 320 ? '<button class="linkbtn" data-act="blurb">Mehr anzeigen</button>' : ''}` : ''}
 
     ${!ro && (e.status === 'reading' || e.status === 'shelf') ? `<h3 class="sec">Lesen loggen</h3>
       ${pages ? `<div class="bar"><div style="width:${Math.min(100, Math.round(lp / pages * 100))}%"></div></div>` : ''}
@@ -246,6 +247,7 @@ export function bookSheet(S, e) {
           <label>Autor:in<input name="b_authors" value="${esc(b.authors || '')}" ${dis}></label>
           <div class="two"><label>Seiten<input type="number" min="1" name="b_pages" value="${b.pages || ''}" ${dis}></label><label>Jahr<input type="number" name="b_year" value="${b.pub_year || ''}" ${dis}></label></div>
           <label>Verlag<input name="b_publisher" value="${esc(b.publisher || '')}" ${dis}></label>
+          <label>Klappentext<textarea name="b_description" rows="5" ${dis}>${esc(b.description || '')}</textarea></label>
         </div></details>
       ${ro ? '' : `<div class="btns"><button class="btn grow" type="submit">Speichern</button><button class="btn danger" type="button" data-act="delentry" data-id="${e.id}">Entfernen</button></div>`}
     </form>

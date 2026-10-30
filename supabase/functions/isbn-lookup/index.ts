@@ -73,6 +73,14 @@ function parseMarc(xml) {
   const ext = fields(xml, '300')[0] || '';
   const pg = (sub(ext, 'a')[0] || '').match(/(\d{1,5})\s*(?:Seiten|S\.|Pages|p\b)/i);
   const lang = (fields(xml, '041')[0] && sub(fields(xml, '041')[0], 'a')[0]) || '';
+  // Inhaltstext: direkt (520) oder als Link vom Verlag/VLB (856 mit $3 „Inhaltstext“)
+  const abstract = fields(xml, '520').map((b) => sub(b, 'a').join(' ')).join(' ').trim();
+  let descUrl;
+  for (const b of fields(xml, '856')) {
+    const label = sub(b, '3').join(' ');
+    const u = sub(b, 'u')[0];
+    if (u && /inhaltstext|klappentext|beschreibung/i.test(label)) { descUrl = u; break; }
+  }
   return {
     title,
     subtitle: subtitle || undefined,
@@ -81,13 +89,15 @@ function parseMarc(xml) {
     year: yr ? Number(yr[0]) : undefined,
     pages: pg ? Number(pg[1]) : undefined,
     language: lang || undefined,
+    description: abstract ? clean(abstract) : undefined,
+    descUrl,
     source: 'dnb'
   };
 }
 
 // Mehrere Quellen zusammenführen: erste Quelle mit Wert gewinnt je Feld.
 function mergeInfos(list) {
-  const keys = ['title', 'subtitle', 'authors', 'publisher', 'year', 'pages', 'language', 'categories', 'coverUrl'];
+  const keys = ['title', 'subtitle', 'authors', 'publisher', 'year', 'pages', 'language', 'categories', 'description', 'coverUrl'];
   const out = {};
   const used = [];
   for (const info of list.filter(Boolean)) {
@@ -96,6 +106,17 @@ function mergeInfos(list) {
   }
   out.sources = used;
   return out;
+}
+
+// HTML (z. B. Inhaltstext-Seite der DNB oder Google-Beschreibung) in lesbaren Text umwandeln
+function htmlToText(html) {
+  let t = String(html || '');
+  const body = /<body[^>]*>([\s\S]*?)<\/body>/i.exec(t); if (body) t = body[1];
+  t = t.replace(/<(script|style|head)[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, '\n').replace(/<\/(p|div|li|h\d)>/gi, '\n\n')
+    .replace(/<[^>]+>/g, ' ');
+  t = decodeXml(t).replace(/&nbsp;/g, ' ').replace(/&#?\w+;/g, ' ');
+  return t.split('\n').map((l) => l.replace(/[ \t]+/g, ' ').trim()).join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 // ===== Handler (Deno / Supabase Edge Function) =====
@@ -156,6 +177,7 @@ async function viaGoogle(isbn: string) {
       title: g.title, subtitle: g.subtitle, authors: (g.authors || []).join(', '), publisher: g.publisher,
       year: g.publishedDate ? Number(String(g.publishedDate).slice(0, 4)) || undefined : undefined,
       pages: g.pageCount || undefined, language: g.language, categories: (g.categories || []).join(', '),
+      description: g.description ? htmlToText(g.description) : undefined,
       coverUrl: th, source: 'google'
     },
     diag: 'Treffer'
@@ -280,6 +302,25 @@ Deno.serve(async (req: Request) => {
     viaDnb(isbn), viaGoogle(isbn), viaOpenLibrary(isbn), viaLobid(isbn), viaOpenLibrarySearch(isbn)
   ]);
   const merged: any = mergeInfos([dnb.info, lobid.info, google.info, ol.info, ols.info]);
+  // Klappentext: DNB-Inhaltstext (Verlagstext) bevorzugt, sonst Google
+  let descDiag = merged.description ? 'ok' : 'keiner';
+  const descUrl = dnb.info && (dnb.info as any).descUrl;
+  if (descUrl && !(dnb.info as any).description) {
+    try {
+      const r = await fetchT(descUrl.replace(/^http:/, 'https:'), 5000, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; buecher-tracker/1.0)' } });
+      let txt = '';
+      if (r.ok) {
+        const buf = new Uint8Array(await r.arrayBuffer());
+        let raw: string;
+        try { raw = new TextDecoder('utf-8', { fatal: true }).decode(buf); } catch { raw = new TextDecoder('windows-1252').decode(buf); }
+        txt = htmlToText(raw);
+      }
+      if (txt.length > 60) { merged.description = txt; descDiag = 'dnb'; }
+      else descDiag = (merged.description ? 'google, ' : '') + 'dnb ' + r.status;
+    } catch { descDiag = (merged.description ? 'google, ' : '') + 'dnb Zeitüberschreitung'; }
+  } else if (merged.description) descDiag = (google.info && (google.info as any).description === merged.description) ? 'google' : 'dnb';
+  if (merged.description && merged.description.length > 4000) merged.description = merged.description.slice(0, 4000).replace(/\s+\S*$/, '') + ' …';
+  delete merged.descUrl;
   const covers: string[] = ['https://portal.dnb.de/opac/mvb/cover?isbn=' + isbn];
   [google.info, ol.info, ols.info].forEach((i: any) => { if (i && i.coverUrl) covers.push(i.coverUrl); });
   covers.push('https://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg?default=false');
@@ -287,14 +328,17 @@ Deno.serve(async (req: Request) => {
   const i10 = toIsbn10(isbn);
   if (i10) covers.push('https://images-na.ssl-images-amazon.com/images/P/' + i10 + '.01.LZZZZZZZ.jpg');
   const coverTried: string[] = [];
-  const coverPath = await cacheCover(isbn, [...new Set(covers)].slice(0, 6), coverTried);
+  const coverPath = body.cover === false ? null : await cacheCover(isbn, [...new Set(covers)].slice(0, 6), coverTried);
+  if (body.cover === false) coverTried.push('übersprungen');
   delete merged.coverUrl;
 
+  const diag = { cover: coverPath ? 'ok' : coverTried.join(', ') || 'keine Quelle', text: descDiag, dnb: dnb.diag, lobid: lobid.diag, google: google.diag, openlibrary: ol.diag, 'openlibrary-suche': ols.diag };
+  console.log(JSON.stringify({ isbn, found: !!merged.title, diag }));
   return json({
     isbn,
     found: !!merged.title,
     ...merged,
     coverPath,
-    diag: { cover: coverPath ? 'ok' : coverTried.join(', ') || 'keine Quelle', dnb: dnb.diag, lobid: lobid.diag, google: google.diag, openlibrary: ol.diag, 'openlibrary-suche': ols.diag }
+    diag
   });
 });
