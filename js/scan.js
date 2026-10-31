@@ -15,6 +15,9 @@ async function getDetector() {
 
 export async function startScanner(video, onCode, onInfo) {
   await stopScanner();
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    const e = new Error('nomedia'); e.name = 'NoMediaDevices'; throw e;
+  }
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }
@@ -25,7 +28,9 @@ export async function startScanner(video, onCode, onInfo) {
   const caps = track.getCapabilities ? track.getCapabilities() : {};
   if (caps.focusMode && caps.focusMode.includes('continuous')) track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {});
   onInfo && onInfo('Scan-Modul wird geladen …');
-  const det = await getDetector();
+  let det;
+  try { det = await getDetector(); }
+  catch (err) { await stopScanner(); const e = new Error(String(err && err.message || err)); e.name = 'LibLoadError'; throw e; }
   running = true;
   onInfo && onInfo('Bereit. Barcode in den Rahmen halten.');
   let last = '', lastAt = 0;

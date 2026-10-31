@@ -214,6 +214,21 @@ async function addBook(info, status, format) {
 }
 
 /* ---------- Scannen ---------- */
+// Verständliche Hinweise, warum die Kamera nicht startet
+function cameraHelp(e) {
+  const n = (e && e.name) || '';
+  const standalone = window.navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  if (n === 'NotAllowedError' || n === 'SecurityError') {
+    return 'Kamera-Zugriff wurde verweigert. iPhone: Einstellungen → Apps → Safari → Kamera → „Fragen“ oder „Erlauben“. '
+      + (standalone ? 'Danach die App ganz schließen und neu öffnen.' : 'Oder in Safari links im Adressfeld auf „aA“ → Website-Einstellungen → Kamera → Erlauben.')
+      + ' Prüfe auch Bildschirmzeit → Beschränkungen → Kamera.';
+  }
+  if (n === 'NoMediaDevices') return 'Dieser Browser bietet keinen Kamera-Zugriff. Bitte die Seite direkt in Safari öffnen (nicht aus WhatsApp/Mail heraus) und dort zum Home-Bildschirm hinzufügen.';
+  if (n === 'NotFoundError' || n === 'OverconstrainedError') return 'Keine passende Kamera gefunden. Alternativ: „Foto aufnehmen“ daneben nutzen.';
+  if (n === 'NotReadableError' || n === 'AbortError') return 'Die Kamera wird gerade von einer anderen App benutzt. Andere Apps schließen und erneut versuchen.';
+  if (n === 'LibLoadError') return 'Das Scan-Modul konnte nicht geladen werden (Internet? Inhaltsblocker oder Blockierungsmodus aktiv?). Alternativ: ISBN eintippen.';
+  return 'Kamera nicht verfügbar: ' + errMsg(e);
+}
 const scanMsg = (t, cls) => { const m = $('#scanMsg'); if (m) { m.textContent = t; m.className = 'msg ' + (cls || ''); } };
 async function onScanCode(isbn) {
   if (S.add.busy || S.add.tab !== 'scan') return;
@@ -338,7 +353,7 @@ document.addEventListener('click', (ev) => {
       case 'camstart': {
         const video = $('#vid');
         try { await startScanner(video, (isbn) => guard(() => onScanCode(isbn)), (t) => scanMsg(t)); }
-        catch (e) { scanMsg('Kamera nicht verfügbar: ' + errMsg(e) + ' (Zugriff erlaubt?)', 'bad'); }
+        catch (e) { scanMsg(cameraHelp(e), 'bad'); }
         break;
       }
       case 'discard': $('#scanResult').innerHTML = ''; S.add.busy = false; scanMsg('Bereit. Nächstes Buch scannen.'); break;
