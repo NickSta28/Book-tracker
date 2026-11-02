@@ -7,10 +7,15 @@ export const FORMAT_COLORS = { hardcover: '#8A3B33', softcover: '#3F5B7A', ebook
 export const FORMAT_LABELS = { hardcover: 'Hardcover', softcover: 'Softcover', ebook: 'E-Book', audio: 'Hörbuch' };
 export const catOf = (u) => (u.category && u.category.trim()) || 'Ohne Kategorie';
 
-// Tagesseiten je Tag: aus den Logs; bei beendeten Büchern ohne Logs gleichmäßig über Lesezeitraum geschätzt.
+// Tagesseiten je Tag.
+// Grundsatz: Wenn Beginn und Ende eines Buchs bekannt sind, gelten diese Daten.
+//  - Logs innerhalb des Zeitraums zählen tagesgenau.
+//  - Logs außerhalb (z. B. „Fertig“ heute getippt, Zeitraum aber nachträglich auf den Sommer gesetzt) werden ignoriert.
+//  - Was dann noch fehlt (Seitenzahl bzw. Abbruchseite minus geloggte Seiten), wird gleichmäßig auf die
+//    Tage ohne Log verteilt und als geschätzt markiert.
+// Ohne Zeitraum zählen die Logs so, wie sie sind.
 export function dailyMap(entries, logs) {
   const byId = new Map(entries.map((u) => [u.id, u]));
-  const withLog = new Set(logs.map((l) => l.user_book_id));
   const map = new Map();
   const add = (date, pages, u, est) => {
     if (!(pages > 0)) return;
@@ -22,20 +27,29 @@ export function dailyMap(entries, logs) {
     d.cats[c] = (d.cats[c] || 0) + pages;
     d.fmts[f] = (d.fmts[f] || 0) + pages;
   };
-  // Abgebrochen ohne laufendes Tracking: nur ein Eintrag am Abbruchtag -> über den Lesezeitraum verteilen
-  const logCount = new Map(); for (const l of logs) logCount.set(l.user_book_id, (logCount.get(l.user_book_id) || 0) + 1);
-  const spread = (u, l) => u.status === 'abandoned' && logCount.get(u.id) === 1 && u.started_at && l.log_date === u.finished_at && u.started_at < u.finished_at;
-  for (const l of logs) {
-    const u = byId.get(l.user_book_id); if (!u) continue;
-    if (spread(u, l)) {
-      const n = Math.max(1, diffDays(u.started_at, u.finished_at) + 1);
-      for (let i = 0; i < n; i++) add(addDays(u.started_at, i), l.pages_read / n, u, true);
-    } else add(l.log_date, l.pages_read, u, false);
-  }
+  const logsBy = new Map();
+  for (const l of logs) { if (!logsBy.has(l.user_book_id)) logsBy.set(l.user_book_id, []); logsBy.get(l.user_book_id).push(l); }
+
   for (const u of entries) {
-    if (withLog.has(u.id) || u.status !== 'finished' || !u.started_at || !u.finished_at || !(u.book && u.book.pages)) continue;
-    const n = Math.max(1, diffDays(u.started_at, u.finished_at) + 1);
-    for (let i = 0; i < n; i++) add(addDays(u.started_at, i), u.book.pages / n, u, true);
+    const ls = logsBy.get(u.id) || [];
+    const ranged = (u.status === 'finished' || u.status === 'abandoned') && u.started_at && u.finished_at && u.started_at <= u.finished_at;
+    if (!ranged) { for (const l of ls) add(l.log_date, l.pages_read, u, false); continue; }
+    let inside = ls.filter((l) => l.log_date >= u.started_at && l.log_date <= u.finished_at);
+    // Einziger Eintrag genau am letzten Tag (z. B. Abbruchseite nachgetragen, „Fertig“ getippt) = kein echtes Tracking
+    if (ls.length === 1 && inside.length === 1 && inside[0].log_date === u.finished_at && u.started_at < u.finished_at) inside = [];
+    for (const l of inside) add(l.log_date, l.pages_read, u, false);
+    const target = u.status === 'finished'
+      ? (u.book && u.book.pages) || 0
+      : Math.max(0, ...ls.map((l) => l.page_to || 0));
+    const logged = inside.reduce((s, l) => s + (l.pages_read || 0), 0);
+    const rest = target - logged;
+    if (rest <= 0) continue;
+    const loggedDays = new Set(inside.map((l) => l.log_date));
+    const n = diffDays(u.started_at, u.finished_at) + 1;
+    const free = [];
+    for (let i = 0; i < n; i++) { const d = addDays(u.started_at, i); if (!loggedDays.has(d)) free.push(d); }
+    if (!free.length) continue;
+    for (const d of free) add(d, rest / free.length, u, true);
   }
   return map;
 }
