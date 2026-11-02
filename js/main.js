@@ -189,7 +189,8 @@ async function saveLog(id, pageTo, date = today()) {
   const upd = {};
   if (e.status === 'shelf' || e.status === 'wishlist') upd.status = 'reading';
   if (!e.started_at) upd.started_at = date;
-  if (pages && pageTo >= pages) { upd.status = 'finished'; upd.finished_at = date; }
+  // Enddatum nur setzen, wenn noch keins da ist (rückwirkend erfasste Bücher behalten ihren Zeitraum)
+  if (pages && pageTo >= pages) { upd.status = 'finished'; if (e.status !== 'finished' || !e.finished_at) upd.finished_at = date; }
   if (Object.keys(upd).length) await patchEntry(id, upd);
   toast(pages && pageTo >= pages ? 'Fertig gelesen!' : 'Seite ' + pageTo + ' gespeichert (+' + pagesRead + ')');
 }

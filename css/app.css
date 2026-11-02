@@ -198,3 +198,9 @@ table.sm td,table.sm th{padding:5px 4px;border-bottom:1px solid var(--line);text
 .form input,.form select,.form textarea{min-width:0;max-width:100%;box-sizing:border-box}
 .form input[type=date]{-webkit-appearance:none;appearance:none;display:block;width:100%;min-height:44px;text-align:left;line-height:1.2}
 .form input[type=date]::-webkit-date-and-time-value{text-align:left}
+
+/* Untere Leiste: aktive Seite deutlich markieren */
+.nav button{color:var(--muted);transition:color .15s}
+.nav button svg{box-sizing:content-box;padding:4px 16px;border-radius:16px;transition:background .15s}
+.nav button[aria-current=page]{color:var(--green);font-weight:700}
+.nav button[aria-current=page] svg{background:color-mix(in srgb,var(--green) 22%,transparent);stroke-width:2.3}
