@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 200" width="110" height="200">
+  <defs>
+    <linearGradient id="goethe-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F3DC98"/>
+      <stop offset="0.35" stop-color="#C99A45"/>
+      <stop offset="0.7" stop-color="#9A6E2A"/>
+      <stop offset="1" stop-color="#6B4A1C"/>
+    </linearGradient>
+    <linearGradient id="goethe-gold2" x1="1" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#F0D58C"/>
+      <stop offset="0.5" stop-color="#B98B3C"/>
+      <stop offset="1" stop-color="#7A5520"/>
+    </linearGradient>
+    <linearGradient id="goethe-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E4A2C"/>
+      <stop offset="0.35" stop-color="#9A6C43"/>
+      <stop offset="1" stop-color="#4A2E1A"/>
+    </linearGradient>
+    <radialGradient id="goethe-bg" cx="0.35" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#6E4D30"/>
+      <stop offset="0.6" stop-color="#3E2A1A"/>
+      <stop offset="1" stop-color="#22170E"/>
+    </radialGradient>
+    <radialGradient id="goethe-skin" cx="0.32" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#F0D2B2"/>
+      <stop offset="0.55" stop-color="#D3A07C"/>
+      <stop offset="1" stop-color="#95634A"/>
+    </radialGradient>
+    <radialGradient id="goethe-hair" cx="0.3" cy="0.25" r="0.9">
+      <stop offset="0" stop-color="#D5CFC4"/>
+      <stop offset="0.55" stop-color="#9A9285"/>
+      <stop offset="1" stop-color="#4F4840"/>
+    </radialGradient>
+    <linearGradient id="goethe-coat" x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0" stop-color="#4E4238"/>
+      <stop offset="0.5" stop-color="#2E2621"/>
+      <stop offset="1" stop-color="#1A1512"/>
+    </linearGradient>
+    <linearGradient id="goethe-tie" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FAF6EC"/>
+      <stop offset="0.6" stop-color="#E2D9C6"/>
+      <stop offset="1" stop-color="#A89C86"/>
+    </linearGradient>
+    <linearGradient id="goethe-gloss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF6DD" stop-opacity="0.16"/>
+      <stop offset="0.5" stop-color="#FFF6DD" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="goethe-p" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="0.35"/></filter>
+    <filter id="goethe-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1"/></filter>
+    <clipPath id="goethe-pic"><rect x="30" y="58" width="50" height="72"/></clipPath>
+  </defs>
+
+  <ellipse cx="55" cy="199.2" rx="34" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Tischstaffelei -->
+  <path d="M53.6 30 H56.4 L58 199 H52 Z" fill="#4A2E1A"/>
+  <path d="M51 28 L54 28.6 L29 199.4 L24.6 199.4 Z" fill="url(#goethe-wood)"/>
+  <path d="M59 28 L56 28.6 L81 199.4 L85.4 199.4 Z" fill="url(#goethe-wood)"/>
+  <circle cx="55" cy="30" r="3" fill="#8A5E37"/>
+  <circle cx="54.4" cy="29.4" r="1.2" fill="#B88D5E"/>
+  <path d="M33 168 H77 V171.6 H33 Z" fill="url(#goethe-wood)"/>
+  <!-- Bildleiste -->
+  <path d="M17 146 H93 V150 Q93 151.6 91.4 151.6 H18.6 Q17 151.6 17 150 Z" fill="url(#goethe-wood)"/>
+  <path d="M17 146 H93" stroke="#C49A6C" stroke-width="0.8" stroke-opacity="0.7"/>
+
+  <!-- verzierter Goldrahmen -->
+  <rect x="17" y="44" width="76" height="102" rx="2" fill="url(#goethe-gold)"/>
+  <path d="M17 44 H93 L87 50 H23 Z" fill="#F6E2A6" opacity="0.55"/>
+  <path d="M17 44 L23 50 V140 L17 146 Z" fill="#E9CB82" opacity="0.4"/>
+  <path d="M93 44 V146 L87 140 V50 Z" fill="#5C3E16" opacity="0.4"/>
+  <path d="M17 146 L23 140 H87 L93 146 Z" fill="#4E3412" opacity="0.45"/>
+  <rect x="23" y="50" width="64" height="90" fill="url(#goethe-gold2)"/>
+  <rect x="25.4" y="53.4" width="59.2" height="83.2" fill="none" stroke="#6B4A1C" stroke-opacity="0.5" stroke-width="0.8"/>
+  <g fill="#F4DE9E"><circle cx="27.6" cy="55.6" r="0.75"/><circle cx="27.6" cy="132.4" r="0.75"/><circle cx="32.2" cy="55.6" r="0.75"/><circle cx="32.2" cy="132.4" r="0.75"/><circle cx="36.7" cy="55.6" r="0.75"/><circle cx="36.7" cy="132.4" r="0.75"/><circle cx="41.3" cy="55.6" r="0.75"/><circle cx="41.3" cy="132.4" r="0.75"/><circle cx="45.9" cy="55.6" r="0.75"/><circle cx="45.9" cy="132.4" r="0.75"/><circle cx="50.4" cy="55.6" r="0.75"/><circle cx="50.4" cy="132.4" r="0.75"/><circle cx="55" cy="55.6" r="0.75"/><circle cx="55" cy="132.4" r="0.75"/><circle cx="59.6" cy="55.6" r="0.75"/><circle cx="59.6" cy="132.4" r="0.75"/><circle cx="64.1" cy="55.6" r="0.75"/><circle cx="64.1" cy="132.4" r="0.75"/><circle cx="68.7" cy="55.6" r="0.75"/><circle cx="68.7" cy="132.4" r="0.75"/><circle cx="73.3" cy="55.6" r="0.75"/><circle cx="73.3" cy="132.4" r="0.75"/><circle cx="77.8" cy="55.6" r="0.75"/><circle cx="77.8" cy="132.4" r="0.75"/><circle cx="82.4" cy="55.6" r="0.75"/><circle cx="82.4" cy="132.4" r="0.75"/><circle cx="27.6" cy="60.1" r="0.75"/><circle cx="82.4" cy="60.1" r="0.75"/><circle cx="27.6" cy="64.6" r="0.75"/><circle cx="82.4" cy="64.6" r="0.75"/><circle cx="27.6" cy="69.2" r="0.75"/><circle cx="82.4" cy="69.2" r="0.75"/><circle cx="27.6" cy="73.7" r="0.75"/><circle cx="82.4" cy="73.7" r="0.75"/><circle cx="27.6" cy="78.2" r="0.75"/><circle cx="82.4" cy="78.2" r="0.75"/><circle cx="27.6" cy="82.7" r="0.75"/><circle cx="82.4" cy="82.7" r="0.75"/><circle cx="27.6" cy="87.2" r="0.75"/><circle cx="82.4" cy="87.2" r="0.75"/><circle cx="27.6" cy="91.7" r="0.75"/><circle cx="82.4" cy="91.7" r="0.75"/><circle cx="27.6" cy="96.3" r="0.75"/><circle cx="82.4" cy="96.3" r="0.75"/><circle cx="27.6" cy="100.8" r="0.75"/><circle cx="82.4" cy="100.8" r="0.75"/><circle cx="27.6" cy="105.3" r="0.75"/><circle cx="82.4" cy="105.3" r="0.75"/><circle cx="27.6" cy="109.8" r="0.75"/><circle cx="82.4" cy="109.8" r="0.75"/><circle cx="27.6" cy="114.3" r="0.75"/><circle cx="82.4" cy="114.3" r="0.75"/><circle cx="27.6" cy="118.8" r="0.75"/><circle cx="82.4" cy="118.8" r="0.75"/><circle cx="27.6" cy="123.4" r="0.75"/><circle cx="82.4" cy="123.4" r="0.75"/><circle cx="27.6" cy="127.9" r="0.75"/><circle cx="82.4" cy="127.9" r="0.75"/></g>
+  <!-- Eckornamente und Kartusche -->
+  <g fill="url(#goethe-gold)">
+    <path d="M44 44.6 C46 39.4 50.4 36 55 35.4 C59.6 36 64 39.4 66 44.6 Z"/>
+    <path d="M30 44.4 C34 41.6 39 41.6 42 44.4 Z M68 44.4 C71 41.6 76 41.6 80 44.4 Z"/>
+  </g>
+  <g fill="#F4DE9E"><circle cx="20" cy="47" r="2.2"/><circle cx="90" cy="47" r="2.2"/><circle cx="20" cy="143" r="2.2"/><circle cx="90" cy="143" r="2.2"/></g>
+  <path d="M48 43.6 C50 40 52.4 38.4 55 38 C57.6 38.4 60 40 62 43.6" fill="none" stroke="#6B4A1C" stroke-opacity="0.5" stroke-width="0.7"/>
+  <path d="M55 38 V43.6 M51.4 39.6 L53 43.6 M58.6 39.6 L57 43.6" stroke="#6B4A1C" stroke-opacity="0.45" stroke-width="0.6"/>
+  <circle cx="55" cy="36.6" r="1.6" fill="#F6E2A6"/>
+  <g fill="#6B4A1C" opacity="0.45">
+    <circle cx="20.5" cy="47.5" r="1"/><circle cx="90.5" cy="47.5" r="1"/><circle cx="20.5" cy="143.5" r="1"/><circle cx="90.5" cy="143.5" r="1"/>
+  </g>
+  <rect x="29" y="57" width="52" height="74" fill="#2A1B0E"/>
+
+  <!-- Gemälde -->
+  <g clip-path="url(#goethe-pic)">
+    <rect x="30" y="58" width="50" height="72" fill="url(#goethe-bg)"/>
+    <g filter="url(#goethe-p)">
+      <g transform="translate(0 6)">
+      <!-- Rock -->
+      <path d="M28 132 C29 118 34 110 44 106.6 C48 105.4 51 104 53 101 L62 101 C64 104 68 106 72 107.6 C80 111 83 120 84 132 Z" fill="url(#goethe-coat)"/>
+      <path d="M44.6 106.4 C47 112 49 120 49.6 132 M65 106 C62 112 60.6 120 60.6 132" fill="none" stroke="#14100D" stroke-opacity="0.6" stroke-width="1"/>
+      <path d="M38 112 C36 118 35.4 124 35.6 132" fill="none" stroke="#6E5F52" stroke-opacity="0.5" stroke-width="1.6"/>
+      <!-- Ordensstern -->
+      <path d="M40 115 L41 117.6 L43.6 117.8 L41.6 119.4 L42.4 122 L40 120.4 L37.6 122 L38.4 119.4 L36.4 117.8 L39 117.6 Z" fill="#D9D4C8"/>
+      <circle cx="40" cy="118.8" r="0.9" fill="#9A3A2E"/>
+      </g>
+      <!-- hoher Kragen -->
+      <path d="M45 112 C44 106 45 101 47.6 98 L52 106 Z M67 111 C68.6 105 68 100 65.6 96.6 L61 106 Z" fill="#3A302A"/>
+      <g transform="translate(55 104.6) scale(1.16) translate(-55 -97)">
+      <!-- Haar hinten -->
+      <path d="M50 67 C52 63 57 61.4 62 62.4 C67.6 63.6 71 68.6 71.4 74.6 C71.8 80 70.6 85.6 68 90 C66.6 88.6 65.6 87 64.6 85 C64 87 63.4 88 62.4 88.6 C62.6 84 62.6 80 62 76 Z" fill="url(#goethe-hair)"/>
+      <!-- Hals, Gesicht -->
+      <path d="M50.4 92 C50.8 95 50.6 98 50 101 L62 101 C61 97 61 93 61.6 90 Z" fill="#B57E5E"/>
+      <path d="M52 66 C47.6 66.4 45 70 44.6 74 C44.4 76 44.8 77.4 44.2 78.6 C43.8 80.4 43.4 82.6 43.2 84.2 C43.1 85.4 43.8 86 44.8 86 C44.6 87.4 44.4 88.6 44.8 89.6 C45 91.4 45.6 93 47 94.2 C49 95.8 52 96 55 94.8 C59 93 62.4 88.4 63.4 82.4 C64.2 76.4 63.4 70.4 60 67.4 C58 65.8 55 65.6 52 66 Z" fill="url(#goethe-skin)"/>
+      <g filter="url(#goethe-b)">
+        <ellipse cx="56" cy="78" rx="3.6" ry="2" fill="#7A4E36" opacity="0.5"/>
+        <ellipse cx="47.6" cy="78.2" rx="2.4" ry="1.8" fill="#7A4E36" opacity="0.45"/>
+        <ellipse cx="60.6" cy="85" rx="3" ry="5" fill="#7A4E36" opacity="0.4"/>
+        <ellipse cx="47" cy="85.4" rx="1.6" ry="2.6" fill="#7A4E36" opacity="0.35"/>
+        <ellipse cx="50.6" cy="70" rx="4.6" ry="2.6" fill="#FBE6CC" opacity="0.6"/>
+        <ellipse cx="54" cy="84.6" rx="2.4" ry="1.8" fill="#E89A80" opacity="0.4"/>
+      </g>
+      <!-- Augen, Brauen -->
+      <path d="M53.6 78.6 C54.6 77.6 56.6 77.4 58 78.2 C56.8 79.2 54.8 79.4 53.6 78.6 Z" fill="#EFE3D2"/>
+      <circle cx="55.6" cy="78.4" r="1.05" fill="#3A2416"/>
+      <path d="M46 78.6 C46.8 77.8 48.2 77.6 49.2 78.2 C48.4 79 47 79.2 46 78.6 Z" fill="#EAD9C4"/>
+      <circle cx="47.4" cy="78.4" r="0.8" fill="#3A2416"/>
+      <circle cx="55.2" cy="78" r="0.3" fill="#FFFFFF"/><circle cx="47.1" cy="78.1" r="0.25" fill="#FFFFFF"/>
+      <path d="M53 76.2 C54.8 75.2 57.4 75.2 59 76.4 M45.4 76.4 C46.6 75.6 48.2 75.6 49.4 76.2" fill="none" stroke="#5E554B" stroke-width="1" stroke-linecap="round"/>
+      <!-- Nase, Mund, Falten -->
+      <path d="M50.6 79 C50.4 81.6 49.6 84 49 85.6 C49.6 86.6 51 86.6 51.8 86" fill="none" stroke="#8A5A40" stroke-opacity="0.7" stroke-width="0.6"/>
+      <path d="M45.6 89.6 C47.4 89.2 49.6 89.4 52.6 89.8" fill="none" stroke="#7A3E30" stroke-width="0.8" stroke-linecap="round"/>
+      <path d="M46.6 90.6 C48 91.2 50 91.2 51.6 90.6" fill="none" stroke="#B26E5C" stroke-width="0.8" stroke-linecap="round"/>
+      <path d="M52.6 86.4 C54 87.6 54.6 89 54.4 90.6" fill="none" stroke="#8A5A40" stroke-opacity="0.5" stroke-width="0.6"/>
+      <!-- Ohr, Haar an Schläfe und Stirn -->
+      <path d="M62.6 77 C64.6 76.6 65.4 79 65 81.6 C64.6 83.6 63.2 84.4 62.2 83.6 Z" fill="#C58E6C"/>
+      <path d="M59.6 67.6 C62 66 64 68 64.6 71 C65 73.6 65.4 76 64.8 78 C63.4 75 61.6 72 59.6 70.6 Z" fill="url(#goethe-hair)"/>
+      <path d="M53 66 C55 63.6 58.6 63 61.6 64 C59.4 64.4 57.4 65.4 56 66.8 Z" fill="#B8B1A6"/>
+      <path d="M62 64.4 C65.6 65 68.6 68 69.8 72 M64.4 70 C66.8 71.4 68.6 74.6 69 79 M65.6 79 C67 81.6 67.4 84.6 67 87.6" fill="none" stroke="#4A433B" stroke-opacity="0.55" stroke-width="0.7"/><path d="M58 63 C62 62.6 66 64 68.4 67" fill="none" stroke="#EDE8DF" stroke-opacity="0.6" stroke-width="0.8"/>
+      </g>
+      <!-- Halstuch -->
+      <path d="M48.6 101 C47.6 105 48 109 50.4 112 C53 115 57 116 60.6 115 C64.2 114 66 110.6 65.8 107 C65.6 104 64.6 101.6 63 100 C59 102.4 53 102.6 48.6 101 Z" fill="url(#goethe-tie)"/>
+      <path d="M50 105 C53 107 58 107.6 64 105.6 M50.6 108.6 C54 110.6 58.6 110.8 63.4 109" fill="none" stroke="#B3A78F" stroke-width="0.7" stroke-linecap="round"/>
+      <path d="M56.4 110 C56 114 55.4 117.4 54.4 121 C57 119.6 59 115.6 59.4 110.6 Z" fill="#EEE7D7"/>
+    </g>
+    <rect x="30" y="58" width="50" height="72" fill="url(#goethe-gloss)"/>
+  </g>
+</svg>

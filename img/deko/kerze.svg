@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 200" width="60" height="200">
+  <defs>
+    <linearGradient id="kerze-brass" gradientUnits="userSpaceOnUse" x1="11" y1="0" x2="49" y2="0">
+      <stop offset="0" stop-color="#8F6A2C"/>
+      <stop offset="0.3" stop-color="#EBD08A"/>
+      <stop offset="0.55" stop-color="#B88E42"/>
+      <stop offset="1" stop-color="#694B1C"/>
+    </linearGradient>
+    <linearGradient id="kerze-brassTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F2DC9E"/>
+      <stop offset="1" stop-color="#B08A40"/>
+    </linearGradient>
+    <linearGradient id="kerze-wax" gradientUnits="userSpaceOnUse" x1="24.5" y1="0" x2="35.5" y2="0">
+      <stop offset="0" stop-color="#E4DDCF"/>
+      <stop offset="0.32" stop-color="#FBF8F1"/>
+      <stop offset="0.72" stop-color="#E6DFD2"/>
+      <stop offset="1" stop-color="#C4BBAB"/>
+    </linearGradient>
+    <radialGradient id="kerze-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#F6D78E" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#F6D78E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="kerze-flame" cx="0.5" cy="0.72" r="0.62">
+      <stop offset="0" stop-color="#FFF8E2"/>
+      <stop offset="0.35" stop-color="#FBE3A0"/>
+      <stop offset="0.75" stop-color="#E9A24F"/>
+      <stop offset="1" stop-color="#C8642E"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="30" cy="199.2" rx="20" ry="1.5" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Leuchter -->
+  <path d="M11 196 Q11 192 16 191.5 L44 191.5 Q49 192 49 196 L49 198 Q49 200 46.5 200 L13.5 200 Q11 200 11 198 Z" fill="url(#kerze-brass)"/>
+  <path d="M16 191.8 C17 184 23 181 27.5 179 L32.5 179 C37 181 43 184 44 191.8 Z" fill="url(#kerze-brass)"/>
+  <ellipse cx="30" cy="191.6" rx="14" ry="1.6" fill="url(#kerze-brassTop)" opacity="0.8"/>
+  <path d="M27.6 179.5 L28 158 L32 158 L32.4 179.5 Z" fill="url(#kerze-brass)"/>
+  <ellipse cx="30" cy="172" rx="6.5" ry="3.4" fill="url(#kerze-brass)"/>
+  <ellipse cx="30" cy="158" rx="5.5" ry="3" fill="url(#kerze-brass)"/>
+  <path d="M28 157 C25 152 25 146 26.5 141 L33.5 141 C35 146 35 152 32 157 Z" fill="url(#kerze-brass)"/>
+  <path d="M17 137.5 Q30 143 43 137.5 Q43 139.5 41 140.5 Q30 144.6 19 140.5 Q17 139.5 17 137.5 Z" fill="url(#kerze-brass)"/>
+  <ellipse cx="30" cy="137.4" rx="13" ry="2.4" fill="url(#kerze-brassTop)"/>
+  <path d="M23.2 129 L36.8 129 L36.2 137.5 L23.8 137.5 Z" fill="url(#kerze-brass)"/>
+  <path d="M23.2 129.2 H36.8" stroke="#F4E2AE" stroke-width="0.8" stroke-opacity="0.8"/>
+
+  <!-- Kerze -->
+  <path d="M24.5 54.5 Q30 56.4 35.5 54.5 L35.5 129.5 L24.5 129.5 Z" fill="url(#kerze-wax)"/>
+  <ellipse cx="30" cy="54.4" rx="5.5" ry="1.4" fill="#F0EBE1"/>
+  <ellipse cx="30" cy="54.6" rx="3.6" ry="0.8" fill="#DCD4C5"/>
+  <path d="M33.4 55.4 C34.2 58 34.6 62 34.2 65.4 C33.9 67.4 32.6 67.4 32.5 65.4 C32.3 62 32.8 58 33.4 55.4 Z" fill="#F6F2EA"/>
+  <path d="M34.6 55.2 C34.9 58 35 61 34.7 64" fill="none" stroke="#C8BFAF" stroke-width="0.6" stroke-opacity="0.8"/>
+
+  <!-- Flamme -->
+  <circle cx="30" cy="40" r="15" fill="url(#kerze-glow)"/>
+  <path d="M29.6 54 C29.8 52 30.4 50.4 30.6 48.6" fill="none" stroke="#2C241C" stroke-width="1" stroke-linecap="round"/>
+  <path d="M30 22 C33 29 36.4 35 36.4 41.5 C36.4 46.6 33.6 50.2 30 50.2 C26.4 50.2 23.6 46.6 23.6 41.5 C23.6 35 27 29 30 22 Z" fill="url(#kerze-flame)"/>
+  <path d="M30 37 C31.6 40 32.4 42.6 32.4 45 C32.4 47.2 31.2 48.4 30 48.4 C28.8 48.4 27.6 47.2 27.6 45 C27.6 42.6 28.4 40 30 37 Z" fill="#FFFBEE" opacity="0.85"/>
+  <path d="M30 46.2 C30.8 46.2 31.2 47.2 30.6 48.6 L29.4 48.6 C28.8 47.2 29.2 46.2 30 46.2 Z" fill="#7C8BB0" opacity="0.5"/>
+</svg>

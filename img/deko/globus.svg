@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200" width="140" height="200">
+  <defs>
+    <radialGradient id="globus-sea" cx="0.36" cy="0.32" r="0.75">
+      <stop offset="0" stop-color="#6FA39B"/>
+      <stop offset="0.5" stop-color="#3F7A74"/>
+      <stop offset="1" stop-color="#22504C"/>
+    </radialGradient>
+    <linearGradient id="globus-land" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E6D6AC"/>
+      <stop offset="1" stop-color="#C4A876"/>
+    </linearGradient>
+    <radialGradient id="globus-shade" cx="0.36" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#FFF8E8" stop-opacity="0.38"/>
+      <stop offset="0.35" stop-color="#FFF8E8" stop-opacity="0"/>
+      <stop offset="0.72" stop-color="#1F1B16" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#1F1B16" stop-opacity="0.5"/>
+    </radialGradient>
+    <linearGradient id="globus-brass" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#EBD08A"/>
+      <stop offset="0.45" stop-color="#B98F43"/>
+      <stop offset="1" stop-color="#7A5A24"/>
+    </linearGradient>
+    <linearGradient id="globus-brassH" gradientUnits="userSpaceOnUse" x1="44" y1="0" x2="76" y2="0">
+      <stop offset="0" stop-color="#9C7634"/>
+      <stop offset="0.3" stop-color="#E6CA84"/>
+      <stop offset="0.7" stop-color="#A9823C"/>
+      <stop offset="1" stop-color="#6E5020"/>
+    </linearGradient>
+    <linearGradient id="globus-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E4A2C"/>
+      <stop offset="0.28" stop-color="#9A6C43"/>
+      <stop offset="0.7" stop-color="#6A4529"/>
+      <stop offset="1" stop-color="#43291A"/>
+    </linearGradient>
+    <linearGradient id="globus-woodTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#A57A50"/>
+      <stop offset="1" stop-color="#7C5634"/>
+    </linearGradient>
+    <clipPath id="globus-clip"><circle cx="70" cy="88" r="50"/></clipPath>
+  </defs>
+
+  <ellipse cx="70" cy="199.2" rx="38" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Standfuß -->
+  <path d="M34 188 Q34 184 40 183.5 L100 183.5 Q106 184 106 188 L106 197 Q106 200 102 200 L38 200 Q34 200 34 197 Z" fill="url(#globus-wood)"/>
+  <ellipse cx="70" cy="184.5" rx="35" ry="3.2" fill="url(#globus-woodTop)"/>
+  <path d="M50 184 Q52 176 62 174 L78 174 Q88 176 90 184 Z" fill="url(#globus-wood)"/>
+  <ellipse cx="70" cy="174.5" rx="9" ry="2" fill="url(#globus-woodTop)"/>
+
+  <!-- Messing-Arm zum Südpol -->
+  <path d="M70 175 V160 Q70 150 54 142.5" fill="none" stroke="url(#globus-brassH)" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="70" cy="162" rx="5" ry="2.4" fill="url(#globus-brass)"/>
+
+  <!-- Kugel -->
+  <circle cx="70" cy="88" r="50" fill="url(#globus-sea)"/>
+  <g clip-path="url(#globus-clip)">
+    <g transform="rotate(20 70 88)">
+      <g fill="none" stroke="#F4EFE6" stroke-opacity="0.18" stroke-width="0.7">
+        <ellipse cx="70" cy="88" rx="50" ry="9"/>
+        <ellipse cx="70" cy="88" rx="24" ry="50"/>
+        <ellipse cx="70" cy="62" rx="43" ry="7"/>
+        <ellipse cx="70" cy="114" rx="43" ry="7"/>
+      </g>
+      <g fill="url(#globus-land)">
+        <path d="M38 50 C47 43 60 45 62 53 C64 61 56 66 54 73 C52 80 46 82 44 88 C41 82 33 78 29 70 C26 62 30 55 38 50 Z"/>
+        <path d="M51 92 C59 90 62 98 60 108 C58 118 53 127 48 133 C46 123 42 113 44 103 C45 97 47 93 51 92 Z"/>
+        <path d="M84 50 C92 46 102 50 107 57 C111 65 105 70 100 72 C108 76 115 86 113 97 C111 109 103 117 96 126 C92 117 92 106 88 99 C84 92 80 86 82 78 C84 69 80 61 84 50 Z"/>
+        <ellipse cx="73" cy="61" rx="4.5" ry="2.6"/>
+        <ellipse cx="57" cy="39" rx="7" ry="3.2"/>
+        <ellipse cx="117" cy="112" rx="5" ry="3"/>
+      </g>
+    </g>
+  </g>
+  <circle cx="70" cy="88" r="50" fill="url(#globus-shade)"/>
+
+  <!-- Halbmeridian -->
+  <g transform="rotate(20 70 88)">
+    <path d="M70 30.5 A57.5 57.5 0 0 0 70 145.5 L70 140.5 A52.5 52.5 0 0 1 70 35.5 Z" fill="url(#globus-brass)"/>
+    <path d="M70 31.3 A56.7 56.7 0 0 0 13.6 92" fill="none" stroke="#FFF3CF" stroke-opacity="0.45" stroke-width="0.8"/>
+    <g stroke="#6E5020" stroke-opacity="0.45" stroke-width="0.6">
+      <path d="M41.2 38.2 L43.7 42.5"/><path d="M22.2 59.2 L26.5 61.7"/><path d="M14.5 88 L19.5 88"/>
+      <path d="M22.2 116.8 L26.5 114.3"/><path d="M41.2 137.8 L43.7 133.5"/>
+    </g>
+    <circle cx="70" cy="30" r="3.2" fill="url(#globus-brass)"/>
+    <circle cx="70" cy="146" r="3.2" fill="url(#globus-brass)"/>
+  </g>
+</svg>

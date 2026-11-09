@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 200" width="150" height="200">
+  <defs>
+    <linearGradient id="teleskop-leg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#A47548"/>
+      <stop offset="0.45" stop-color="#7C5432"/>
+      <stop offset="1" stop-color="#4E331D"/>
+    </linearGradient>
+    <linearGradient id="teleskop-legBack" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E4A2C"/>
+      <stop offset="1" stop-color="#3E2816"/>
+    </linearGradient>
+    <linearGradient id="teleskop-tube" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9C7634"/>
+      <stop offset="0.22" stop-color="#F0D896"/>
+      <stop offset="0.5" stop-color="#C39A4C"/>
+      <stop offset="0.85" stop-color="#7E5D24"/>
+      <stop offset="1" stop-color="#5C4318"/>
+    </linearGradient>
+    <linearGradient id="teleskop-ring" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7E5D24"/>
+      <stop offset="0.22" stop-color="#E2C47C"/>
+      <stop offset="0.55" stop-color="#A47C36"/>
+      <stop offset="1" stop-color="#4E3812"/>
+    </linearGradient>
+    <linearGradient id="teleskop-brassV" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9C7634"/>
+      <stop offset="0.3" stop-color="#EBD08A"/>
+      <stop offset="0.65" stop-color="#B08840"/>
+      <stop offset="1" stop-color="#6B4D1C"/>
+    </linearGradient>
+    <radialGradient id="teleskop-lens" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#9DB8C0"/>
+      <stop offset="0.5" stop-color="#3D5560"/>
+      <stop offset="1" stop-color="#1C2A30"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="75" cy="199.2" rx="58" ry="1.6" fill="#1F1B16" opacity="0.18"/>
+
+  <!-- hinteres Bein -->
+  <path d="M73 98 L78 98 L88.6 197 L84.8 197 Z" fill="url(#teleskop-legBack)"/>
+  <path d="M84.6 194 H88.8 L89 197.6 Q86.8 199 84.4 197.6 Z" fill="url(#teleskop-brassV)"/>
+
+  <!-- vordere Beine -->
+  <path d="M68 97 L75 99 L28.5 200 L22 200 Z" fill="url(#teleskop-leg)"/>
+  <path d="M75 97 L82 99 L128 200 L121.5 200 Z" fill="url(#teleskop-leg)"/>
+  <path d="M69.6 98 L46 150" stroke="#D4A878" stroke-opacity="0.45" stroke-width="0.9"/>
+  <path d="M76.6 98.2 L100 150" stroke="#D4A878" stroke-opacity="0.35" stroke-width="0.9"/>
+  <!-- Messingschuhe -->
+  <path d="M23.8 194 H30.4 L28.6 198.2 Q28.4 200 26.6 200 H23.4 Q21.6 200 21.8 198.2 Z" fill="url(#teleskop-brassV)"/>
+  <path d="M119.6 194 H126.2 L128.2 198.2 Q128.4 200 126.6 200 H123.4 Q121.6 200 121.4 198.2 Z" fill="url(#teleskop-brassV)"/>
+  <!-- Spreizkette -->
+  <path d="M49 150 Q75 156 101 150" fill="none" stroke="#8F6E30" stroke-width="1" stroke-dasharray="2 1.2"/>
+
+  <!-- Stativkopf -->
+  <path d="M65 92 H85 L83 100 Q75 103 67 100 Z" fill="url(#teleskop-brassV)"/>
+  <ellipse cx="75" cy="92" rx="10" ry="2.4" fill="#E6CB86"/>
+  <path d="M72 76 H78 V92 H72 Z" fill="url(#teleskop-brassV)"/>
+  <circle cx="75" cy="82" r="3.4" fill="url(#teleskop-brassV)"/>
+
+  <!-- Fernrohr, um 32° geneigt -->
+  <g transform="translate(74.5 73) rotate(-32) scale(0.98)">
+    <!-- Okular und Auszüge -->
+    <rect x="-66" y="-3.6" width="10" height="7.2" rx="1" fill="url(#teleskop-tube)"/>
+    <rect x="-68" y="-4.4" width="3" height="8.8" rx="1" fill="url(#teleskop-ring)"/>
+    <rect x="-57" y="-4.6" width="20" height="9.2" fill="url(#teleskop-tube)"/>
+    <rect x="-38" y="-5.6" width="2.4" height="11.2" rx="0.6" fill="url(#teleskop-ring)"/>
+    <rect x="-37" y="-6.2" width="26" height="12.4" fill="url(#teleskop-tube)"/>
+    <rect x="-12" y="-7.4" width="3" height="14.8" rx="0.8" fill="url(#teleskop-ring)"/>
+    <!-- Haupttubus -->
+    <rect x="-10" y="-8.2" width="80" height="16.4" fill="url(#teleskop-tube)"/>
+    <rect x="22" y="-9" width="4" height="18" rx="1" fill="url(#teleskop-ring)"/>
+    <!-- Taukappe -->
+    <path d="M68 -9.6 H82 Q83 -9.6 83 -8.6 V8.6 Q83 9.6 82 9.6 H68 Z" fill="url(#teleskop-ring)"/>
+    <ellipse cx="83" cy="0" rx="2.2" ry="9.4" fill="url(#teleskop-lens)"/>
+    <!-- Glanzkanten -->
+    <path d="M-9 -5.8 H69" stroke="#FFF5D6" stroke-opacity="0.6" stroke-width="0.9"/>
+    <path d="M-36 -4 H-12" stroke="#FFF5D6" stroke-opacity="0.55" stroke-width="0.8"/>
+    <!-- Halterung -->
+    <rect x="-4" y="-9.4" width="9" height="18.8" rx="1.4" fill="url(#teleskop-ring)"/>
+    <circle cx="0.5" cy="0" r="2.2" fill="#5C4318"/>
+    <circle cx="0.1" cy="-0.4" r="1" fill="#E6CB86"/>
+  </g>
+</svg>

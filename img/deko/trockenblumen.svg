@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" width="120" height="200">
+  <defs>
+    <radialGradient id="trockenblumen-vase" cx="0.34" cy="0.42" r="0.7">
+      <stop offset="0" stop-color="#D8AE62"/>
+      <stop offset="0.5" stop-color="#AE7F34"/>
+      <stop offset="1" stop-color="#6A4818"/>
+    </radialGradient>
+    <linearGradient id="trockenblumen-neck" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#A57530"/>
+      <stop offset="0.3" stop-color="#D4A85C"/>
+      <stop offset="1" stop-color="#7A5520"/>
+    </linearGradient>
+    <radialGradient id="trockenblumen-ball" cx="0.35" cy="0.3" r="0.75">
+      <stop offset="0" stop-color="#F3D27A"/>
+      <stop offset="0.5" stop-color="#D3A33C"/>
+      <stop offset="1" stop-color="#8E6618"/>
+    </radialGradient>
+    <linearGradient id="trockenblumen-tail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F1E2B6"/>
+      <stop offset="1" stop-color="#C3A766"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="60" cy="199.2" rx="22" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Stiele -->
+  <path d="M56 112Q49 74 34 48M59 112Q58 62 57 28M62 112Q69 68 86 38M56 112Q53 88 46 72M59 112Q64 82 77 62M62 112Q50 93 22 80M56 112Q58 75 63 50M59 112Q71 82 98 62M62 112Q55 62 40 28M56 112Q47 82 25 62M59 112Q70 94 95 82M62 112Q64 66 70 36M56 112Q53 101 46 94M59 112Q66 105 82 100M62 112Q52 64 30 32M56 112Q63 58 80 22M59 112Q73 74 105 48M62 112Q47 74 13 48M56 112Q54 57 50 20M59 112Q69 60 92 26M62 112Q63 63 66 30M56 112Q66 75 89 50M59 112Q53 81 38 60" fill="none" stroke="#8A7A44" stroke-width="1" stroke-linecap="round"/>
+  <path d="M25 66L26.0 60.4M25 66L19.1 60.7M25 66L32.5 61.4M25 66L26.2 62.8M25 66L27.9 63.3M25 66L34.3 64.0M25 66L20.4 64.3M95 86L99.8 80.8M95 86L91.1 81.6M95 86L88.8 82.1M95 86L93.5 82.8M95 86L93.0 83.9M95 86L96.3 84.4M70 40L73.1 34.0M70 40L65.5 34.2M70 40L77.2 35.6M70 40L68.6 36.2M70 40L79.3 37.2M70 40L60.4 37.7M70 40L77.3 38.1M46 98L43.5 93.3M46 98L50.4 93.9M46 98L40.4 94.9M46 98L48.2 95.8M46 98L52.4 96.3M82 104L79.8 100.1M82 104L84.5 100.2M82 104L85.6 100.8M82 104L79.0 102.0" fill="none" stroke="#8A7A44" stroke-width="0.5"/>
+  <g fill="#7E7140">
+    <path d="M57 106 C51 100 47 93 46 86 C52 91 56 98 57 106 Z"/>
+    <path d="M62 103 C68 98 73 92 75 85 C69 89 64 95 62 103 Z"/>
+    <path d="M59 94 C55 88 54 81 55 74 C58 80 60 87 59 94 Z"/>
+    <path d="M60 104 C64 101 68 100 72 100 C68 103 64 104 60 104 Z"/>
+  </g>
+
+  <!-- Gräser -->
+  <g fill="#D7BE78"><g transform="rotate(4 66 30)"><ellipse cx="64.6" cy="28.0" rx="1.1" ry="2.3" transform="rotate(-25 64.6 28.0)"/><ellipse cx="67.4" cy="24.8" rx="1.1" ry="2.3" transform="rotate(25 67.4 24.8)"/><ellipse cx="64.6" cy="21.6" rx="1.1" ry="2.3" transform="rotate(-25 64.6 21.6)"/><ellipse cx="67.4" cy="18.4" rx="1.1" ry="2.3" transform="rotate(25 67.4 18.4)"/><ellipse cx="64.6" cy="15.2" rx="1.1" ry="2.3" transform="rotate(-25 64.6 15.2)"/><ellipse cx="67.4" cy="12.0" rx="1.1" ry="2.3" transform="rotate(25 67.4 12.0)"/></g><g transform="rotate(25 89 50)"><ellipse cx="87.6" cy="48.0" rx="1.1" ry="2.3" transform="rotate(-25 87.6 48.0)"/><ellipse cx="90.4" cy="44.8" rx="1.1" ry="2.3" transform="rotate(25 90.4 44.8)"/><ellipse cx="87.6" cy="41.6" rx="1.1" ry="2.3" transform="rotate(-25 87.6 41.6)"/><ellipse cx="90.4" cy="38.4" rx="1.1" ry="2.3" transform="rotate(25 90.4 38.4)"/><ellipse cx="87.6" cy="35.2" rx="1.1" ry="2.3" transform="rotate(-25 87.6 35.2)"/><ellipse cx="90.4" cy="32.0" rx="1.1" ry="2.3" transform="rotate(25 90.4 32.0)"/></g><g transform="rotate(-23 38 60)"><ellipse cx="36.6" cy="58.0" rx="1.1" ry="2.3" transform="rotate(-25 36.6 58.0)"/><ellipse cx="39.4" cy="54.8" rx="1.1" ry="2.3" transform="rotate(25 39.4 54.8)"/><ellipse cx="36.6" cy="51.6" rx="1.1" ry="2.3" transform="rotate(-25 36.6 51.6)"/><ellipse cx="39.4" cy="48.4" rx="1.1" ry="2.3" transform="rotate(25 39.4 48.4)"/><ellipse cx="36.6" cy="45.2" rx="1.1" ry="2.3" transform="rotate(-25 36.6 45.2)"/><ellipse cx="39.4" cy="42.0" rx="1.1" ry="2.3" transform="rotate(25 39.4 42.0)"/></g></g>
+  <!-- Samtgras -->
+  <g fill="url(#trockenblumen-tail)"><ellipse cx="30" cy="28" rx="3" ry="6.4" transform="rotate(-21 30 32)"/><ellipse cx="80" cy="18" rx="3" ry="6.4" transform="rotate(13 80 22)"/><ellipse cx="105" cy="44" rx="3" ry="6.4" transform="rotate(35 105 48)"/><ellipse cx="13" cy="44" rx="3" ry="6.4" transform="rotate(-36 13 48)"/><ellipse cx="50" cy="16" rx="3" ry="6.4" transform="rotate(-6 50 20)"/><ellipse cx="92" cy="22" rx="3" ry="6.4" transform="rotate(20 92 26)"/></g>
+  <!-- Schafgarbe -->
+  <path stroke="#B4852A" stroke-width="3.8" stroke-linecap="round" d="M26.0 60.4h.01M28.1 60.5h.01M19.2 60.6h.01M19.1 60.7h.01M26.0 60.7h.01M31.4 60.9h.01M32.5 61.4h.01M17.5 61.4h.01M24.5 62.0h.01M26.2 62.8h.01M21.4 63.0h.01M27.9 63.1h.01M27.9 63.3h.01M32.8 63.6h.01M28.1 63.9h.01M34.3 64.0h.01M18.3 64.0h.01M15.7 64.2h.01M20.4 64.3h.01M99.8 80.8h.01M92.3 81.4h.01M100.7 81.5h.01M91.1 81.6h.01M91.7 81.8h.01M87.8 82.0h.01M88.8 82.1h.01M92.6 82.3h.01M100.1 82.7h.01M93.5 82.8h.01M99.6 83.6h.01M96.2 83.6h.01M93.0 83.9h.01M87.1 84.0h.01M87.6 84.2h.01M96.3 84.4h.01M93.1 84.4h.01M73.1 34.0h.01M70.7 34.1h.01M72.5 34.1h.01M65.5 34.2h.01M75.4 34.3h.01M69.1 35.3h.01M77.2 35.6h.01M70.8 35.7h.01M67.3 35.8h.01M68.6 36.2h.01M67.8 36.7h.01M62.0 36.9h.01M79.3 37.2h.01M60.7 37.4h.01M64.5 37.5h.01M60.4 37.7h.01M68.1 37.9h.01M66.3 37.9h.01M77.3 38.1h.01M43.5 93.3h.01M45.8 93.5h.01M48.4 93.6h.01M50.4 93.9h.01M43.3 94.6h.01M45.8 94.6h.01M40.4 94.9h.01M45.2 95.2h.01M41.7 95.6h.01M48.2 95.8h.01M41.1 96.1h.01M50.7 96.2h.01M52.4 96.3h.01M79.8 100.1h.01M78.6 100.1h.01M80.0 100.2h.01M84.5 100.2h.01M86.2 100.7h.01M82.0 100.8h.01M85.6 100.8h.01M85.7 100.8h.01M79.4 100.8h.01M79.0 102.0h.01M86.7 102.1h.01"/>
+  <path stroke="#EBC873" stroke-width="1.6" stroke-linecap="round" d="M25.5 59.8h.01M27.6 59.9h.01M18.7 60.0h.01M18.6 60.1h.01M25.5 60.1h.01M17.0 60.8h.01M24.0 61.4h.01M25.7 62.2h.01M20.9 62.4h.01M27.4 62.5h.01M27.4 62.7h.01M27.6 63.3h.01M17.8 63.4h.01M15.2 63.6h.01M19.9 63.7h.01M91.8 80.8h.01M90.6 81.0h.01M91.2 81.2h.01M87.3 81.4h.01M88.3 81.5h.01M92.1 81.7h.01M93.0 82.2h.01M95.7 83.0h.01M92.5 83.3h.01M86.6 83.4h.01M87.1 83.6h.01M95.8 83.8h.01M92.6 83.8h.01M72.6 33.4h.01M70.2 33.5h.01M72.0 33.5h.01M65.0 33.6h.01M68.6 34.7h.01M70.3 35.1h.01M66.8 35.2h.01M68.1 35.6h.01M67.3 36.1h.01M61.5 36.3h.01M60.2 36.8h.01M64.0 36.9h.01M59.9 37.1h.01M67.6 37.3h.01M65.8 37.3h.01M43.0 92.7h.01M45.3 92.9h.01M47.9 93.0h.01M42.8 94.0h.01M45.3 94.0h.01M39.9 94.3h.01M44.7 94.6h.01M41.2 95.0h.01M47.7 95.2h.01M40.6 95.5h.01M79.3 99.5h.01M78.1 99.5h.01M79.5 99.6h.01M81.5 100.2h.01M78.9 100.2h.01M78.5 101.4h.01"/>
+  <!-- Craspedia -->
+  <g fill="url(#trockenblumen-ball)"><circle cx="34" cy="48" r="4.8"/><circle cx="57" cy="28" r="4.8"/><circle cx="86" cy="38" r="4.8"/><circle cx="46" cy="72" r="4.8"/><circle cx="77" cy="62" r="4.8"/><circle cx="22" cy="80" r="4.8"/><circle cx="63" cy="50" r="4.8"/><circle cx="98" cy="62" r="4.8"/><circle cx="40" cy="28" r="4.8"/></g>
+  <path stroke="#F7E2A0" stroke-opacity="0.7" stroke-width="1.2" stroke-linecap="round" d="M32.3 46.3h.01M34.9 45.5h.01M31.4 48.7h.01M34.2 47.8h.01M55.3 26.3h.01M57.9 25.5h.01M54.4 28.7h.01M57.2 27.8h.01M84.3 36.3h.01M86.9 35.5h.01M83.4 38.7h.01M86.2 37.8h.01M44.3 70.3h.01M46.9 69.5h.01M43.4 72.7h.01M46.2 71.8h.01M75.3 60.3h.01M77.9 59.5h.01M74.4 62.7h.01M77.2 61.8h.01M20.3 78.3h.01M22.9 77.5h.01M19.4 80.7h.01M22.2 79.8h.01M61.3 48.3h.01M63.9 47.5h.01M60.4 50.7h.01M63.2 49.8h.01M96.3 60.3h.01M98.9 59.5h.01M95.4 62.7h.01M98.2 61.8h.01M38.3 26.3h.01M40.9 25.5h.01M37.4 28.7h.01M40.2 27.8h.01"/>
+
+  <!-- Vase -->
+  <path d="M44 200 Q41 200 40.5 197 C33 188 30 176 31 162 C32 146 42 134 51 128 L51 113 L69 113 L69 128 C78 134 88 146 89 162 C90 176 87 188 79.5 197 Q79 200 76 200 Z" fill="url(#trockenblumen-vase)"/>
+  <path d="M51 113 H69 V128 C63 130 57 130 51 128 Z" fill="url(#trockenblumen-neck)"/>
+  <path d="M47.5 109.5 Q47.5 107.5 49.5 107.5 H70.5 Q72.5 107.5 72.5 109.5 V112 Q72.5 114 70.5 114 H49.5 Q47.5 114 47.5 112 Z" fill="url(#trockenblumen-neck)"/>
+  <ellipse cx="60" cy="107.8" rx="11" ry="1.3" fill="#5E4015"/>
+  <path d="M51 115 H69" stroke="#4E3410" stroke-opacity="0.35" stroke-width="1.2"/>
+  <path d="M34.6 150 Q60 156 85.4 150" fill="none" stroke="#5E4015" stroke-opacity="0.35" stroke-width="0.9"/>
+  <path d="M34 153 Q60 159 86 153" fill="none" stroke="#F0CF86" stroke-opacity="0.35" stroke-width="0.7"/>
+  <path d="M38 156 C36 168 38 180 43 190" fill="none" stroke="#F3D79A" stroke-opacity="0.35" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -49,6 +49,23 @@ h1,h2,h3{margin:0}
 .spine .dot{width:10px;height:10px;border:1.5px solid currentColor;border-radius:50%;opacity:.7}
 .spine .mark{position:absolute;top:-8px;right:5px;width:5px;height:14px;background:var(--red)}
 .spine.light{box-shadow:inset 0 0 0 1px var(--line2)}
+.deco{flex:none;display:block;position:relative;padding:0 3px;border:0;background:none;border-radius:6px}
+.deco img{display:block;width:100%;height:100%;object-fit:contain;object-position:50% 100%;pointer-events:none;user-select:none;-webkit-user-select:none}
+button.deco{cursor:pointer;outline:1.5px dashed var(--line2);outline-offset:2px}
+button.deco.sel{outline:2px solid var(--green);background:color-mix(in srgb,var(--green) 10%,transparent)}
+.deco-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;font:500 12px/1.35 var(--sans);color:var(--muted)}
+.lnk{flex:none;min-height:40px;padding:0 4px;border:0;background:none;color:var(--green);font:600 14px var(--sans)}
+.deco-ctl{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;font:600 12px var(--sans);color:var(--muted)}
+.deco-ctl.on{color:var(--ink);flex-wrap:wrap;padding:6px 0}
+.seg.sm button{min-height:36px;padding:0 11px}
+.deco-ctl .mvs{display:flex;gap:6px}
+.mv{min-width:40px;height:40px;padding:0 10px;border-radius:20px;border:1px solid var(--line2);background:transparent;font:600 15px var(--sans)}
+.mv.del{color:var(--red);border-color:var(--red);font-size:13px}
+.deco-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;margin:8px 0 8px}
+.deco-pick{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.deco-pick .pv{width:100%;height:132px;display:flex;align-items:flex-end;justify-content:center;padding:12px 8px 10px;border-radius:14px;background:var(--paper2);overflow:hidden}
+.deco-pick img{display:block;height:100%;width:100%;object-fit:contain;object-position:50% 100%}
+.deco-pick .nm{font:600 13px var(--sans)}
 .empty{margin:40px 0;text-align:center;color:var(--muted);font:500 14px var(--sans)}
 .empty b{display:block;font:700 18px var(--serif);color:var(--ink);margin-bottom:6px}
 

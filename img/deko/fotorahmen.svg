@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 200" width="110" height="200">
+  <defs>
+    <linearGradient id="fotorahmen-wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8E6238"/>
+      <stop offset="0.5" stop-color="#734A29"/>
+      <stop offset="1" stop-color="#4E311C"/>
+    </linearGradient>
+    <linearGradient id="fotorahmen-mat" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F6F1E7"/>
+      <stop offset="1" stop-color="#E2D9C8"/>
+    </linearGradient>
+    <linearGradient id="fotorahmen-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4E4A66"/>
+      <stop offset="0.35" stop-color="#8E6170"/>
+      <stop offset="0.65" stop-color="#D08A5E"/>
+      <stop offset="0.85" stop-color="#E5B46E"/>
+    </linearGradient>
+    <radialGradient id="fotorahmen-sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FBE3A6"/>
+      <stop offset="0.45" stop-color="#F2C67C" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#F2C67C" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fotorahmen-far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8A6378"/>
+      <stop offset="1" stop-color="#6E5468"/>
+    </linearGradient>
+    <linearGradient id="fotorahmen-mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5D4A60"/>
+      <stop offset="1" stop-color="#433A50"/>
+    </linearGradient>
+    <linearGradient id="fotorahmen-near" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#363247"/>
+      <stop offset="1" stop-color="#25222F"/>
+    </linearGradient>
+    <linearGradient id="fotorahmen-gloss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="0.45" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="55" cy="199.2" rx="52" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Rahmen mit Facetten -->
+  <rect x="5" y="70" width="100" height="130" rx="1.5" fill="url(#fotorahmen-wood)"/>
+  <path d="M5 70 H105 L95 80 H15 Z" fill="#A87B4E"/>
+  <path d="M5 70 L15 80 V190 L5 200 Z" fill="#94683F"/>
+  <path d="M105 70 V200 L95 190 V80 Z" fill="#5A3A21"/>
+  <path d="M5 200 L15 190 H95 L105 200 Z" fill="#4A2E1A"/>
+  <g fill="none" stroke="#3A2414" stroke-opacity="0.25" stroke-width="0.6">
+    <path d="M18 74 C40 73 70 75.5 92 74"/>
+    <path d="M9 90 C10 120 8 150 9.5 185"/>
+    <path d="M100 88 C101 120 99 160 100.5 186"/>
+    <path d="M22 195.5 C46 194.8 70 196.2 88 195.4"/>
+  </g>
+  <path d="M5.6 70.6 H104.4" stroke="#D2A876" stroke-opacity="0.7" stroke-width="0.8"/>
+  <path d="M5.6 70.6 V199.4" stroke="#C4996A" stroke-opacity="0.5" stroke-width="0.8"/>
+  <!-- innere Rahmenkante -->
+  <rect x="14" y="79" width="82" height="112" fill="#3B2616"/>
+
+  <!-- Passepartout -->
+  <rect x="15" y="80" width="80" height="110" fill="url(#fotorahmen-mat)"/>
+  <path d="M15 80 H95 L94 81 H16 V189 L15 190 Z" fill="#B8A98E" opacity="0.5"/>
+  <!-- Fensterschnitt (Facette) -->
+  <path d="M26 93 H84 L82.5 94.5 H27.5 V175.5 L26 177 Z" fill="#D8CDB8"/>
+  <path d="M84 93 V177 H26 L27.5 175.5 H82.5 V94.5 Z" fill="#FBF8F2"/>
+
+  <!-- Bild: Berge im Abendrot -->
+  <rect x="27.5" y="94.5" width="55" height="81" fill="url(#fotorahmen-sky)"/>
+  <circle cx="62" cy="140" r="11" fill="url(#fotorahmen-sun)"/>
+  <circle cx="62" cy="140" r="4.6" fill="#F9DFA0"/>
+  <path d="M27.5 138 L36 129 L42 134 L52 122 L60 131 L66 127 L74 136 L82.5 130 V175.5 H27.5 Z" fill="url(#fotorahmen-far)"/>
+  <path d="M27.5 148 L34 142 L40 146 L47 136 L55 145 L61 141 L69 149 L76 143 L82.5 148 V175.5 H27.5 Z" fill="url(#fotorahmen-mid)"/>
+  <path d="M47 136 L50 140.5 L48.2 140 L46.4 142 L45 140.6 Z" fill="#E7D7D2" opacity="0.55"/>
+  <path d="M27.5 160 C36 155 44 157 52 160 C60 163 70 157 82.5 158 V175.5 H27.5 Z" fill="url(#fotorahmen-near)"/>
+  <path d="M38 158 L39.4 152 L40.8 158 Z M43 158.4 L44.8 150.5 L46.6 158.6 Z M72 158 L73.3 153 L74.6 158 Z" fill="#25222F"/>
+  <!-- Glasreflex -->
+  <path d="M27.5 94.5 H60 L27.5 140 Z" fill="url(#fotorahmen-gloss)"/>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 200" width="70" height="200">
+  <defs>
+    <linearGradient id="sanduhr-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E4A2C"/>
+      <stop offset="0.28" stop-color="#A57A50"/>
+      <stop offset="0.7" stop-color="#6A4529"/>
+      <stop offset="1" stop-color="#43291A"/>
+    </linearGradient>
+    <linearGradient id="sanduhr-woodTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#B88B5E"/>
+      <stop offset="1" stop-color="#7C5634"/>
+    </linearGradient>
+    <linearGradient id="sanduhr-post" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7A5232"/>
+      <stop offset="0.35" stop-color="#B8885A"/>
+      <stop offset="1" stop-color="#4A2E1A"/>
+    </linearGradient>
+    <linearGradient id="sanduhr-postD" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5A3A22"/>
+      <stop offset="1" stop-color="#33200F"/>
+    </linearGradient>
+    <linearGradient id="sanduhr-sand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E9CB8E"/>
+      <stop offset="0.5" stop-color="#D2AE6C"/>
+      <stop offset="1" stop-color="#A9844A"/>
+    </linearGradient>
+    <linearGradient id="sanduhr-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8F1EE" stop-opacity="0.55"/>
+      <stop offset="0.3" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="0.8" stop-color="#C9D8D4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#7E9590" stop-opacity="0.45"/>
+    </linearGradient>
+    <clipPath id="sanduhr-g"><path d="M22 49 H48 C52 57 54 70 51 86 C48 100 38.6 112 36.2 120 C38.6 128 48 140 51 154 C54 170 52 181 48 188 H22 C18 181 16 170 19 154 C22 140 31.4 128 33.8 120 C31.4 112 22 100 19 86 C16 70 18 57 22 49 Z"/></clipPath>
+  </defs>
+
+  <ellipse cx="35" cy="199.2" rx="27" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+  <!-- hinterer Stab -->
+  <g opacity="0.55"><rect x="33.4" y="47" width="3.2" height="142" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="60" rx="2.8" ry="3.5" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="76" rx="2.2" ry="2.8" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="104" rx="3.0" ry="3.8" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="120" rx="2.4" ry="3.0" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="136" rx="3.0" ry="3.8" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="164" rx="2.2" ry="2.8" fill="url(#sanduhr-postD)"/><ellipse cx="35" cy="178" rx="2.8" ry="3.5" fill="url(#sanduhr-postD)"/></g>
+
+  <!-- Glas mit Sand -->
+  <g clip-path="url(#sanduhr-g)">
+    <path d="M14 93 Q35 98.6 56 93 V120 H14 Z" fill="url(#sanduhr-sand)"/>
+    <ellipse cx="35" cy="95" rx="15.6" ry="2.6" fill="#EFD6A2" opacity="0.8"/>
+    <path d="M14 188 V181 C22 177 29 167.4 35 164.6 C41 167.4 48 177 56 181 V188 Z" fill="url(#sanduhr-sand)"/>
+    <path d="M27 172 C30 168 33 165.6 35 164.8" fill="none" stroke="#F4DEAE" stroke-width="0.9" stroke-linecap="round"/>
+    <path d="M35 118 V165" stroke="#C9A462" stroke-width="0.7"/>
+  </g>
+  <path d="M22 49 H48 C52 57 54 70 51 86 C48 100 38.6 112 36.2 120 C38.6 128 48 140 51 154 C54 170 52 181 48 188 H22 C18 181 16 170 19 154 C22 140 31.4 128 33.8 120 C31.4 112 22 100 19 86 C16 70 18 57 22 49 Z" fill="url(#sanduhr-glass)"/>
+  <path d="M23.4 54 C20.6 64 20.4 76 23 88 M23.4 152 C20.6 162 20.6 172 23 182" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M48.6 58 C50.4 68 50 80 47.4 90 M48.4 150 C50.6 162 50.4 172 48 182" fill="none" stroke="#5E726E" stroke-opacity="0.35" stroke-width="1" stroke-linecap="round"/>
+  <path d="M33.8 120 H36.2" stroke="#9AB0AA" stroke-width="1.4" stroke-opacity="0.6"/>
+
+  <!-- Holzgestell -->
+  <rect x="10.4" y="47" width="3.2" height="142" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="60" rx="2.8" ry="3.5" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="76" rx="2.2" ry="2.8" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="104" rx="3.0" ry="3.8" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="120" rx="2.4" ry="3.0" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="136" rx="3.0" ry="3.8" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="164" rx="2.2" ry="2.8" fill="url(#sanduhr-post)"/><ellipse cx="12" cy="178" rx="2.8" ry="3.5" fill="url(#sanduhr-post)"/>
+  <rect x="56.4" y="47" width="3.2" height="142" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="60" rx="2.8" ry="3.5" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="76" rx="2.2" ry="2.8" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="104" rx="3.0" ry="3.8" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="120" rx="2.4" ry="3.0" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="136" rx="3.0" ry="3.8" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="164" rx="2.2" ry="2.8" fill="url(#sanduhr-post)"/><ellipse cx="58" cy="178" rx="2.8" ry="3.5" fill="url(#sanduhr-post)"/>
+  <path d="M7 41 Q7 37.6 10.4 37.6 H59.6 Q63 37.6 63 41 V45.4 Q63 48 60.4 48 H9.6 Q7 48 7 45.4 Z" fill="url(#sanduhr-wood)"/>
+  <ellipse cx="35" cy="37.8" rx="27.6" ry="1.6" fill="url(#sanduhr-woodTop)"/>
+  <path d="M10 48 H60 L58 50 H12 Z" fill="#3A2416" opacity="0.5"/>
+  <path d="M7 191.6 Q7 188 10.4 188 H59.6 Q63 188 63 191.6 V197 Q63 200 60 200 H10 Q7 200 7 197 Z" fill="url(#sanduhr-wood)"/>
+  <ellipse cx="35" cy="188.2" rx="27.6" ry="1.6" fill="url(#sanduhr-woodTop)"/>
+  <path d="M7.6 194 H62.4" stroke="#3A2416" stroke-opacity="0.35" stroke-width="0.7"/>
+</svg>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 200" width="70" height="200">
+  <defs>
+    <linearGradient id="kafka-wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6A4A33"/>
+      <stop offset="0.45" stop-color="#3E2A1C"/>
+      <stop offset="1" stop-color="#22160E"/>
+    </linearGradient>
+    <linearGradient id="kafka-wood2" x1="1" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#5E4130"/>
+      <stop offset="1" stop-color="#25180F"/>
+    </linearGradient>
+    <radialGradient id="kafka-bg" cx="0.35" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#A8A59E"/>
+      <stop offset="0.6" stop-color="#77746E"/>
+      <stop offset="1" stop-color="#45433F"/>
+    </radialGradient>
+    <radialGradient id="kafka-skin" cx="0.35" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#F0EEE9"/>
+      <stop offset="0.6" stop-color="#C2BFB8"/>
+      <stop offset="1" stop-color="#7C7973"/>
+    </radialGradient>
+    <linearGradient id="kafka-suit" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#4A4846"/>
+      <stop offset="0.5" stop-color="#252423"/>
+      <stop offset="1" stop-color="#151414"/>
+    </linearGradient>
+    <linearGradient id="kafka-hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4A4846"/>
+      <stop offset="1" stop-color="#121212"/>
+    </linearGradient>
+    <radialGradient id="kafka-gloss" cx="0.3" cy="0.22" r="0.6">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="kafka-p" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="0.28"/></filter>
+    <filter id="kafka-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="0.8"/></filter>
+    <clipPath id="kafka-pic"><ellipse cx="35" cy="150" rx="20" ry="27"/></clipPath>
+  </defs>
+
+  <ellipse cx="35" cy="199.2" rx="20" ry="1.5" fill="#1F1B16" opacity="0.22"/>
+  <!-- Fuß -->
+  <path d="M17 188 Q17 184 21 184 H49 Q53 184 53 188 V198.6 Q53 200 51.6 200 H18.4 Q17 200 17 198.6 Z" fill="url(#kafka-wood)"/>
+  <path d="M18 184.8 H52" stroke="#8A6448" stroke-width="0.7" stroke-opacity="0.7"/>
+
+  <!-- ovaler Holzrahmen -->
+  <g transform="translate(0 -4)">
+  <ellipse cx="35" cy="150" rx="29" ry="37" fill="url(#kafka-wood)"/>
+  <ellipse cx="35" cy="150" rx="25.6" ry="33.4" fill="url(#kafka-wood2)"/>
+  <ellipse cx="35" cy="150" rx="28.3" ry="36.3" fill="none" stroke="#8C6648" stroke-opacity="0.5" stroke-width="0.6"/>
+  <ellipse cx="35" cy="150" rx="22" ry="29" fill="#1A120B"/>
+
+  <!-- Schwarzweiß-Fotografie -->
+  <g clip-path="url(#kafka-pic)">
+    <rect x="14" y="122" width="42" height="56" fill="url(#kafka-bg)"/>
+    <g filter="url(#kafka-p)">
+      <!-- dunkler Anzug -->
+      <path d="M10 180 C11 170 16 165 24 162.6 C28 161.6 30.4 160.4 31.4 158.6 H38.6 C39.6 160.4 42 161.6 46 162.6 C54 165 59 170 60 180 Z" fill="url(#kafka-suit)"/>
+      <path d="M30.6 159.4 L35 170 L39.4 159.4" fill="none" stroke="#0C0C0C" stroke-opacity="0.7" stroke-width="0.8"/>
+      <g transform="translate(35 159) scale(1.2) translate(-35 -157)">
+      <!-- Hals -->
+      <path d="M31.6 151 C32 153 31.8 155 31.2 156.6 C33.6 157.6 36.4 157.6 38.8 156.6 C38.2 155 38 153 38.4 151 Z" fill="#A9A6A0"/>
+      <!-- abstehende Ohren -->
+      <path d="M28.6 141.4 C25.6 139 23.4 140.6 23.6 143.8 C23.8 147.2 26 150 28.8 150.6 Z" fill="#BDBAB3"/>
+      <path d="M41.4 141.4 C44.4 139 46.6 140.6 46.4 143.8 C46.2 147.2 44 150 41.2 150.6 Z" fill="#9C9993"/>
+      <path d="M25.6 142.6 C25 144.6 25.8 147 27.6 148.4 M44.4 142.6 C45 144.6 44.2 147 42.4 148.4" fill="none" stroke="#5E5B56" stroke-width="0.7"/>
+      <!-- schmales Gesicht -->
+      <path d="M35 131.4 C30.6 131.4 28 134.6 28 139.6 C28 145 29 149.4 31 152.6 C32.4 154.8 33.6 156 35 156 C36.4 156 37.6 154.8 39 152.6 C41 149.4 42 145 42 139.6 C42 134.6 39.4 131.4 35 131.4 Z" fill="url(#kafka-skin)"/>
+      <g filter="url(#kafka-b)">
+        <ellipse cx="38.8" cy="146" rx="2" ry="4.4" fill="#6E6B66" opacity="0.45"/>
+        <ellipse cx="35" cy="153.8" rx="2.4" ry="1" fill="#6E6B66" opacity="0.4"/>
+        <ellipse cx="31.6" cy="145.4" rx="1.6" ry="2.6" fill="#FFFFFF" opacity="0.45"/>
+        <ellipse cx="35.6" cy="148" rx="1.2" ry="0.6" fill="#6E6B66" opacity="0.5"/>
+      </g>
+      <!-- sehr große dunkle Augen, Brauen -->
+      <path d="M29.8 142.2 C30.8 140.8 32.8 140.6 34 141.8 C33 143.2 30.8 143.4 29.8 142.2 Z M36 141.8 C37.2 140.6 39.2 140.8 40.2 142.2 C39.2 143.4 37 143.2 36 141.8 Z" fill="#E4E2DD"/>
+      <circle cx="32" cy="142" r="1.3" fill="#121212"/>
+      <circle cx="38" cy="142" r="1.3" fill="#121212"/>
+      <circle cx="31.6" cy="141.6" r="0.32" fill="#FFFFFF"/><circle cx="37.6" cy="141.6" r="0.32" fill="#FFFFFF"/>
+      <path d="M29.8 142 C30.8 140.6 32.8 140.4 34 141.6 M36 141.6 C37.2 140.4 39.2 140.6 40.2 142" fill="none" stroke="#1E1E1E" stroke-width="0.6" stroke-linecap="round"/>
+      <path d="M29.4 139.2 C30.8 138.2 32.8 138.2 34 138.8 M36 138.8 C37.2 138.2 39.2 138.2 40.6 139.2" fill="none" stroke="#1A1A1A" stroke-width="1" stroke-linecap="round"/>
+      <!-- Nase, Mund -->
+      <path d="M35.4 143 C35.6 145 36 146.6 36.2 147.6 C35.6 148.2 34.6 148.2 34 147.8" fill="none" stroke="#7A7772" stroke-width="0.5" stroke-linecap="round"/>
+      <path d="M33 151 C34.4 150.6 35.8 150.6 37.2 151" fill="none" stroke="#5A5753" stroke-width="0.7" stroke-linecap="round"/>
+      <path d="M33.6 152.2 C34.6 152.6 35.6 152.6 36.6 152.2" fill="none" stroke="#9A9893" stroke-width="0.5" stroke-linecap="round"/>
+      <!-- kurzes dunkles Haar -->
+      <path d="M27.8 141 C26.4 134 29 128.6 34.6 128.2 C40.6 127.8 44 132.6 42.4 140.6 C41.8 138.2 41 136.6 39.6 135.8 C37.6 135.6 36 135.2 35 134.4 C33.6 135.4 31.6 135.6 30.6 135.8 C29 136.6 28.2 138.4 27.8 141 Z" fill="url(#kafka-hair)"/>
+      </g>
+      <!-- hoher weißer Stehkragen, Krawatte -->
+      <path d="M28.6 157 C30.6 159.2 32.6 160.2 34.4 160.4 L34.2 164.6 C31.8 164.4 29.6 163.4 28 161.6 Z" fill="#F4F3EF"/>
+      <path d="M41.4 157 C39.4 159.2 37.4 160.2 35.6 160.4 L35.8 164.6 C38.2 164.4 40.4 163.4 42 161.6 Z" fill="#D6D4CF"/>
+      <path d="M34 164.2 H36 L36.5 166.4 H33.5 Z M33.6 166.4 H36.4 L37.2 172 L35 174 L32.8 172 Z" fill="#1C1B1A"/>
+      <path d="M28.4 162 L33 172.6 M41.6 162 L37 172.6" stroke="#0A0A0A" stroke-opacity="0.7" stroke-width="0.8"/>
+    </g>
+  </g>
+  <ellipse cx="35" cy="150" rx="22" ry="29" fill="url(#kafka-gloss)"/>
+  </g>
+  <path d="M22 184.6 H48 L46.6 186.6 H23.4 Z" fill="#1A110A" opacity="0.6"/>
+</svg>

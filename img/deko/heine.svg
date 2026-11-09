@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 200" width="90" height="200">
+  <defs>
+    <linearGradient id="heine-rim" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#E9C27E"/>
+      <stop offset="0.4" stop-color="#A9743A"/>
+      <stop offset="0.75" stop-color="#6E4520"/>
+      <stop offset="1" stop-color="#4E3016"/>
+    </linearGradient>
+    <linearGradient id="heine-rimIn" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#5A381A"/>
+      <stop offset="0.6" stop-color="#8C5C2E"/>
+      <stop offset="1" stop-color="#D3A465"/>
+    </linearGradient>
+    <radialGradient id="heine-field" cx="0.4" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#A9743E"/>
+      <stop offset="1" stop-color="#714823"/>
+    </radialGradient>
+    <radialGradient id="heine-patina" cx="0.45" cy="0.42" r="0.6">
+      <stop offset="0.55" stop-color="#4F8068" stop-opacity="0"/>
+      <stop offset="1" stop-color="#4F8068" stop-opacity="0.6"/>
+    </radialGradient>
+    <linearGradient id="heine-relief" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E3B574"/>
+      <stop offset="0.45" stop-color="#B07A40"/>
+      <stop offset="1" stop-color="#7A4E25"/>
+    </linearGradient>
+    <radialGradient id="heine-cg" cx="0.3" cy="0.25" r="0.85">
+      <stop offset="0" stop-color="#E8BC7C"/>
+      <stop offset="0.6" stop-color="#A8743C"/>
+      <stop offset="1" stop-color="#6E4520"/>
+    </radialGradient>
+    <linearGradient id="heine-hg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C99556"/>
+      <stop offset="0.5" stop-color="#8E5A2A"/>
+      <stop offset="1" stop-color="#5E3A18"/>
+    </linearGradient>
+    <linearGradient id="heine-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E4A2C"/>
+      <stop offset="0.3" stop-color="#9A6C43"/>
+      <stop offset="1" stop-color="#43291A"/>
+    </linearGradient>
+    <filter id="heine-b" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="0.6"/></filter>
+    <filter id="heine-b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2"/></filter>
+    <path id="heine-h" d="M36 131.6 C35.4 134 34.8 136 34.6 138 C34.6 138.8 35.2 139.4 35 140.2 C34 142.2 32.6 144.4 31.6 146 C31.2 146.8 31.8 147.6 32.8 147.6 C33.6 147.8 34 148.4 33.8 149.2 C33.6 149.8 33.8 150.4 34.4 150.7 C34 151.2 34 151.8 34.4 152.2 C34.8 152.6 35 153.2 34.8 153.8 C34.4 155 34.4 156.6 35.4 157.6 C36.6 158.6 38.6 158.8 40.4 158.6 C40.8 162 40.6 165 39.6 168 C38 169 36.4 169.6 35 170.4 C42 172.4 52 172.4 60 170 C58.6 167 57.6 163 57.6 158.6 C58.6 154.6 60.8 150.6 62 146 C63.4 140.6 63 134 60 129.4 C56.6 124.4 50.6 122.4 45 123 C40.6 123.6 37.4 127.4 36 131.6 Z"/>
+    <path id="heine-c" fill="url(#heine-cg)" d="M5 3.5 C6 -1 3 -4.6 -0.6 -4.4 C-4.4 -4.2 -6 -1 -5.2 2 C-4.6 4.2 -2.4 5 -0.6 4.4 C0.8 3.8 1.2 2.4 0.4 1.4 C-0.4 0.6 -1.8 0.8 -2 2 C-2.6 0.4 -1.8 -1.6 0 -1.8 C2 -2 3.4 0 3.4 2 C3.4 2.8 4 3.6 5 3.5 Z"/>
+    <clipPath id="heine-fc"><circle cx="45" cy="148" r="28"/></clipPath>
+  </defs>
+
+  <ellipse cx="45" cy="199.2" rx="30" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <g transform="translate(0 4)">
+  <!-- Medaille -->
+  <circle cx="45" cy="148" r="34" fill="url(#heine-rim)"/>
+  <circle cx="45" cy="148" r="30" fill="url(#heine-rimIn)"/>
+  <circle cx="45" cy="148" r="28" fill="url(#heine-field)"/>
+  <circle cx="45" cy="148" r="28" fill="url(#heine-patina)"/>
+  <g clip-path="url(#heine-fc)">
+    <g fill="#4F8068" opacity="0.45" filter="url(#heine-b2)">
+      <ellipse cx="28" cy="160" rx="5" ry="3"/><ellipse cx="62" cy="128" rx="4" ry="3"/><ellipse cx="66" cy="160" rx="4" ry="5"/>
+    </g>
+    <!-- Profil-Relief nach links -->
+    <use href="#heine-h" fill="#3E2410" opacity="0.7" transform="translate(0.9 1)" filter="url(#heine-b)"/>
+    <use href="#heine-h" fill="#F2CF8E" transform="translate(-0.5 -0.5)"/>
+    <use href="#heine-h" fill="url(#heine-relief)"/>
+    <g fill="none" stroke-linecap="round">
+      <path d="M36.2 140.6 C37.2 139.8 38.6 139.8 39.4 140.6 C38.6 141.4 37.2 141.4 36.2 140.6 Z" stroke="#5A3A1C" stroke-width="0.6"/>
+      <path d="M35.6 138.4 C37 137.4 39 137.4 40.6 138.4" stroke="#F4D49A" stroke-width="0.8" opacity="0.8"/>
+      <path d="M34.4 147.4 C35.4 148 36.4 147.6 36.6 146.6" stroke="#5A3A1C" stroke-width="0.6"/>
+      <path d="M34.4 150.7 L36.8 150.9" stroke="#5A3A1C" stroke-width="0.7"/><path d="M35 152.8 C35.8 153.2 36.6 153 37 152.4" stroke="#F4D49A" stroke-width="0.6" opacity="0.8"/>
+      <path d="M40.6 158.6 C43 158 45.6 156.6 47.6 154.6" stroke="#5A3A1C" stroke-opacity="0.6" stroke-width="0.7"/>
+      <path d="M36.4 168.4 C42 170.4 50 170.4 58 168.4" stroke="#F4D49A" stroke-opacity="0.6" stroke-width="0.8"/>
+      <path d="M41 162 C44 164.4 48 165.6 54 165" stroke="#5A3A1C" stroke-opacity="0.5" stroke-width="0.7"/>
+    </g>
+    <!-- lockiges Haar, Koteletten -->
+    <use href="#heine-hr" fill="#3E2410" opacity="0.6" transform="translate(0.7 0.8)" filter="url(#heine-b)"/>
+    <path id="heine-hr" d="M36.4 131 C37.6 126.6 41 123.4 45.4 122.6 C51 121.8 57 124 60.4 128.6 C63.6 133.4 64 140 62.6 145.6 C61.6 149.6 59.6 153 58.4 156.6 C56.6 156 55.6 154 55.4 151.6 C55.2 149.6 54 148.4 52.4 148.4 C51.6 151 50.6 153.4 48.8 155.6 C47.4 155 46.6 153 46.4 150.6 C46.2 147.6 46.6 144.6 46 142 C45.2 139 43.4 136.4 41 134.6 C39.4 133.4 37.8 132.4 36.4 131 Z" fill="url(#heine-hg)"/>
+    <path d="M46.4 143 C47 146 47.2 149.6 46.8 153 M48 144 C48.4 147 48.6 150 48.2 153.6" fill="none" stroke="#5A3A1C" stroke-opacity="0.45" stroke-width="0.5"/>
+    <use href="#heine-c" transform="translate(42.4 126.4) rotate(10) scale(0.6)"/><use href="#heine-c" transform="translate(48.4 124.4) rotate(-15) scale(0.68)"/><use href="#heine-c" transform="translate(55 126.4) rotate(20) scale(0.66)"/><use href="#heine-c" transform="translate(59.6 131.4) rotate(40) scale(0.62)"/><use href="#heine-c" transform="translate(61.4 138) rotate(70) scale(0.66)"/><use href="#heine-c" transform="translate(60.4 145) rotate(90) scale(0.6)"/><use href="#heine-c" transform="translate(57.6 151.4) rotate(100) scale(0.55)"/><use href="#heine-c" transform="translate(51 130.6) rotate(0) scale(0.62)"/><use href="#heine-c" transform="translate(56.4 136.4) rotate(30) scale(0.64)"/><use href="#heine-c" transform="translate(45.6 131.6) rotate(-20) scale(0.5)"/><use href="#heine-c" transform="translate(55.4 143.6) rotate(60) scale(0.58)"/><use href="#heine-c" transform="translate(50.8 138.6) rotate(10) scale(0.52)"/><use href="#heine-c" transform="translate(49 147.6) rotate(80) scale(0.45)"/>
+    <!-- Ohr -->
+    <path d="M49.6 142.4 C51.6 142 52.8 144.4 52.4 147 C52 149 50.6 150 49.6 149.4 C48.8 147 48.8 144.6 49.6 142.4 Z" fill="url(#heine-relief)"/>
+    <path d="M50.4 144 C51.4 144.6 51.4 146.6 50.6 147.8" fill="none" stroke="#5A3A1C" stroke-width="0.5"/>
+  </g>
+  <circle cx="45" cy="148" r="33.4" fill="none" stroke="#F6DCA4" stroke-opacity="0.35" stroke-width="0.6" stroke-dasharray="40 200" transform="rotate(200 45 148)"/>
+
+  </g>
+  <!-- Holzständer -->
+  <path d="M14 188 Q14 184 18 184 H72 Q76 184 76 188 V198 Q76 200 74 200 H16 Q14 200 14 198 Z" fill="url(#heine-wood)"/>
+  <path d="M15 184.8 H75" stroke="#C49A6C" stroke-width="0.7" stroke-opacity="0.7"/>
+  <path d="M27 184 H63 L61.6 186 H28.4 Z" fill="#2A1A0E" opacity="0.6"/>
+</svg>

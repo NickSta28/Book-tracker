@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" width="120" height="200">
+<defs>
+<radialGradient id="david-skin" cx="0.42" cy="0.36" r="0.75">
+<stop offset="0" stop-color="#F4F0E9"/>
+<stop offset="0.55" stop-color="#E0DACF"/>
+<stop offset="1" stop-color="#B3AB9E"/>
+</radialGradient>
+<radialGradient id="david-hm" cx="0.4" cy="0.3" r="0.8">
+<stop offset="0" stop-color="#C9C2B6"/>
+<stop offset="1" stop-color="#8A8275"/>
+</radialGradient>
+<radialGradient id="david-hs" cx="0.3" cy="0.2" r="0.95">
+<stop offset="0.5" stop-color="#4A4238" stop-opacity="0"/>
+<stop offset="1" stop-color="#4A4238" stop-opacity="0.5"/>
+</radialGradient>
+<radialGradient id="david-lk" cx="0.32" cy="0.28" r="0.8">
+<stop offset="0" stop-color="#F6F2EC"/>
+<stop offset="0.55" stop-color="#DDD6CA"/>
+<stop offset="1" stop-color="#B1A99C"/>
+</radialGradient>
+<radialGradient id="david-lkm" cx="0.32" cy="0.28" r="0.8">
+<stop offset="0" stop-color="#E9E4DB"/>
+<stop offset="0.55" stop-color="#CEC7BB"/>
+<stop offset="1" stop-color="#A29A8D"/>
+</radialGradient>
+<radialGradient id="david-lkd" cx="0.32" cy="0.28" r="0.8">
+<stop offset="0" stop-color="#D9D2C6"/>
+<stop offset="0.55" stop-color="#BDB5A8"/>
+<stop offset="1" stop-color="#938B7E"/>
+</radialGradient>
+<linearGradient id="david-body" x1="0.05" y1="0" x2="1" y2="0.5">
+<stop offset="0" stop-color="#F0EBE3"/>
+<stop offset="0.5" stop-color="#DCD5CA"/>
+<stop offset="1" stop-color="#ADA598"/>
+</linearGradient>
+<linearGradient id="david-front" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#E6E0D6"/>
+<stop offset="0.3" stop-color="#EDE8DF"/>
+<stop offset="1" stop-color="#C4BCAF"/>
+</linearGradient>
+<linearGradient id="david-cyl" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#D9D2C6"/>
+<stop offset="0.25" stop-color="#EDE8DF"/>
+<stop offset="0.65" stop-color="#CFC8BB"/>
+<stop offset="1" stop-color="#A9A194"/>
+</linearGradient>
+<filter id="david-b" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur stdDeviation="1.2"/></filter>
+<filter id="david-b2" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur stdDeviation="0.45"/></filter>
+<filter id="david-ds" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur in="SourceAlpha" stdDeviation="0.55" result="s"/><feFlood flood-color="#4A4238" flood-opacity="0.55"/><feComposite operator="in" in2="s"/><feOffset dx="0.5" dy="0.8"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<clipPath id="david-bodyclip"><path id="david-torso" d="M42.6 93 C42.4 102 41 109 36.6 113.6 C33 117.6 25 120 18 123.4 C11.6 126.6 9 133 9.4 142 C9.8 152 13 160 19.6 165.6 C29 171.6 44 173.4 60 173.4 C76 173.4 91 171.6 101 166 C107 160 110.2 152 110.6 142 C111 133 108.4 126.6 102 123.4 C95 120 87 118 82.4 113.6 C78.6 109.6 77.4 104 77 96 Z"/></clipPath>
+<clipPath id="david-faceclip"><path id="david-face" d="M60 52 C64 54 67 56.6 67.8 60 C68.4 62.6 69 65 70.2 66.6 C71.2 67.4 71.6 68.2 71.4 69.4 C71.2 70.2 70.8 70.6 70.8 71.4 C72 74.4 74 77.8 75.8 80.4 C76.4 81.2 76.3 82.4 75.4 82.8 C74.6 83.1 73.6 82.9 72.8 83.3 C72.5 83.5 72.6 83.9 73 84.2 C73.5 84.8 73.7 85.8 73.5 86.8 C73.3 87.6 73 88.2 72.8 88.8 C72.6 89.6 71.6 90.2 71.4 91 C71.8 92.2 72.6 93.4 72.6 95 C72.6 96.6 71.8 97.8 70.6 98.4 C68.4 99.4 65 99.8 62 99.4 C58 99 55 96.6 53.4 93 L52 86 L48 70 L50 54 Z"/></clipPath>
+<path id="david-hair" d="M68.6 60.6 C70.6 57.4 70.6 53 68.4 49.6 C65.4 45.4 59.6 43.4 52.6 43.4 C44 43.4 36 46 31 51.4 C27.4 55.6 26.6 62 27.8 68.6 C29 75.4 32.6 81.6 37.6 86.6 C41 90 45 92 48.6 91.2 C50.6 90 50.8 87.6 50.4 85.6 C49.8 82 49.8 77.6 50.8 74.6 C51.8 71.8 53.8 70.6 56.6 70.8 C57.6 67.8 59.4 65.2 62 63.4 C64.2 61.8 66.6 61.2 68.6 60.6 Z"/>
+<path id="david-k1" filter="url(#david-ds)" d="M3.6 0.6 C4 -2.6 1.4 -4.4 -1.4 -4 C-4.2 -3.4 -5 0 -3.4 2.2 C-1.8 4.2 1.6 4 2.4 1.6 C2.9 0 1.8 -1.4 0.2 -1.2 C-0.8 -1 -1 0 -0.6 0.6"/>
+<path id="david-k2" filter="url(#david-ds)" d="M-3.4 0.8 C-3.8 -2.2 -1.4 -4 1.2 -3.6 C3.8 -3 4.4 0.2 3 2.2 C1.6 3.8 -1.4 3.6 -2 1.4 C-2.4 0 -1.4 -1 0 -0.9 C0.8 -0.8 1.1 0 0.7 0.6"/>
+<path id="david-k3" filter="url(#david-ds)" d="M2.8 0.4 C3 -2 1 -3.4 -1.2 -3 C-3.2 -2.4 -3.6 0.2 -2.4 1.6 C-1.2 2.8 1.2 2.6 1.6 1 C1.8 0 0.9 -0.6 0 -0.3"/>
+</defs>
+
+<ellipse cx="60" cy="199.2" rx="33" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+<!-- Quadratischer Sockel -->
+<path d="M32 184 H88 V199 Q88 200 87 200 H33 Q32 200 32 199 Z" fill="url(#david-front)"/>
+<path d="M32 184 H88 V186 H32 Z" fill="#A9A194" opacity="0.35"/>
+<path d="M30 178.5 Q30 177 31.5 177 H88.5 Q90 177 90 178.5 V183 Q90 184.5 88.5 184.5 H31.5 Q30 184.5 30 183 Z" fill="url(#david-front)"/>
+<path d="M31 177.6 H89" stroke="#F8F5EF" stroke-width="0.8" stroke-opacity="0.9"/>
+<path d="M44 177.2 C46 174.6 46 172.6 44 170.6 H76 C74 172.6 74 174.6 76 177.2 Z" fill="url(#david-cyl)"/>
+
+<!-- Kräftiger Hals als Zylinder, runde Schultern -->
+<use href="#david-torso" fill="url(#david-body)"/>
+<g clip-path="url(#david-bodyclip)">
+<g filter="url(#david-b)" fill="none" stroke-linecap="round">
+<ellipse cx="68" cy="104" rx="13" ry="7" fill="#6E6659" opacity="0.5"/>
+<path d="M73.4 98 C73.6 104 75 109 78 113" stroke="#7E7669" stroke-opacity="0.5" stroke-width="5"/>
+<path d="M48.6 97 C48.4 103 47 108 44 112" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="3.6"/>
+<path d="M52 101 C55 108 57.6 115 59 122" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3.4"/>
+<path d="M56.6 101 C59.6 108 61.4 115 62 122" stroke="#7E7669" stroke-opacity="0.35" stroke-width="2.4"/>
+<ellipse cx="61.4" cy="123.6" rx="3.6" ry="2" fill="#7E7669" opacity="0.45"/>
+<path d="M43 110 C37 115.6 28 118.6 20 122.6" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="3"/>
+<path d="M79 112 C84 117 92 119.6 100 123" stroke="#7E7669" stroke-opacity="0.3" stroke-width="2.6"/>
+<path d="M24 129 C33 126.4 43 126.4 54 128.6" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2"/>
+<path d="M25 131.6 C34 129.2 43 129.4 53 131.4" stroke="#7E7669" stroke-opacity="0.3" stroke-width="1.6"/>
+<path d="M66 129.6 C76 127.4 86 127.4 96 130" stroke="#7E7669" stroke-opacity="0.35" stroke-width="1.8"/>
+<path d="M21 130 C18 138 19 146 24 152" stroke="#7E7669" stroke-opacity="0.3" stroke-width="3"/>
+<path d="M102 128 C106 138 105 152 97 162" stroke="#6E6659" stroke-opacity="0.45" stroke-width="5"/>
+<path d="M27 152 C36 158 48 158.6 57 153" stroke="#7E7669" stroke-opacity="0.35" stroke-width="3"/>
+<path d="M63 153 C72 158.6 84 158 93 152" stroke="#7E7669" stroke-opacity="0.4" stroke-width="3"/>
+<path d="M60 134 C60.4 142 60.4 150 60 158" stroke="#7E7669" stroke-opacity="0.35" stroke-width="1.8"/>
+<path d="M30 141 C37 136.6 46 136 54 138.6" stroke="#FFFFFF" stroke-opacity="0.65" stroke-width="3.4"/>
+<path d="M13 138 C11.6 146 13 154 18 160" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3"/>
+<path d="M22 168 C40 174 80 174 98 168" stroke="#6E6659" stroke-opacity="0.35" stroke-width="5"/>
+</g>
+<path d="M77.4 99 C77.8 105 79.6 110 83 113.6 M110.4 140 C110.6 150 107 159 100 165" fill="none" stroke="#E6E0D6" stroke-opacity="0.7" stroke-width="1" filter="url(#david-b2)"/>
+</g>
+
+<!-- Kopf, fast im Profil nach rechts, als Ei-Volumen -->
+<g transform="translate(60 108) scale(1.36) translate(-58 -100)">
+<!-- Schatten unter dem Kiefer auf dem Hals -->
+<path d="M53 92 C56 98 62 100.6 70 99 L71 103 C62 105 54 102 50.6 95 Z" fill="#5E564A" opacity="0.45" filter="url(#david-b)"/>
+
+<use href="#david-face" fill="url(#david-skin)"/>
+<g clip-path="url(#david-faceclip)">
+<g filter="url(#david-b)">
+<ellipse cx="62" cy="78.6" rx="5" ry="4.6" fill="#FFFFFF" opacity="0.5"/>
+<ellipse cx="64.4" cy="63" rx="3.4" ry="3" fill="#FFFFFF" opacity="0.45"/>
+<ellipse cx="65.8" cy="72.2" rx="4.2" ry="2.5" fill="#5E564A" opacity="0.7"/>
+<ellipse cx="60.4" cy="69" rx="2.4" ry="3" fill="#7E7669" opacity="0.25"/>
+<ellipse cx="65" cy="86.4" rx="4" ry="3.2" fill="#7E7669" opacity="0.22"/>
+<path d="M68.6 59 C69.2 62 69.6 65 70 67.4 M70.2 83.4 C70.6 85.6 70.4 88 69.8 90 M70.2 92 C70.6 94 70.6 96 70 98.4" fill="none" stroke="#6E6659" stroke-opacity="0.32" stroke-width="2.6"/>
+<path d="M70.6 82.2 C69.8 84.6 69.4 86.4 69.4 88.4" fill="none" stroke="#5E564A" stroke-opacity="0.35" stroke-width="1.2"/>
+<path d="M54.6 94 C58 98 63 99.4 69.6 98.6" fill="none" stroke="#6E6659" stroke-opacity="0.45" stroke-width="3"/>
+<ellipse cx="73" cy="83.6" rx="2" ry="0.8" fill="#5E564A" opacity="0.55"/>
+<ellipse cx="71.4" cy="90.4" rx="1.6" ry="0.9" fill="#5E564A" opacity="0.5"/>
+<ellipse cx="71.2" cy="94.4" rx="1.4" ry="1.6" fill="#FFFFFF" opacity="0.45"/>
+</g>
+<path d="M68.4 60.4 C69 63.4 69.6 65.6 70.8 67.2 M72.6 75.2 C73.6 77 74.6 78.8 75.8 80.4 M73.3 84.4 C73.7 85.4 73.7 86.8 73.2 88 M72.2 92.4 C72.6 94.4 72.2 96.8 70.6 98.2" fill="none" stroke="#EEE9E1" stroke-opacity="0.8" stroke-width="0.7" filter="url(#david-b2)"/>
+</g>
+<!-- schwere Braue, tief liegendes Auge -->
+<path d="M60.6 68.8 C63.6 67.2 67.4 66.8 70.4 67.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="1.4" stroke-linecap="round" filter="url(#david-b2)"/>
+<path d="M62.4 70.9 C64.4 70 66.8 70 68.8 70.8" fill="none" stroke="#5E564A" stroke-opacity="0.4" stroke-width="1.4" stroke-linecap="round" filter="url(#david-b)"/>
+<path d="M63.4 73.6 C64.8 72.5 66.6 72.4 67.8 73.4 C66.8 74.6 64.8 74.9 63.4 73.6 Z" fill="#CFC8BC"/>
+<path d="M63.2 73.5 C64.6 71.8 66.8 71.8 68 73.3 C66.6 72.6 64.8 72.6 63.2 73.5 Z" fill="#EAE5DC"/>
+<path d="M63.6 73.7 C64.8 73.1 66.4 73 67.6 73.5" fill="none" stroke="#5E564A" stroke-opacity="0.55" stroke-width="0.5" stroke-linecap="round"/>
+<path d="M63.8 74.4 C65 75 66.6 74.8 67.6 74" fill="none" stroke="#F4F0E9" stroke-opacity="0.5" stroke-width="0.5" stroke-linecap="round"/>
+<!-- Nase, Mund -->
+<path d="M71 72.4 C72 75 73.6 77.8 75.2 80.2" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="0.9" stroke-linecap="round" filter="url(#david-b2)"/>
+<path d="M71.2 80.8 C70.4 82 71 83.4 72.6 83.4" fill="none" stroke="#5E564A" stroke-opacity="0.4" stroke-width="0.7" stroke-linecap="round"/>
+<path d="M69.4 87.9 C70.6 87.6 71.8 87.6 72.9 87.7" fill="none" stroke="#5E564A" stroke-opacity="0.5" stroke-width="0.75" stroke-linecap="round"/>
+<path d="M70.2 89.2 C71 89.4 71.8 89.2 72.4 88.9" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="0.6" stroke-linecap="round"/>
+<!-- Ohr -->
+<path d="M53 73.6 C50 73 48.6 76.6 49 80.4 C49.4 84 51.2 86.6 53.4 86.2 C55.2 85.8 55.4 83 54.6 80.8 C55.8 78.4 55.4 74.6 53 73.6 Z" fill="#D9D2C7"/>
+<path d="M52.4 75.6 C50.8 76.6 50.6 80.4 52 83.4 M53.4 78.6 C52.6 79.6 52.8 81.2 53.6 82" fill="none" stroke="#6E6659" stroke-opacity="0.55" stroke-width="0.7" stroke-linecap="round"/>
+<!-- Lockenkappe: gemeißelte Lockenwülste -->
+<use href="#david-hair" fill="url(#david-hm)"/>
+<g fill="none" stroke-width="1.8" stroke-linecap="round" stroke="url(#david-lk)"><use href="#david-k2" x="57.0" y="46.9"/><use href="#david-k3" x="39.7" y="47.2"/><use href="#david-k1" x="51.0" y="47.3"/><use href="#david-k2" x="45.0" y="47.4"/><use href="#david-k3" x="63.5" y="47.8"/><use href="#david-k1" x="43.3" y="51.9"/><use href="#david-k2" x="54.1" y="51.9"/><use href="#david-k1" x="49.1" y="52.1"/><use href="#david-k1" x="36.7" y="52.3"/><use href="#david-k2" x="66.2" y="52.5"/><use href="#david-k1" x="60.3" y="52.8"/><use href="#david-k3" x="30.8" y="52.9"/><use href="#david-k2" x="33.0" y="57.0"/><use href="#david-k1" x="51.5" y="57.2"/><use href="#david-k1" x="39.9" y="57.3"/><use href="#david-k1" x="45.3" y="57.5"/><use href="#david-k1" x="37.3" y="61.9"/><use href="#david-k1" x="30.9" y="62.1"/><use href="#david-k2" x="48.1" y="62.4"/><use href="#david-k2" x="42.5" y="62.7"/><use href="#david-k3" x="27.7" y="67.3"/><use href="#david-k1" x="34.1" y="67.9"/><use href="#david-k3" x="30.1" y="71.9"/></g>
+<g fill="none" stroke-width="1.8" stroke-linecap="round" stroke="url(#david-lkm)"><use href="#david-k2" x="63.2" y="57.5"/><use href="#david-k1" x="58.0" y="57.6"/><use href="#david-k3" x="69.6" y="57.9"/><use href="#david-k3" x="61.0" y="62.5"/><use href="#david-k1" x="54.0" y="62.6"/><use href="#david-k3" x="58.1" y="67.1"/><use href="#david-k2" x="39.6" y="67.6"/><use href="#david-k1" x="45.0" y="67.6"/><use href="#david-k2" x="51.8" y="68.0"/><use href="#david-k1" x="42.1" y="72.1"/><use href="#david-k2" x="36.0" y="72.7"/><use href="#david-k1" x="48.4" y="72.8"/><use href="#david-k1" x="34.2" y="77.0"/><use href="#david-k2" x="39.1" y="77.1"/></g>
+<g fill="none" stroke-width="1.8" stroke-linecap="round" stroke="url(#david-lkd)"><use href="#david-k1" x="45.2" y="77.4"/><use href="#david-k1" x="36.8" y="81.9"/><use href="#david-k2" x="43.2" y="82.7"/><use href="#david-k3" x="49.1" y="82.8"/><use href="#david-k3" x="39.0" y="87.2"/><use href="#david-k2" x="44.9" y="87.8"/></g>
+<use href="#david-hair" fill="url(#david-hs)"/>
+</g>
+</svg>

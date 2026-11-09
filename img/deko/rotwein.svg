@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 200" width="90" height="200">
+  <defs>
+    <linearGradient id="rotwein-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3A2A2A"/>
+      <stop offset="0.18" stop-color="#5E3A3A"/>
+      <stop offset="0.45" stop-color="#2A1718"/>
+      <stop offset="1" stop-color="#0E0809"/>
+    </linearGradient>
+    <linearGradient id="rotwein-foil" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6E1E24"/>
+      <stop offset="0.3" stop-color="#B2404A"/>
+      <stop offset="0.7" stop-color="#6A1C22"/>
+      <stop offset="1" stop-color="#3E0E12"/>
+    </linearGradient>
+    <linearGradient id="rotwein-label" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D9CDB4"/>
+      <stop offset="0.3" stop-color="#F6EFDF"/>
+      <stop offset="0.8" stop-color="#DCCFB5"/>
+      <stop offset="1" stop-color="#A89A7E"/>
+    </linearGradient>
+    <linearGradient id="rotwein-wine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8E1E2C"/>
+      <stop offset="0.4" stop-color="#6A1020"/>
+      <stop offset="1" stop-color="#3A0610"/>
+    </linearGradient>
+    <linearGradient id="rotwein-cl" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8F1EE" stop-opacity="0.5"/>
+      <stop offset="0.3" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="0.8" stop-color="#C9D8D4" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#7E9590" stop-opacity="0.45"/>
+    </linearGradient>
+    <clipPath id="rotwein-bc"><path d="M57 122 C55 132 55.4 146 59 152 C61.4 156 65 158 68 158 C71 158 74.6 156 77 152 C80.6 146 81 132 79 122 Z"/></clipPath>
+  </defs>
+
+  <ellipse cx="27" cy="199.2" rx="19" ry="1.6" fill="#1F1B16" opacity="0.24"/>
+  <ellipse cx="68" cy="199.2" rx="13" ry="1.4" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Flasche -->
+  <path d="M22 38 H32 V70 C32 80 44 86 44 102 V194 Q44 200 38 200 H16 Q10 200 10 194 V102 C10 86 22 80 22 70 Z" fill="url(#rotwein-glass)"/>
+  <path d="M21.4 30 H32.6 V58 H21.4 Z" fill="url(#rotwein-foil)"/>
+  <path d="M21 29 H33 V32 H21 Z" fill="#8E2A32"/>
+  <path d="M21.4 55 H32.6 V58 H21.4 Z" fill="#4A1216"/>
+  <path d="M13.6 96 C14.6 90 18 86 21 83" fill="none" stroke="#C9A0A0" stroke-opacity="0.35" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M14 104 V190" stroke="#E0C0C0" stroke-opacity="0.35" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M24.4 62 V76" stroke="#E0C0C0" stroke-opacity="0.3" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Etikett ohne Text -->
+  <path d="M10 132 H44 V172 H10 Z" fill="url(#rotwein-label)"/>
+  <rect x="13.4" y="135.4" width="27.2" height="33.2" fill="none" stroke="#8C6A2C" stroke-opacity="0.7" stroke-width="0.7"/>
+  <rect x="15" y="137" width="24" height="30" fill="none" stroke="#8C6A2C" stroke-opacity="0.45" stroke-width="0.4"/>
+  <path d="M27 143 C24 146 24 150 27 153 C30 150 30 146 27 143 Z" fill="#7A1A26" opacity="0.8"/>
+  <path d="M21 158 C24 160 30 160 33 158" fill="none" stroke="#8C6A2C" stroke-opacity="0.5" stroke-width="0.7"/>
+  <path d="M10 127 H44 V130 H10 Z" fill="#7A1A26" opacity="0.85"/>
+
+  <!-- Stielglas mit etwas Rotwein -->
+  <path d="M60 195.6 C60 194 64 193.4 68 193.4 C72 193.4 76 194 76 195.6 C76 197.2 72 197.8 68 197.8 C64 197.8 60 197.2 60 195.6 Z" fill="url(#rotwein-cl)"/>
+  <path d="M59.4 196.4 Q68 200.6 76.6 196.4 V197 Q68 201 59.4 197 Z" fill="#B9C8C4" opacity="0.5"/>
+  <path d="M67.2 157.6 H68.8 L69.2 194 H66.8 Z" fill="url(#rotwein-cl)"/>
+  <path d="M67.6 158 V193.6" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="0.5"/>
+  <g clip-path="url(#rotwein-bc)">
+    <path d="M50 145 C60 146.6 76 146.6 86 145 V160 H50 Z" fill="url(#rotwein-wine)"/>
+    <ellipse cx="68" cy="145.6" rx="11.6" ry="1.6" fill="#A8303E"/>
+    <ellipse cx="65" cy="145.4" rx="5" ry="0.6" fill="#D86A74" opacity="0.6"/>
+  </g>
+  <path d="M57 122 C55 132 55.4 146 59 152 C61.4 156 65 158 68 158 C71 158 74.6 156 77 152 C80.6 146 81 132 79 122 Z" fill="url(#rotwein-cl)"/>
+  <ellipse cx="68" cy="122" rx="11" ry="1.4" fill="none" stroke="#DCE6E3" stroke-opacity="0.8" stroke-width="0.6"/>
+  <path d="M59.6 126 C58.6 134 58.8 142 60.6 148" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

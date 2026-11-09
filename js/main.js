@@ -14,7 +14,8 @@ const S = {
   filter: { status: 'all', formats: { paper: true, ebook: true, audio: false }, q: '' },
   stats: { period: 'month', anchor: today(), color: 'category' },
   add: { tab: 'scan', defStatus: 'shelf', defFormat: 'softcover', busy: false, last: null },
-  loginError: '', loginBusy: false, openId: null, enriching: false
+  loginError: '', loginBusy: false, openId: null, enriching: false,
+  deco: { rows: [], edit: false, sel: null, pos: {}, layout: [], width: 0, addMode: 'place' }
 };
 try { Object.assign(S, JSON.parse(localStorage.getItem(PREFS) || '{}').ui || {}); } catch { /* egal */ }
 const savePrefs = () => { try { localStorage.setItem(PREFS, JSON.stringify({ ui: { layout: S.layout, filter: { ...S.filter, q: '' }, tab: S.tab, stats: { ...S.stats, anchor: today() } } })); } catch { /* egal */ } };
@@ -104,8 +105,11 @@ async function loadShared() {
   S.profiles = profiles; S.books = new Map(books.map((b) => [b.id, b]));
 }
 async function loadUser(uid) {
-  const [ub, logs] = await Promise.all([api.selectAll('user_books', { user_id: 'eq.' + uid }), api.selectAll('reading_logs', { user_id: 'eq.' + uid })]);
-  S.ub = ub; S.logs = logs;
+  const [ub, logs, deco] = await Promise.all([
+    api.selectAll('user_books', { user_id: 'eq.' + uid }), api.selectAll('reading_logs', { user_id: 'eq.' + uid }),
+    api.selectAll('shelf_decor', { user_id: 'eq.' + uid }).catch((e) => { console.warn('Deko nicht geladen', e); return []; })
+  ]);
+  S.ub = ub; S.logs = logs; S.deco.rows = deco; S.deco.sel = null; S.deco.edit = false;
 }
 async function boot() {
   if (!api.isLoggedIn()) { render(); return; }
@@ -321,6 +325,58 @@ async function importCsv(file, out) {
   await enrich(out);
 }
 
+/* ---------- Regal-Deko ---------- */
+// Höchstens ein Objekt pro Fach; Ziel-Verankerung aus Fach + Position (Anzahl Bücher links davon)
+function anchorAt(d, shelf, slot, mode) {
+  const row = S.deco.layout[shelf] || { ids: [] }, ids = row.ids;
+  slot = Math.max(0, Math.min(slot, ids.length));
+  if (mode === 'book' && ids.length) {
+    return slot > 0 ? { anchor: 'after', book_id: ids[slot - 1], shelf, slot } : { anchor: 'before', book_id: ids[0], shelf, slot };
+  }
+  if (mode === 'book') toast('In diesem Fach steht kein Buch – das Objekt bleibt fest an seinem Platz.');
+  return { anchor: 'place', book_id: null, shelf, slot };
+}
+const rowFree = (shelf, exceptId) => { const r = S.deco.layout[shelf]; return !r || !r.decor || r.decor.id === exceptId; };
+async function saveDecor(d, upd) {
+  const old = { anchor: d.anchor, book_id: d.book_id, shelf: d.shelf, slot: d.slot };
+  Object.assign(d, upd); renderList();
+  try { await api.patch('shelf_decor', { id: 'eq.' + d.id }, upd); }
+  catch (e) { Object.assign(d, old); renderList(); throw e; }
+}
+async function addDecor(item, shelf) {
+  if (!rowFree(shelf)) { toast('In Fach ' + (shelf + 1) + ' steht schon ein Objekt.', true); return; }
+  const slot = (S.deco.layout[shelf] || { books: 0 }).books; // ans Ende des Fachs
+  const [row] = await api.insert('shelf_decor', [{ item, ...anchorAt(null, shelf, slot, S.deco.addMode) }]);
+  S.deco.rows.push(row); S.deco.sel = row.id;
+  closeSheet(); renderList();
+}
+const curMode = (d) => (d.anchor === 'after' || d.anchor === 'before') && d.book_id ? 'book' : 'place';
+async function moveDecor(dir) {
+  const d = S.deco.rows.find((x) => x.id === S.deco.sel); if (!d) return;
+  const p = S.deco.pos[d.id] || { shelf: d.shelf, slot: d.slot };
+  const n = S.deco.layout.length;
+  let shelf = p.shelf, slot = p.slot;
+  if (dir === 'left') { if (slot === 0) return; slot--; }
+  else if (dir === 'right') { if (slot >= (S.deco.layout[shelf]?.books || 0)) return; slot++; }
+  else {
+    const step = dir === 'up' ? -1 : 1;
+    do { shelf += step; } while (shelf >= 0 && shelf < n && !rowFree(shelf, d.id));
+    if (shelf < 0 || shelf >= n) { toast('Kein freies Fach ' + (step < 0 ? 'darüber.' : 'darunter.')); return; }
+  }
+  await saveDecor(d, anchorAt(d, shelf, slot, curMode(d)));
+}
+async function setAnchor(mode) {
+  const d = S.deco.rows.find((x) => x.id === S.deco.sel); if (!d || curMode(d) === mode) return;
+  const p = S.deco.pos[d.id] || { shelf: d.shelf, slot: d.slot };
+  await saveDecor(d, anchorAt(d, p.shelf, p.slot, mode));
+  toast(curMode(d) === 'book' ? 'Wandert jetzt mit dem Buch.' : 'Steht jetzt fest an diesem Platz.');
+}
+async function delDecor() {
+  const id = S.deco.sel; if (!id) return;
+  await api.remove('shelf_decor', { id: 'eq.' + id });
+  S.deco.rows = S.deco.rows.filter((d) => d.id !== id); S.deco.sel = null; renderList();
+}
+
 /* ---------- Ereignisse ---------- */
 document.addEventListener('click', (ev) => {
   const el = ev.target.closest('[data-act]'); if (!el) return;
@@ -338,6 +394,14 @@ document.addEventListener('click', (ev) => {
       case 'next': S.stats.anchor = shiftAnchor(S.stats.period, S.stats.anchor, 1); render(); break;
       case 'reload': boot(); break;
       case 'open': openBook(id); break;
+      case 'decoedit': S.deco.edit = !S.deco.edit; S.deco.sel = null; renderList(); break;
+      case 'decosel': S.deco.sel = S.deco.sel === id ? null : id; renderList(); break;
+      case 'decoadd': openSheet(V.decoSheet(S, Number(v))); break;
+      case 'decomode': S.deco.addMode = v; openSheet(V.decoSheet(S, Number(el.dataset.shelf))); break;
+      case 'decoanchor': await setAnchor(v); break;
+      case 'decopick': await addDecor(v, Number(el.dataset.shelf)); break;
+      case 'decomove': await moveDecor(v); break;
+      case 'decodel': await delDecor(); break;
       case 'closeSheet': closeSheet(); break;
       case 'blurb': { const d = $('#blurb'); const open = d.classList.toggle('open'); el.textContent = open ? 'Weniger anzeigen' : 'Mehr anzeigen'; break; }
       case 'day': {

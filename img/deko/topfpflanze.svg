@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200" width="140" height="200">
+  <defs>
+    <linearGradient id="topfpflanze-leafg" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#7FA06F"/>
+      <stop offset="0.5" stop-color="#4E7A55"/>
+      <stop offset="1" stop-color="#2B5440"/>
+    </linearGradient>
+    <linearGradient id="topfpflanze-leafd" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#5E8461"/>
+      <stop offset="0.5" stop-color="#3A6448"/>
+      <stop offset="1" stop-color="#1F4436"/>
+    </linearGradient>
+    <linearGradient id="topfpflanze-pot" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#A35F3D"/>
+      <stop offset="0.27" stop-color="#C98058"/>
+      <stop offset="0.7" stop-color="#9A5534"/>
+      <stop offset="1" stop-color="#6E3A22"/>
+    </linearGradient>
+    <linearGradient id="topfpflanze-rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#B06A45"/>
+      <stop offset="0.27" stop-color="#D48D64"/>
+      <stop offset="0.7" stop-color="#A65E3B"/>
+      <stop offset="1" stop-color="#7A4128"/>
+    </linearGradient>
+    <linearGradient id="topfpflanze-stem" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="145">
+      <stop offset="0" stop-color="#6F8F5A"/>
+      <stop offset="1" stop-color="#3E5A36"/>
+    </linearGradient>
+    <g id="topfpflanze-leaf">
+      <path d="M0 0 C-16 -8 -21 -32 -10 -50 C-6 -56 -2 -59 0 -62 C2 -59 6 -56 10 -50 C21 -32 16 -8 0 0 Z" fill="url(#topfpflanze-leafg)"/>
+      <path d="M0 0 C16 -8 21 -32 10 -50 C6 -56 2 -59 0 -62 C0.6 -40 0.6 -20 0 0 Z" fill="#1F3D2E" opacity="0.28"/>
+      <path d="M0 -1 C0.8 -20 0.8 -40 0 -58" fill="none" stroke="#B9CDA0" stroke-opacity="0.75" stroke-width="1.1"/>
+      <g fill="none" stroke="#B9CDA0" stroke-opacity="0.35" stroke-width="0.7">
+        <path d="M0.4 -12 C-5 -16 -9 -20 -12 -26"/><path d="M0.6 -24 C-5 -28 -8 -33 -11 -40"/><path d="M0.5 -36 C-3 -40 -5 -44 -7 -50"/>
+        <path d="M0.4 -12 C5 -16 9 -20 12 -26"/><path d="M0.6 -24 C5 -28 8 -33 11 -40"/><path d="M0.5 -36 C3 -40 5 -44 7 -50"/>
+      </g>
+    </g>
+    <g id="topfpflanze-leafB">
+      <path d="M0 0 C-16 -8 -21 -32 -10 -50 C-6 -56 -2 -59 0 -62 C2 -59 6 -56 10 -50 C21 -32 16 -8 0 0 Z" fill="url(#topfpflanze-leafd)"/>
+      <path d="M0 0 C16 -8 21 -32 10 -50 C6 -56 2 -59 0 -62 C0.6 -40 0.6 -20 0 0 Z" fill="#132C22" opacity="0.3"/>
+      <path d="M0 -1 C0.8 -20 0.8 -40 0 -58" fill="none" stroke="#A9C092" stroke-opacity="0.6" stroke-width="1.1"/>
+    </g>
+  </defs>
+
+  <ellipse cx="70" cy="199.2" rx="26" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Stiele -->
+  <g fill="none" stroke="url(#topfpflanze-stem)" stroke-width="2.2" stroke-linecap="round">
+    <path d="M66 142 Q57 128 45 104"/>
+    <path d="M68 142 Q62 112 54 84"/>
+    <path d="M70 142 Q70 110 70 74"/>
+    <path d="M72 142 Q80 112 88 84"/>
+    <path d="M74 142 Q85 126 97 104"/>
+    <path d="M68 142 Q60 132 52 122"/>
+    <path d="M72 142 Q80 132 89 122"/>
+  </g>
+
+  <!-- hintere Blätter (dunkler) -->
+  <use href="#topfpflanze-leafB" transform="translate(54 84) rotate(-24) scale(0.95)"/>
+  <use href="#topfpflanze-leafB" transform="translate(88 84) rotate(24) scale(0.95)"/>
+  <!-- Blätter -->
+  <use href="#topfpflanze-leaf" transform="translate(45 104) rotate(-54) scale(0.8)"/>
+  <use href="#topfpflanze-leaf" transform="translate(97 104) rotate(54) scale(0.8)"/>
+  <use href="#topfpflanze-leaf" transform="translate(70 74) rotate(-3) scale(1.02)"/>
+  <use href="#topfpflanze-leaf" transform="translate(53 122) rotate(-72) scale(0.66)"/>
+  <use href="#topfpflanze-leaf" transform="translate(88 122) rotate(72) scale(0.66)"/>
+  <use href="#topfpflanze-leaf" transform="translate(64 112) rotate(-28) scale(0.7)"/>
+  <use href="#topfpflanze-leaf" transform="translate(78 114) rotate(22) scale(0.68)"/>
+
+  <!-- Topf -->
+  <path d="M41 148 L99 148 L93.5 197 Q93 200 90 200 L50 200 Q47 200 46.5 197 Z" fill="url(#topfpflanze-pot)"/>
+  <path d="M41 148 L99 148 L98.4 153 Q70 156 41.6 153 Z" fill="#5A2F1B" opacity="0.35"/>
+  <path d="M37 139 Q37 137.5 39 137.5 L101 137.5 Q103 137.5 103 139 L103 148 Q103 150 101 150 L39 150 Q37 150 37 148 Z" fill="url(#topfpflanze-rim)"/>
+  <path d="M38 138.3 H102" stroke="#E7AE86" stroke-opacity="0.7" stroke-width="0.8"/>
+  <path d="M43 152 L47.5 196" stroke="#E3A27A" stroke-opacity="0.35" stroke-width="1.2"/>
+</svg>

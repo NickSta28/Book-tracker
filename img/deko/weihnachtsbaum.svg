@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 200" width="130" height="200">
+  <defs>
+    <linearGradient id="weihnachtsbaum-green" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0" stop-color="#4F7E58"/>
+      <stop offset="0.45" stop-color="#2E5A42"/>
+      <stop offset="1" stop-color="#173A2C"/>
+    </linearGradient>
+    <linearGradient id="weihnachtsbaum-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7E5634"/>
+      <stop offset="0.3" stop-color="#A27548"/>
+      <stop offset="0.7" stop-color="#76502F"/>
+      <stop offset="1" stop-color="#4E331D"/>
+    </linearGradient>
+    <radialGradient id="weihnachtsbaum-red" cx="0.35" cy="0.3" r="0.75">
+      <stop offset="0" stop-color="#E3A096"/>
+      <stop offset="0.35" stop-color="#A84A3F"/>
+      <stop offset="1" stop-color="#5E241E"/>
+    </radialGradient>
+    <radialGradient id="weihnachtsbaum-gold" cx="0.35" cy="0.3" r="0.75">
+      <stop offset="0" stop-color="#F7E4AE"/>
+      <stop offset="0.35" stop-color="#C9A04A"/>
+      <stop offset="1" stop-color="#6E5019"/>
+    </radialGradient>
+    <linearGradient id="weihnachtsbaum-star" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7E3A6"/>
+      <stop offset="0.5" stop-color="#D4AA4E"/>
+      <stop offset="1" stop-color="#8E6A22"/>
+    </linearGradient>
+    <radialGradient id="weihnachtsbaum-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#F7DC8C" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#F7DC8C" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="weihnachtsbaum-clip"><path d="M65 98 C78.2 123.9 102.1 153.5 118.0 169.0 Q110.4 175.5 102.9 171.0 Q95.3 178.0 87.7 171.0 Q80.1 178.0 72.6 171.0 Q65.0 178.0 57.4 171.0 Q49.9 178.0 42.3 171.0 Q34.7 178.0 27.1 171.0 Q19.6 175.5 12.0 169.0 C27.9 153.5 51.8 123.9 65 98 Z"/><path d="M65 72 C76.0 96.5 95.8 124.5 109.0 139.0 Q101.7 145.5 94.3 141.0 Q87.0 148.0 79.7 141.0 Q72.3 148.0 65.0 141.0 Q57.7 148.0 50.3 141.0 Q43.0 148.0 35.7 141.0 Q28.3 145.5 21.0 139.0 C34.2 124.5 54.0 96.5 65 72 Z"/><path d="M65 48 C73.8 70.4 89.5 96.0 100.0 109.0 Q93.0 115.5 86.0 111.0 Q79.0 118.0 72.0 111.0 Q65.0 118.0 58.0 111.0 Q51.0 118.0 44.0 111.0 Q37.0 115.5 30.0 109.0 C40.5 96.0 56.2 70.4 65 48 Z"/><path d="M65 28 C71.5 46.9 83.2 68.5 91.0 79.0 Q84.5 85.5 78.0 81.0 Q71.5 88.0 65.0 81.0 Q58.5 88.0 52.0 81.0 Q45.5 85.5 39.0 79.0 C46.8 68.5 58.5 46.9 65 28 Z"/></clipPath>
+  </defs>
+
+  <ellipse cx="65" cy="199.2" rx="20" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Stamm und Holzfuß -->
+  <path d="M60 165 H70 V186 H60 Z" fill="url(#weihnachtsbaum-wood)"/>
+  <path d="M60 176 H70 V181 H60 Z" fill="#2E1E10" opacity="0.35"/>
+  <path d="M49 185 H81 L83 197.5 Q83 200 80.5 200 H49.5 Q47 200 47 197.5 Z" fill="url(#weihnachtsbaum-wood)"/>
+  <path d="M49 185 H81 L81.4 187.6 H48.6 Z" fill="#C49A6A"/>
+
+  <!-- Zweige -->
+  <path d="M65 98 C78.2 123.9 102.1 153.5 118.0 169.0 Q110.4 175.5 102.9 171.0 Q95.3 178.0 87.7 171.0 Q80.1 178.0 72.6 171.0 Q65.0 178.0 57.4 171.0 Q49.9 178.0 42.3 171.0 Q34.7 178.0 27.1 171.0 Q19.6 175.5 12.0 169.0 C27.9 153.5 51.8 123.9 65 98 Z" fill="url(#weihnachtsbaum-green)"/>
+  <path d="M63 106 C49.1 131.3 33.2 153.5 20.0 168" fill="none" stroke="#9BBE88" stroke-opacity="0.35" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M68 110 C73.0 135.0 78.2 153.5 80.9 169" fill="none" stroke="#0E2219" stroke-opacity="0.25" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M65 75 C76.0 99.5 95.8 127.5 109.0 142.0 Q101.7 148.5 94.3 144.0 Q87.0 151.0 79.7 144.0 Q72.3 151.0 65.0 144.0 Q57.7 151.0 50.3 144.0 Q43.0 151.0 35.7 144.0 Q28.3 148.5 21.0 142.0 C34.2 127.5 54.0 99.5 65 75 Z" fill="#0E2219" opacity="0.35"/>
+  <path d="M65 72 C76.0 96.5 95.8 124.5 109.0 139.0 Q101.7 145.5 94.3 141.0 Q87.0 148.0 79.7 141.0 Q72.3 148.0 65.0 141.0 Q57.7 148.0 50.3 141.0 Q43.0 148.0 35.7 141.0 Q28.3 145.5 21.0 139.0 C34.2 124.5 54.0 96.5 65 72 Z" fill="url(#weihnachtsbaum-green)"/>
+  <path d="M63 80 C51.8 103.5 38.6 124.5 27.6 138" fill="none" stroke="#9BBE88" stroke-opacity="0.35" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M68 84 C71.6 107.0 76.0 124.5 78.2 139" fill="none" stroke="#0E2219" stroke-opacity="0.25" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M65 51 C73.8 73.4 89.5 99.0 100.0 112.0 Q93.0 118.5 86.0 114.0 Q79.0 121.0 72.0 114.0 Q65.0 121.0 58.0 114.0 Q51.0 121.0 44.0 114.0 Q37.0 118.5 30.0 112.0 C40.5 99.0 56.2 73.4 65 51 Z" fill="#0E2219" opacity="0.35"/>
+  <path d="M65 48 C73.8 70.4 89.5 96.0 100.0 109.0 Q93.0 115.5 86.0 111.0 Q79.0 118.0 72.0 111.0 Q65.0 118.0 58.0 111.0 Q51.0 118.0 44.0 111.0 Q37.0 115.5 30.0 109.0 C40.5 96.0 56.2 70.4 65 48 Z" fill="url(#weihnachtsbaum-green)"/>
+  <path d="M63 56 C54.5 76.8 44.0 96.0 35.2 108" fill="none" stroke="#9BBE88" stroke-opacity="0.35" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M68 60 C70.2 80.0 73.8 96.0 75.5 109" fill="none" stroke="#0E2219" stroke-opacity="0.25" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M65 31 C71.5 49.9 83.2 71.5 91.0 82.0 Q84.5 88.5 78.0 84.0 Q71.5 91.0 65.0 84.0 Q58.5 91.0 52.0 84.0 Q45.5 88.5 39.0 82.0 C46.8 71.5 58.5 49.9 65 31 Z" fill="#0E2219" opacity="0.35"/>
+  <path d="M65 28 C71.5 46.9 83.2 68.5 91.0 79.0 Q84.5 85.5 78.0 81.0 Q71.5 88.0 65.0 81.0 Q58.5 88.0 52.0 81.0 Q45.5 85.5 39.0 79.0 C46.8 68.5 58.5 46.9 65 28 Z" fill="url(#weihnachtsbaum-green)"/>
+  <path d="M63 36 C57.2 52.3 49.4 68.5 42.9 78" fill="none" stroke="#9BBE88" stroke-opacity="0.35" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M68 40 C68.9 55.0 71.5 68.5 72.8 79" fill="none" stroke="#0E2219" stroke-opacity="0.25" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Lichterkette -->
+  <g clip-path="url(#weihnachtsbaum-clip)">
+  <path d="M22 150 Q100 142 108 140 M30 121 Q70 122 98 108 M40 92 Q78 96 88 70 M46 63 Q68 70 78 44" fill="none" stroke="#14271D" stroke-opacity="0.55" stroke-width="0.6"/>
+  <g fill="url(#weihnachtsbaum-glow)"><circle cx="29.6" cy="149.2" r="3.6"/><circle cx="43.8" cy="147.7" r="3.6"/><circle cx="56.6" cy="146.4" r="3.6"/><circle cx="68.0" cy="145.1" r="3.6"/><circle cx="78.0" cy="144.0" r="3.6"/><circle cx="86.6" cy="143.0" r="3.6"/><circle cx="93.8" cy="142.1" r="3.6"/><circle cx="99.6" cy="141.4" r="3.6"/><circle cx="104.0" cy="140.7" r="3.6"/><circle cx="107.0" cy="140.2" r="3.6"/><circle cx="35.0" cy="121.1" r="3.6"/><circle cx="44.6" cy="120.8" r="3.6"/><circle cx="53.8" cy="120.2" r="3.6"/><circle cx="62.7" cy="119.0" r="3.6"/><circle cx="71.2" cy="117.4" r="3.6"/><circle cx="79.3" cy="115.3" r="3.6"/><circle cx="87.1" cy="112.7" r="3.6"/><circle cx="94.5" cy="109.7" r="3.6"/><circle cx="46.1" cy="92.5" r="3.6"/><circle cx="57.2" cy="92.1" r="3.6"/><circle cx="66.8" cy="90.1" r="3.6"/><circle cx="74.8" cy="86.5" r="3.6"/><circle cx="81.2" cy="81.1" r="3.6"/><circle cx="86.1" cy="74.1" r="3.6"/><circle cx="50.3" cy="64.1" r="3.6"/><circle cx="58.1" cy="64.2" r="3.6"/><circle cx="65.0" cy="61.8" r="3.6"/><circle cx="70.9" cy="56.6" r="3.6"/><circle cx="75.9" cy="48.9" r="3.6"/></g>
+  <g fill="#FBE7A8"><circle cx="29.6" cy="149.2" r="1.5"/><circle cx="43.8" cy="147.7" r="1.5"/><circle cx="56.6" cy="146.4" r="1.5"/><circle cx="68.0" cy="145.1" r="1.5"/><circle cx="78.0" cy="144.0" r="1.5"/><circle cx="86.6" cy="143.0" r="1.5"/><circle cx="93.8" cy="142.1" r="1.5"/><circle cx="99.6" cy="141.4" r="1.5"/><circle cx="104.0" cy="140.7" r="1.5"/><circle cx="107.0" cy="140.2" r="1.5"/><circle cx="35.0" cy="121.1" r="1.5"/><circle cx="44.6" cy="120.8" r="1.5"/><circle cx="53.8" cy="120.2" r="1.5"/><circle cx="62.7" cy="119.0" r="1.5"/><circle cx="71.2" cy="117.4" r="1.5"/><circle cx="79.3" cy="115.3" r="1.5"/><circle cx="87.1" cy="112.7" r="1.5"/><circle cx="94.5" cy="109.7" r="1.5"/><circle cx="46.1" cy="92.5" r="1.5"/><circle cx="57.2" cy="92.1" r="1.5"/><circle cx="66.8" cy="90.1" r="1.5"/><circle cx="74.8" cy="86.5" r="1.5"/><circle cx="81.2" cy="81.1" r="1.5"/><circle cx="86.1" cy="74.1" r="1.5"/><circle cx="50.3" cy="64.1" r="1.5"/><circle cx="58.1" cy="64.2" r="1.5"/><circle cx="65.0" cy="61.8" r="1.5"/><circle cx="70.9" cy="56.6" r="1.5"/><circle cx="75.9" cy="48.9" r="1.5"/></g>
+  </g>
+
+  <!-- Kugeln -->
+  <path d="M30 161.4 V159.0" stroke="#C9A04A" stroke-width="0.7"/><circle cx="30" cy="166" r="4.6" fill="url(#weihnachtsbaum-red)"/>
+  <path d="M52 165.8 V163.4" stroke="#C9A04A" stroke-width="0.7"/><circle cx="52" cy="170" r="4.2" fill="url(#weihnachtsbaum-gold)"/>
+  <path d="M84 163.4 V161.0" stroke="#C9A04A" stroke-width="0.7"/><circle cx="84" cy="168" r="4.6" fill="url(#weihnachtsbaum-red)"/>
+  <path d="M106 160.0 V157.6" stroke="#C9A04A" stroke-width="0.7"/><circle cx="106" cy="164" r="4.0" fill="url(#weihnachtsbaum-gold)"/>
+  <path d="M40 132.0 V129.6" stroke="#C9A04A" stroke-width="0.7"/><circle cx="40" cy="136" r="4.0" fill="url(#weihnachtsbaum-gold)"/>
+  <path d="M76 133.8 V131.4" stroke="#C9A04A" stroke-width="0.7"/><circle cx="76" cy="138" r="4.2" fill="url(#weihnachtsbaum-red)"/>
+  <path d="M94 130.4 V128.0" stroke="#C9A04A" stroke-width="0.7"/><circle cx="94" cy="134" r="3.6" fill="url(#weihnachtsbaum-gold)"/>
+  <path d="M50 102.2 V99.8" stroke="#C9A04A" stroke-width="0.7"/><circle cx="50" cy="106" r="3.8" fill="url(#weihnachtsbaum-red)"/>
+  <path d="M82 100.4 V98.0" stroke="#C9A04A" stroke-width="0.7"/><circle cx="82" cy="104" r="3.6" fill="url(#weihnachtsbaum-gold)"/>
+  <path d="M60 74.6 V72.19999999999999" stroke="#C9A04A" stroke-width="0.7"/><circle cx="60" cy="78" r="3.4" fill="url(#weihnachtsbaum-gold)"/>
+  <path d="M74 72.8 V70.39999999999999" stroke="#C9A04A" stroke-width="0.7"/><circle cx="74" cy="76" r="3.2" fill="url(#weihnachtsbaum-red)"/>
+
+  <!-- Stern -->
+  <circle cx="65" cy="24" r="14" fill="url(#weihnachtsbaum-glow)"/>
+  <path d="M65.0 13.0 L67.7 20.3 L75.5 20.6 L69.4 25.4 L71.5 32.9 L65.0 28.6 L58.5 32.9 L60.6 25.4 L54.5 20.6 L62.3 20.3 Z" fill="url(#weihnachtsbaum-star)" stroke="url(#weihnachtsbaum-star)" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M65 13.4 L67.6 21 L65 24 Z" fill="#FFF4D2" opacity="0.6"/>
+</svg>

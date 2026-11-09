@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 200" width="112" height="200">
+  <defs>
+    <linearGradient id="glasvasen-petrol" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1A4448"/>
+      <stop offset="0.16" stop-color="#3A8285"/>
+      <stop offset="0.34" stop-color="#5FA6A3"/>
+      <stop offset="0.7" stop-color="#2A666A"/>
+      <stop offset="1" stop-color="#143639"/>
+    </linearGradient>
+    <linearGradient id="glasvasen-petrolBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0F2C2E" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0F2C2E" stop-opacity="0.5"/>
+    </linearGradient>
+    <radialGradient id="glasvasen-mint" cx="0.42" cy="0.58" r="0.62">
+      <stop offset="0" stop-color="#C6E3D3"/>
+      <stop offset="0.55" stop-color="#93C5AE"/>
+      <stop offset="0.85" stop-color="#6AA58E"/>
+      <stop offset="1" stop-color="#4B8571"/>
+    </radialGradient>
+    <linearGradient id="glasvasen-mintNeck" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6FA690"/>
+      <stop offset="0.35" stop-color="#B7DCC8"/>
+      <stop offset="1" stop-color="#5A927D"/>
+    </linearGradient>
+    <linearGradient id="glasvasen-shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="56" cy="199.2" rx="46" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+  <!-- Flasche, petrol -->
+  <g opacity="0.92">
+    <path d="M64 195 V122 C64 109 74 103 75.5 93 V72 H90.5 V93 C92 103 102 109 102 122 V195 Q102 200 97 200 H69 Q64 200 64 195 Z" fill="url(#glasvasen-petrol)"/>
+    <path d="M64 188 H102 V195 Q102 200 97 200 H69 Q64 200 64 195 Z" fill="url(#glasvasen-petrolBase)"/>
+  </g>
+  <path d="M73 67.5 Q73 66 74.5 66 H91.5 Q93 66 93 67.5 V72 Q93 73.5 91.5 73.5 H74.5 Q73 73.5 73 72 Z" fill="url(#glasvasen-petrol)"/>
+  <ellipse cx="83" cy="66.4" rx="8.4" ry="1.3" fill="#123336"/>
+  <path d="M68.5 124 C68.5 116 71 111 75 107.5 C72.4 112 71.2 117 71.2 124 L71.2 188 L68.5 188 Z" fill="url(#glasvasen-shine)"/>
+  <path d="M78.6 77 V91" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M100.6 122 V193" stroke="#CFEDEA" stroke-opacity="0.3" stroke-width="0.8"/>
+  <path d="M74.6 67.8 H91.4" stroke="#CFEDEA" stroke-opacity="0.5" stroke-width="0.7"/>
+
+  <!-- Bauchige Vase, mintgrün -->
+  <g opacity="0.94">
+    <path d="M30 200 Q27.5 200 27.5 197.5 L28 195 C15 188 9 174 10 160 C11 143 23 133 33.5 128.5 L33.5 116 C33.5 113 31 111 28.6 109.5 C28.2 108.4 29 107.6 30.2 107.6 L49.8 107.6 C51 107.6 51.8 108.4 51.4 109.5 C49 111 46.5 113 46.5 116 L46.5 128.5 C57 133 69 143 70 160 C71 174 65 188 52 195 L52.5 197.5 Q52.5 200 50 200 Z" fill="url(#glasvasen-mint)"/>
+    <path d="M33.5 116 C33.5 113 31 111 28.6 109.5 C28.2 108.4 29 107.6 30.2 107.6 L49.8 107.6 C51 107.6 51.8 108.4 51.4 109.5 C49 111 46.5 113 46.5 116 L46.5 128.5 L33.5 128.5 Z" fill="url(#glasvasen-mintNeck)"/>
+    <path d="M28 195 C36 197.6 44 197.6 52 195 L52.5 197.5 Q52.5 200 50 200 L30 200 Q27.5 200 27.5 197.5 Z" fill="#3E7663" opacity="0.6"/>
+  </g>
+  <ellipse cx="40" cy="108.2" rx="10.4" ry="1.5" fill="#477E6B"/>
+  <path d="M20 146 C24 138 30 134 36 132 C30 137 26 142 23.5 150 C21.4 156.5 21 163 22 170 C18 162 17.6 153 20 146 Z" fill="url(#glasvasen-shine)"/>
+  <path d="M35.6 113 V126" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M66 166 C65 176 60 185 52 190" fill="none" stroke="#E2F3EA" stroke-opacity="0.35" stroke-width="0.9"/>
+  <path d="M30.5 108.2 H49.5" stroke="#E6F5EC" stroke-opacity="0.7" stroke-width="0.7"/>
+</svg>

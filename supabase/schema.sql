@@ -124,3 +124,22 @@ drop policy if exists covers_insert on storage.objects;
 create policy covers_insert on storage.objects for insert to authenticated with check (bucket_id = 'covers');
 drop policy if exists covers_update on storage.objects;
 create policy covers_update on storage.objects for update to authenticated using (bucket_id = 'covers');
+
+-- Regal-Deko (je Nutzer, höchstens ein Objekt pro Fach)
+-- anchor 'place': fest in Fach `shelf` (ab 0) nach `slot` Büchern; 'after'/'before': rechts/links an Buch `book_id`, wandert mit
+create table if not exists public.shelf_decor (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  item text not null,
+  anchor text not null default 'place' check (anchor in ('place', 'after', 'before')),
+  book_id uuid references public.user_books(id) on delete set null,
+  shelf integer not null default 0 check (shelf >= 0),
+  slot integer not null default 0 check (slot >= 0),
+  created_at timestamptz not null default now()
+);
+create index if not exists shelf_decor_user_idx on public.shelf_decor(user_id);
+alter table public.shelf_decor enable row level security;
+drop policy if exists sd_read on public.shelf_decor;
+create policy sd_read on public.shelf_decor for select to authenticated using (true);
+drop policy if exists sd_write on public.shelf_decor;
+create policy sd_write on public.shelf_decor for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());

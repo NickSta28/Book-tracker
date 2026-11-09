@@ -3,6 +3,7 @@ import { esc, hashStr, textOn, luminance, MONTHS, MONTHS_SHORT, deDate, deShort,
 import { coverUrl } from './api.js';
 import { analyze } from './reco.js';
 import { APP_VERSION, APP_DATE } from './version.js';
+import { DECOR, layoutShelf, decorSrc, decorH, decorInfo, onBook } from './decor.js';
 import { dailyMap, periodRange, summarize, categoryColors, catOf, FORMAT_COLORS, FORMAT_LABELS, OTHER_COLOR, lastPage } from './stats.js';
 
 // Feste Kategorien (je Buch genau eine); eigene, ältere Werte bleiben auswählbar
@@ -86,23 +87,49 @@ export function shelfList(S, entries, width) {
   if (S.layout === 'grid') {
     return `<div class="grid">${entries.map((e) => `<button class="card" data-act="open" data-id="${e.id}" aria-label="${esc(e.book.title)}">${coverHtml(e.book)}<div class="nm">${esc(e.book.title)}</div><div class="mt">${esc(metaLine(e))}</div></button>`).join('')}</div>`;
   }
-  const rows = []; let cur = [], used = 0;
+  const own = S.viewUser === S.me.id, edit = own && S.deco.edit;
   const items = entries.map((e) => {
     const pages = Math.max(60, Math.min(900, e.book.pages || 250));
     const w = Math.round(20 + pages / 528 * 22);
     const h = Math.round(150 + Math.min(pages, 600) / 600 * 50 + (hashStr(e.book.title) % 16));
     return { e, w, h };
   });
-  for (const it of items) {
-    if (used + it.w + 2 > width && cur.length) { rows.push(cur); cur = []; used = 0; }
-    cur.push(it); used += it.w + 2;
-  }
-  if (cur.length) rows.push(cur);
-  return rows.map((r) => `<div class="shelf-row"><div class="books">${r.map(({ e, w, h }) => {
-    const bg = colorOf(e.book), fg = textOn(bg), light = luminance(bg) > 0.7;
+  const { rows, pos } = layoutShelf(items, S.deco.rows, width);
+  if (edit) rows.push({ cells: [], books: 0, ids: [], decor: null }); // freies Fach unten, um Deko auch dort abzustellen
+  S.deco.pos = pos; S.deco.layout = rows; S.deco.width = width;
+  const sel = edit ? S.deco.rows.find((d) => d.id === S.deco.sel) : null;
+  const cell = (c) => {
+    if (c.kind === 'decor') {
+      const info = decorInfo(c.d.item), on = sel && sel.id === c.d.id;
+      const attrs = edit ? `data-act="decosel" data-id="${c.d.id}" aria-pressed="${!!on}" aria-label="${esc(info.name)} verschieben oder entfernen"` : 'aria-hidden="true"';
+      const tag = edit ? 'button' : 'span';
+      return `<${tag} class="deco${on ? ' sel' : ''}" ${attrs} style="width:${c.w}px;height:${decorH()}px"><img src="${decorSrc(c.d.item)}" alt="" draggable="false"></${tag}>`;
+    }
+    const { e, w, h } = c, bg = colorOf(e.book), fg = textOn(bg), light = luminance(bg) > 0.7;
     return `<button class="spine${light ? ' light' : ''}" data-act="open" data-id="${e.id}" aria-label="${esc(e.book.title)}, ${esc(e.book.authors || '')}" style="width:${w}px;height:${h}px;background:${bg};color:${fg}">${e.status === 'reading' ? '<span class="mark"></span>' : ''}<span class="t" style="max-height:${h - 44}px;font-family:${hashStr(e.book.title) % 2 ? 'var(--serif)' : 'var(--sans)'}">${esc(e.book.title)}</span><span class="dot"></span></button>`;
-  }).join('')}</div><div class="board"></div></div>`).join('') +
+  };
+  const ctl = (r) => {
+    if (!edit) return '';
+    if (sel && pos[sel.id] && pos[sel.id].shelf === r) {
+      const mv = (v, l, t) => `<button class="mv" data-act="decomove" data-v="${v}" aria-label="${t}">${l}</button>`, bk = onBook(sel);
+      return `<div class="deco-ctl on"><div class="mvs">${mv('left', '←', 'Nach links')}${mv('right', '→', 'Nach rechts')}${mv('up', '↑', 'In das nächste freie Fach darüber')}${mv('down', '↓', 'In das nächste freie Fach darunter')}<button class="mv del" data-act="decodel" aria-label="Entfernen">✕</button></div>
+        <div class="seg sm" role="group" aria-label="Verankerung"><button data-act="decoanchor" data-v="place" aria-pressed="${!bk}">Fester Platz</button><button data-act="decoanchor" data-v="book" aria-pressed="${bk}">Wandert mit Buch</button></div></div>`;
+    }
+    return rows[r].decor ? `<div class="deco-ctl"><span>Fach ${r + 1}</span></div>` : `<div class="deco-ctl"><span>Fach ${r + 1}</span><button class="lnk" data-act="decoadd" data-v="${r}">+ Deko</button></div>`;
+  };
+  const bar = own ? `<div class="deco-bar">${edit ? '<span>Je Fach ein Objekt. „+ Deko“ stellt eins hinein; Objekt antippen zum Verschieben, Entfernen oder Verankern.</span>' : '<span></span>'}<button class="lnk" data-act="decoedit">${edit ? 'Fertig' : 'Regal dekorieren'}</button></div>` : '';
+  return bar + rows.map((r, i) => `<div class="shelf-row"><div class="books">${r.cells.map(cell).join('')}</div><div class="board"></div>${ctl(i)}</div>`).join('') +
     `<p class="note">Rückenfarbe aus dem Cover, Dicke nach Seitenzahl, rotes Lesezeichen = lese ich gerade.</p>`;
+}
+export function decoSheet(S, shelf) {
+  const m = S.deco.addMode;
+  return `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true" aria-label="Deko hinzufügen" data-stop>
+    <div class="sheet-head"><span style="width:44px"></span><span class="grab"></span><button class="icon-btn" style="border:0" data-act="closeSheet" aria-label="Schließen">${ICON.close}</button></div>
+    <h2>Deko hinzufügen</h2><p class="sub">Fach ${shelf + 1}</p>
+    <div class="seg" role="group" aria-label="Verankerung" style="margin-top:12px"><button data-act="decomode" data-v="place" data-shelf="${shelf}" aria-pressed="${m === 'place'}">Fester Platz</button><button data-act="decomode" data-v="book" data-shelf="${shelf}" aria-pressed="${m === 'book'}">Wandert mit Buch</button></div>
+    <p class="note">${m === 'place' ? 'Bleibt an dieser Stelle im Fach stehen, neue Bücher rücken drumherum.' : 'Steht neben einem Buch und wandert mit, wenn neue Bücher dazukommen.'}</p>
+    ${[...new Set(DECOR.map((d) => d.group))].map((g) => `<h3 class="sec">${esc(g)}</h3><div class="deco-grid">${DECOR.filter((d) => d.group === g).map((d) => `<button class="deco-pick" data-act="decopick" data-v="${d.id}" data-shelf="${shelf}"><span class="pv"><img src="${decorSrc(d.id)}" alt="" loading="lazy"></span><span class="nm">${esc(d.name)}</span></button>`).join('')}</div>`).join('')}
+  </div></div>`;
 }
 function metaLine(e) {
   if (e.status === 'finished') return (e.rating ? '★'.repeat(e.rating) + ' · ' : '') + (e.book.pages || '?') + ' S.';

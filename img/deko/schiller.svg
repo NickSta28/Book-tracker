@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" width="100" height="200">
+<defs>
+<radialGradient id="schiller-skin" cx="0.12" cy="0.32" r="0.95">
+<stop offset="0" stop-color="#F5F1EA"/>
+<stop offset="0.45" stop-color="#E2DCD1"/>
+<stop offset="0.85" stop-color="#BFB7AA"/>
+<stop offset="1" stop-color="#B1A99C"/>
+</radialGradient>
+<radialGradient id="schiller-hm" cx="0.2" cy="0.18" r="1">
+<stop offset="0" stop-color="#F2EDE6"/>
+<stop offset="0.45" stop-color="#DCD5CA"/>
+<stop offset="0.8" stop-color="#AFA79A"/>
+<stop offset="1" stop-color="#A39B8E"/>
+</radialGradient>
+<radialGradient id="schiller-lk" cx="0.3" cy="0.25" r="0.85">
+<stop offset="0" stop-color="#EDE8DF"/>
+<stop offset="0.55" stop-color="#D2CBBF"/>
+<stop offset="1" stop-color="#9C9487"/>
+</radialGradient>
+<linearGradient id="schiller-body" x1="0" y1="0" x2="1" y2="0.5">
+<stop offset="0" stop-color="#F0EBE3"/>
+<stop offset="0.5" stop-color="#DDD6CB"/>
+<stop offset="1" stop-color="#B0A89B"/>
+</linearGradient>
+<linearGradient id="schiller-block" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#E4DED4"/>
+<stop offset="0.3" stop-color="#EDE8DF"/>
+<stop offset="1" stop-color="#BDB5A8"/>
+</linearGradient>
+<linearGradient id="schiller-top" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#F3EFE8"/>
+<stop offset="1" stop-color="#D6CFC3"/>
+</linearGradient>
+<filter id="schiller-b" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur stdDeviation="1.1"/></filter>
+<filter id="schiller-b2" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur stdDeviation="0.4"/></filter>
+<filter id="schiller-b3" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur stdDeviation="0.65"/></filter>
+<filter id="schiller-ds" filterUnits="userSpaceOnUse" x="-20" y="-20" width="160" height="240"><feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="s"/><feFlood flood-color="#4A4238" flood-opacity="0.5"/><feComposite operator="in" in2="s"/><feOffset dx="0.4" dy="0.7"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<clipPath id="schiller-bodyclip"><path id="schiller-torso" d="M40.2 102 C40.6 110 39.4 115.6 35.6 119.4 C31 123 24 124.4 19.4 127 C15 129.6 13.4 135 13.6 141 C13.8 149 15.4 155 19.6 159 C27 163.6 39 164.6 50 164.6 C61 164.6 73 163.6 80.4 159 C84.6 155 86.2 149 86.4 141 C86.6 135 85 129.6 80.6 127 C76.6 124.6 72 123.4 68.6 120.6 C65.6 117.6 65 110 65.6 100 Z"/></clipPath>
+<clipPath id="schiller-faceclip"><path id="schiller-face" d="M50 46 C45.6 46.4 42.4 49 40.8 52.4 C39.6 55.4 39 58.8 38.8 62 C38.6 64.4 38.2 66 37.8 67.4 C37.6 68.6 38.2 69.4 38.4 70.4 C38 72.6 37 75.4 35.8 78.2 C35 80 34 81.6 33.6 82.8 C33.4 83.8 34 84.6 35 84.6 C35.8 84.6 36.4 84.8 36.8 85.4 C36.2 86 35.6 86.8 35.8 87.8 C36.4 88.6 37.2 88.8 37.2 89.4 C36.8 90 36.6 90.6 37.2 91.2 C37.8 91.8 38.2 92.4 37.8 93.4 C37.2 94.8 36.8 96 37 97.4 C37.4 99.2 39 100.4 41.4 100.8 C45 101.2 49.6 100 52.6 97.4 C54.4 95.6 55.4 92.6 55.6 89 L58 70 L56 46 Z"/></clipPath>
+<clipPath id="schiller-hairclip"><path id="schiller-hair" d="M42 52 C41.4 47 44.6 42.8 50 41.2 C53.4 40.2 57 40 60.6 40.4 C67.6 41.2 73.4 45 76.4 51 C78.4 55 78.8 59.6 78.4 64 C78 69 78.8 74 79.6 79 C80.4 84 80.4 88.6 78.4 92.4 C77.6 94.6 75.6 95.6 73.8 95 C72.4 96.6 69.6 96.8 68 95.2 C66 95.8 63.8 94.6 63 92.2 C61.6 90.6 60.2 89.4 58.8 88.4 C58.4 85 58 81 56.6 77 C55.6 74.6 53.8 73 52.4 72 C51.4 69.4 50.8 66.4 51.4 63.8 C51.8 62 52.6 60.6 52.4 59.4 C51.4 57.4 49.4 55.6 47 54.4 C45.4 53.6 43.4 52.8 42 52 Z"/></clipPath>
+<g id="schiller-wv"><path d="M44.5 49.1 C45 48.6 46.2 46.7 47.3 45.9 S50.1 45 51.4 44.4 S53.9 42.6 55.2 42.4 S58.1 43.2 59.5 43.3 S62.5 42.5 63.9 42.9 S66.2 44.6 67.5 45.3 S70.5 46 71.5 46.9 S72.8 49.5 73.6 50.7 S75.9 52.8 76.4 54.1 S76.1 57 76.3 58.4 S77.6 61.2 77.7 62.6 S76.8 65.4 76.8 66.8 S77.8 69.6 77.9 71 S77.4 73.9 77.6 75.3 S78.9 78.1 79 79.5 S78.3 82.3 78.3 83.7 S78.9 87.3 79 88"/><path d="M46.1 52.1 C46.7 51.6 48.4 49.7 49.8 49 S52.8 47.7 54.3 47.4 S57.5 47 59.1 47.1 S62.4 47.3 63.9 47.9 S66.7 49.5 67.9 50.5 S70.7 52.5 71.5 53.8 S72.1 57 72.6 58.5 S74.1 61.6 74.2 63.1 S73.4 66.5 73.6 68.1 S75.2 71.1 75.4 72.7 S74.3 76.1 74.5 77.7 S76.3 80.7 76.5 82.3 S75.3 85.5 75.2 87.2 S76 91.3 76.1 92.1"/><path d="M49.2 53.9 C50 53.7 52.4 52.9 54 52.6 S57.5 51.4 59.1 51.6 S62.1 53.1 63.6 54 S66.9 55.5 67.9 56.8 S68.6 60.2 69.2 61.8 S70.8 64.9 71.1 66.6 S70.3 70.1 70.5 71.8 S71.9 75 72.1 76.7 S71.4 80.2 71.5 81.9 S72.6 85.2 72.6 86.9 S71.6 91.2 71.4 92"/><path d="M50.4 58.4 C51.1 58.4 53.3 58.6 54.7 58.4 S57.9 57 59.2 57.4 S61 59.8 62.1 60.8 S65.1 62.4 65.7 63.6 S65.5 66.7 65.9 68.1 S67.6 70.8 67.8 72.2 S67.2 75.2 67.3 76.7 S68.4 79.5 68.5 80.9 S68.2 83.9 68.2 85.3 S68.8 88.2 68.8 89.7 S68.4 93.3 68.3 94"/><path d="M51.4 62.9 C52.3 63.1 55 62.9 56.5 63.6 S59.3 65.6 60.4 66.9 S62.7 69.7 63.2 71.3 S63.1 74.8 63.5 76.6 S65.1 79.9 65.3 81.6 S64.6 85.1 64.5 86.8 S64.8 91.2 64.9 92"/><path d="M52.2 67.7 C53 68 56 68.2 57.2 69.2 S58.6 72.4 59.4 74 S61.7 76.9 62 78.6 S61.3 82.1 61.3 83.9 S62.1 88.2 62.3 89.1"/></g>
+<path id="schiller-c" filter="url(#schiller-ds)" d="M-3 0.6 C-3.4 -2 -1.2 -3.6 1 -3.2 C3.2 -2.6 3.8 0.2 2.6 2 C1.4 3.4 -1.2 3.4 -1.8 1.4 C-2.2 0 -1.2 -1 0 -0.8 C0.8 -0.7 1 0 0.6 0.6"/>
+</defs>
+
+<ellipse cx="50" cy="199.2" rx="26" ry="1.6" fill="#1F1B16" opacity="0.22"/>
+
+<!-- Klassizistischer Sockel -->
+<path d="M25 195.4 H75 V198.6 Q75 200 73.6 200 H26.4 Q25 200 25 198.6 Z" fill="url(#schiller-block)"/>
+<path d="M28 175 H72 V195.6 H28 Z" fill="url(#schiller-block)"/>
+<path d="M28 175 H72 V176.6 H28 Z" fill="#A9A194" opacity="0.35"/>
+<path d="M25.6 170.4 Q25.6 169 27 169 H73 Q74.4 169 74.4 170.4 V174 Q74.4 175.4 73 175.4 H27 Q25.6 175.4 25.6 174 Z" fill="url(#schiller-block)"/>
+<path d="M26.4 169.6 H73.6" stroke="#F8F5EF" stroke-width="0.8"/>
+<path d="M39 169.2 C41 167 41 165 39.4 163 H60.6 C59 165 59 167 61 169.2 Z" fill="url(#schiller-block)"/>
+<ellipse cx="50" cy="163" rx="11" ry="1.4" fill="url(#schiller-top)"/>
+
+<!-- Hals als Zylinder, Oberkörper mit offenem Hemdkragen -->
+<use href="#schiller-torso" fill="url(#schiller-body)"/>
+<g clip-path="url(#schiller-bodyclip)">
+<g filter="url(#schiller-b)" fill="none" stroke-linecap="round">
+<ellipse cx="46" cy="104" rx="9" ry="5" fill="#6E6659" opacity="0.5"/>
+<path d="M61.4 101 C61.2 108 62.4 114 66 119" stroke="#6E6659" stroke-opacity="0.45" stroke-width="4.4"/>
+<path d="M43 104 C44 110 44.4 115 43.4 120" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="2.6"/>
+<path d="M57 102 C55 108 52.6 114 50 120" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="2.2"/>
+<path d="M59.4 104 C57.4 110 55 115.6 52.4 121" stroke="#7E7669" stroke-opacity="0.3" stroke-width="1.8"/>
+<path d="M83 132 C86 142 85 152 79 160" stroke="#6E6659" stroke-opacity="0.4" stroke-width="4.4"/>
+<path d="M22 160 C36 166 64 166 78 160" stroke="#6E6659" stroke-opacity="0.3" stroke-width="4"/>
+</g>
+<path d="M65.4 102 C65 110 65.8 116 68.6 120.4" fill="none" stroke="#E2DCD1" stroke-opacity="0.7" stroke-width="0.8" filter="url(#schiller-b2)"/>
+<!-- Kragen links -->
+<path d="M33 118 C38 117 41 116 42.6 113.6 C44 120 47 128 50.6 136 C44 134 38 132 31 133 C33 128 34 123 33 118 Z" fill="#6E6659" opacity="0.3" filter="url(#schiller-b)" transform="translate(1.6 2)"/>
+<path d="M33 118 C38 117 41 116 42.6 113.6 C44 120 47 128 50.6 136 C44 134 38 132 31 133 C33 128 34 123 33 118 Z" fill="url(#schiller-top)"/>
+<!-- Kragen rechts -->
+<path d="M68 118.6 C64 117.6 61.6 116 60.6 112.6 C58.4 120 54.6 128 50.6 136 C56.6 134 62.6 132.4 70 133.4 C68.2 128 67.4 123 68 118.6 Z" fill="#6E6659" opacity="0.3" filter="url(#schiller-b)" transform="translate(1.6 2)"/>
+<path d="M68 118.6 C64 117.6 61.6 116 60.6 112.6 C58.4 120 54.6 128 50.6 136 C56.6 134 62.6 132.4 70 133.4 C68.2 128 67.4 123 68 118.6 Z" fill="url(#schiller-body)"/>
+<g filter="url(#schiller-b)" fill="none" stroke-linecap="round">
+<path d="M50.6 138 C50 146 49 154 47 163" stroke="#7E7669" stroke-opacity="0.35" stroke-width="2"/>
+<path d="M30 138 C26 146 26 154 30 162" stroke="#7E7669" stroke-opacity="0.3" stroke-width="2.4"/>
+<path d="M72 138 C76 146 76 154 72 162" stroke="#7E7669" stroke-opacity="0.35" stroke-width="2.4"/>
+<path d="M24 136 C20 143 20 151 23 158" stroke="#FFFFFF" stroke-opacity="0.7" stroke-width="2.4"/>
+</g>
+</g>
+
+<!-- Kopf, fast im Profil nach links, Blick leicht erhoben -->
+<g transform="translate(46 111) rotate(-4) scale(1.28) translate(-46 -100)">
+<!-- Schatten unter dem Kiefer auf dem Hals -->
+<path d="M38 99 C44 103 52 101 57 95 L59 100 C53 106 44 107 37 103 Z" fill="#5E564A" opacity="0.4" filter="url(#schiller-b)"/>
+
+<!-- Gesicht -->
+<use href="#schiller-face" fill="url(#schiller-skin)"/>
+<g clip-path="url(#schiller-faceclip)">
+<g filter="url(#schiller-b)">
+<ellipse cx="42.4" cy="60" rx="3.4" ry="5" fill="#FFFFFF" opacity="0.55"/>
+<ellipse cx="43.6" cy="79.4" rx="3.8" ry="4" fill="#FFFFFF" opacity="0.4"/>
+<ellipse cx="42.6" cy="72" rx="3.6" ry="2.4" fill="#5E564A" opacity="0.55"/>
+<ellipse cx="47.6" cy="86.6" rx="3.6" ry="4" fill="#7E7669" opacity="0.2"/>
+<ellipse cx="53.6" cy="85" rx="3" ry="6" fill="#7E7669" opacity="0.18"/>
+<ellipse cx="36.8" cy="84.8" rx="1.8" ry="0.8" fill="#5E564A" opacity="0.5"/>
+<ellipse cx="38.2" cy="91.6" rx="1.4" ry="0.8" fill="#5E564A" opacity="0.5"/>
+<ellipse cx="39.4" cy="96.4" rx="1.6" ry="1.6" fill="#FFFFFF" opacity="0.5"/>
+<path d="M40 99.4 C45 100.6 50 99.4 54.6 95.6" fill="none" stroke="#6E6659" stroke-opacity="0.45" stroke-width="2.6"/>
+<path d="M39.2 70.6 C38.8 74 37.6 77.6 36 80.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1.6"/>
+<path d="M46 51 C49.6 54 51.6 58 51.2 63 C51 68 52.6 74 54 80" fill="none" stroke="#6E6659" stroke-opacity="0.24" stroke-width="3"/>
+<ellipse cx="46.6" cy="77.4" rx="3.4" ry="2.4" fill="#FFFFFF" opacity="0.45"/>
+<path d="M44 95.4 C47.6 95.6 51 93.6 53.6 90" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.6"/>
+</g>
+<path d="M41.6 76.8 C40.4 79.4 39.8 81.8 40.2 84.2" fill="none" stroke="#6E6659" stroke-opacity="0.3" stroke-width="1" filter="url(#schiller-b2)"/>
+<path d="M38 85.6 C38.8 87 39.2 88.6 38.8 90" fill="none" stroke="#6E6659" stroke-opacity="0.3" stroke-width="0.9" filter="url(#schiller-b2)"/>
+</g>
+<!-- Braue, Auge -->
+<path d="M38.6 67.6 C40.6 66.6 43.6 66.6 46.2 67.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="1.2" stroke-linecap="round" filter="url(#schiller-b2)"/>
+<path d="M40.2 72.6 C41.4 71.6 43.4 71.4 45 72.4 C43.8 73.6 41.6 73.8 40.2 72.6 Z" fill="#CFC8BC"/>
+<path d="M40 72.5 C41.4 70.9 43.6 70.9 45.2 72.3 C43.6 71.6 41.6 71.6 40 72.5 Z" fill="#EAE5DC"/>
+<path d="M40.4 72.7 C41.6 72.1 43.2 72 44.6 72.5" fill="none" stroke="#5E564A" stroke-opacity="0.5" stroke-width="0.5" stroke-linecap="round"/>
+<path d="M40.6 73.4 C41.8 74 43.4 73.8 44.4 73" fill="none" stroke="#F4F0E9" stroke-opacity="0.5" stroke-width="0.5" stroke-linecap="round"/>
+<!-- Nasenflügel, schmaler Mund -->
+<path d="M38.8 81.6 C39.6 82.8 39 84.2 37.4 84.4" fill="none" stroke="#5E564A" stroke-opacity="0.45" stroke-width="0.7" stroke-linecap="round"/>
+<path d="M37.2 89.4 C38.2 89.2 39.4 89.4 40.4 89.8" fill="none" stroke="#5E564A" stroke-opacity="0.55" stroke-width="0.7" stroke-linecap="round"/>
+<path d="M37.6 90.8 C38.4 91 39.2 90.9 39.8 90.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="0.6" stroke-linecap="round"/>
+<!-- langes Haar, aus der Stirn zurückgekämmt, im Nacken gelockt -->
+<use href="#schiller-hair" fill="url(#schiller-hm)" filter="url(#schiller-ds)"/>
+<g fill="none" stroke-linecap="round" clip-path="url(#schiller-hairclip)">
+<path d="M70.6 50 C76 60 75 78 74 96" stroke="#5E564A" stroke-opacity="0.4" stroke-width="7" filter="url(#schiller-b)"/>
+<path d="M42.4 51.4 C46.4 53 50 55.4 51.6 59 C51.2 63 50.6 67 52.6 72" stroke="#FFFFFF" stroke-opacity="0.8" stroke-width="1.8" filter="url(#schiller-b2)"/>
+<path d="M77.6 56 C79 66 78.6 76 80 84 C80.6 88 79.6 91 78 93" stroke="#E2DCD1" stroke-opacity="0.45" stroke-width="1.2" filter="url(#schiller-b2)"/>
+<use href="#schiller-wv" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="2.6" transform="translate(-0.7 -1.1)" filter="url(#schiller-b)"/>
+<use href="#schiller-wv" stroke="#6E6659" stroke-opacity="0.38" stroke-width="1.2" filter="url(#schiller-b3)"/>
+</g>
+<!-- Ohr, oben von einer Locke überdeckt -->
+<path d="M53.6 74.2 C56.6 73.4 58.6 76.6 58.2 80.4 C57.8 84 56.6 86.6 54.6 86.4 C53.2 86.2 52.8 84.4 53.4 82.6 C52.6 80 52.6 76.6 53.6 74.2 Z" fill="#CFC8BC"/>
+<path d="M55 76.6 C56.6 77.6 56.8 81 55.4 83.6" fill="none" stroke="#6E6659" stroke-opacity="0.5" stroke-width="0.7" stroke-linecap="round"/>
+<path d="M51.6 68.4 C55 68.8 58.2 71.4 59.6 75.6 C60 77.2 58.8 77.8 58 76.6 C56.6 74 54.6 72.2 52.2 71.4 C51.2 70.8 51 69.4 51.6 68.4 Z" fill="url(#schiller-lk)" filter="url(#schiller-ds)"/>
+<!-- Lockenenden im Nacken -->
+<g fill="none" stroke="url(#schiller-lk)" stroke-width="1.7" stroke-linecap="round">
+<use href="#schiller-c" x="62.8" y="90.4"/><use href="#schiller-c" x="78" y="88.8"/><use href="#schiller-c" x="67.6" y="93"/><use href="#schiller-c" x="73" y="93.2"/>
+</g>
+</g>
+</svg>
