@@ -1,3 +1,3 @@
 // App-Version (bei jeder Veröffentlichung erhöhen, zusammen mit CACHE in sw.js)
-export const APP_VERSION = '1.13';
-export const APP_DATE = '09.11.2026';
+export const APP_VERSION = '1.14';
+export const APP_DATE = '13.11.2026';

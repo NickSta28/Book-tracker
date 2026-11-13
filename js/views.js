@@ -4,7 +4,7 @@ import { coverUrl } from './api.js';
 import { analyze } from './reco.js';
 import { APP_VERSION, APP_DATE } from './version.js';
 import { DECOR, layoutShelf, decorSrc, decorH, decorInfo, onBook } from './decor.js';
-import { dailyMap, periodRange, summarize, categoryColors, catOf, FORMAT_COLORS, FORMAT_LABELS, OTHER_COLOR, lastPage } from './stats.js';
+import { dailyMap, bookPace, periodRange, summarize, categoryColors, catOf, FORMAT_COLORS, FORMAT_LABELS, OTHER_COLOR, lastPage } from './stats.js';
 
 // Feste Kategorien (je Buch genau eine); eigene, ältere Werte bleiben auswählbar
 export const CATEGORY_GROUPS = {
@@ -141,7 +141,7 @@ function metaLine(e) {
 export function statsView(S, entries) {
   const st = S.stats, range = periodRange(st.period, st.anchor);
   const daily = dailyMap(entries, S.logs);
-  const sum = summarize(entries, daily, range);
+  const sum = summarize(entries, daily, range, S.logs);
   const ccolors = categoryColors(entries);
   const label = st.period === 'week' ? `KW ${isoWeek(range.from)} · ${deShort(range.from)} – ${deDate(range.to)}`
     : st.period === 'year' ? String(parseDate(st.anchor).getFullYear())
@@ -190,7 +190,7 @@ export function statsView(S, entries) {
   }
 
   const fastest = sum.fastest, slowest = sum.slowest;
-  const pace = (p) => p ? `<b>${esc(p.u.book.title)}</b><span>${num(p.perDay)} Seiten pro Tag · ${p.days} ${p.days === 1 ? 'Tag' : 'Tage'}</span>` : '<b>–</b><span>noch keine Daten</span>';
+  const pace = (p) => p ? `<b>${esc(p.u.book.title)}</b><span>${num(p.perDay)} Seiten pro Tag · ${p.days} ${p.est ? (p.days === 1 ? 'Tag' : 'Tage') : (p.days === 1 ? 'Lesetag' : 'Lesetage')}</span>` : '<b>–</b><span>noch keine Daten</span>';
   const est = [...daily.entries()].filter(([d]) => d >= range.from && d <= range.to).reduce((s, [, d]) => s + d.est, 0);
   return `${header(S, 'Statistik', S.ub.length + ' Einträge')}
   <div class="row" style="justify-content:space-between;align-items:center;margin-top:12px">
@@ -233,8 +233,8 @@ export function bookSheet(S, e) {
   const b = e.book, ro = S.viewUser !== S.me.id;
   const logs = S.logs.filter((l) => l.user_book_id === e.id).sort((a, c) => (a.log_date < c.log_date ? 1 : -1));
   const lp = logs.length ? logs[0].page_to : 0, pages = b.pages || 0;
-  const days = e.started_at && e.finished_at ? Math.max(1, diffDays(e.started_at, e.finished_at) + 1) : null;
-  const pace = days && pages ? Math.round(pages / days) : null;
+  const bp = bookPace(e, S.logs);
+  const days = bp.days || null, pace = bp.days ? Math.round(bp.perDay) : null;
   const stBg = { finished: 'var(--green)', reading: 'var(--red)', shelf: 'var(--muted)', wishlist: 'var(--ochre)', abandoned: 'var(--muted)' }[e.status];
   const opt = (obj, cur) => Object.entries(obj).map(([k, v]) => `<option value="${k}" ${k === cur ? 'selected' : ''}>${esc(v)}</option>`).join('');
   const cats = [...new Set(S.ub.map((u) => u.category).filter(Boolean))];
@@ -245,7 +245,7 @@ export function bookSheet(S, e) {
       <span class="pill" style="align-self:flex-start;background:${stBg}">${STATUS[e.status]}</span>
       <h2>${esc(b.title)}</h2>${b.subtitle ? `<p class="sub clamp2" style="margin:0">${esc(b.subtitle)}</p>` : ''}
       <p class="sub" style="margin:0">${esc(b.authors || '')}</p>${e.status === 'abandoned' && e.abandon_reason ? `<p class="sub" style="margin:0;color:var(--red)">Abgebrochen: ${esc(e.abandon_reason)}${lp ? ' · bei Seite ' + lp : ''}</p>` : ''}</div></div>
-    <div class="facts"><div class="fact"><b>${pages || '–'}</b><span>Seiten</span></div><div class="fact"><b>${pace || '–'}</b><span>Seiten pro Tag</span></div><div class="fact"><b>${days || '–'}</b><span>Tage</span></div></div>
+    <div class="facts"><div class="fact"><b>${pages || '–'}</b><span>Seiten</span></div><div class="fact"><b>${pace || '–'}</b><span>Seiten pro ${bp.est ? 'Tag' : 'Lesetag'}</span></div><div class="fact"><b>${days || '–'}</b><span>${bp.est ? 'Tage (geschätzt)' : 'Lesetage'}</span></div></div>
     ${ro ? '' : `<label class="btn ghost covbtn">${b.cover_path ? 'Cover ersetzen' : 'Cover fotografieren oder wählen'}<input type="file" accept="image/*" data-cover="${b.id}" hidden></label>`}
     ${b.description ? `<h3 class="sec">Klappentext</h3><div class="blurb" id="blurb">${esc(b.description).replace(/\n+/g, '<br><br>')}</div>${b.description.length > 320 ? '<button class="linkbtn" data-act="blurb">Mehr anzeigen</button>' : ''}` : ''}
 
